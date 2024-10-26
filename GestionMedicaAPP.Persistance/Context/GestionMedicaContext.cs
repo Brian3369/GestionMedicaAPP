@@ -17,7 +17,7 @@ namespace GestionMedicaAPP.Persistance.Context
 
         #region "Appointmets Entities"
         public DbSet<Appointments> Appointments { get; set; }
-        public DbSet<DoctorAvailabilityModel> DoctorAvailability { get; set; }
+        public DbSet<DoctorAvailability> DoctorAvailability { get; set; }
         #endregion
 
         #region "Insurase Entities"

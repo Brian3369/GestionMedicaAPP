@@ -1,5 +1,6 @@
 ﻿using GestionMedicaAPP.Domain.Entities.appointmets;
 using GestionMedicaAPP.Domain.Entities.Medical;
+using GestionMedicaAPP.Domain.Entities.System;
 using GestionMedicaAPP.Persistance.Interfaces.appointmets;
 using GestionMedicaAPP.Persistance.Repositories.appointments;
 using Microsoft.AspNetCore.Mvc;
@@ -15,8 +16,7 @@ namespace GestionMedicaAPP.Appointment.Api.Controllers
         {
             _doctorAvailabilityRepository = doctorAvailabilityRepository;
         }
-
-        // GET: api/<AsientoController>
+ 
         [HttpGet("GetDoctorAvailability")]
         public async Task<IActionResult> Get()
         {
@@ -27,14 +27,16 @@ namespace GestionMedicaAPP.Appointment.Api.Controllers
             return Ok(result);
         }
 
-        // GET api/<AsientoController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("GetDoctorAvailabilityById")]
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            var result = await _doctorAvailabilityRepository.GetEntityBy(id);
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
 
-        // POST api/<AsientoController>
         [HttpPost("SaveDoctorAvailability")]
         public async Task<IActionResult> Post([FromBody] DoctorAvailability doctorAvailability)
         {
@@ -45,16 +47,24 @@ namespace GestionMedicaAPP.Appointment.Api.Controllers
             return Ok(result);
         }
 
-        // PUT api/<AsientoController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost("UpdateDoctorAvailability")]
+        public async Task<IActionResult> Put(int id, [FromBody] DoctorAvailability doctorAvailability)
         {
+            var result = await _doctorAvailabilityRepository.Update(doctorAvailability);
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
 
-        // DELETE api/<AsientoController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpPost("RemoveDoctorAvailability")]
+        public async Task<IActionResult> Remove(DoctorAvailability doctorAvailability)
         {
+            var result = await _doctorAvailabilityRepository.Remove(doctorAvailability);
+            if (result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
     }
 }

@@ -10,8 +10,8 @@ namespace GestionMedicaAPP.Domain.Entities.appointmets
         [Key]
         public int AvailabilityID { get; set; }
         public int DoctorID { get; set; }
-        public DateTime AvalitableDate { get; set; }
-        public TimeSpan StarTime { get; set; }
+        public DateTime AvailableDate { get; set; }
+        public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
     }
 }

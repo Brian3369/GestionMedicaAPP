@@ -1,5 +1,6 @@
 ﻿using GestionMedicaAPP.Domain.Entities.appointmets;
 using GestionMedicaAPP.Persistance.Interfaces.appointmets;
+using GestionMedicaAPP.Persistance.Repositories.appointments;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionMedicaAPP.Appointment.Api.Controllers
@@ -13,8 +14,8 @@ namespace GestionMedicaAPP.Appointment.Api.Controllers
         {
             _appointmentsRepository = appointmentsRepository;
         }
-        // GET: api/<AsientoController>
-        [HttpGet ("GetAppointment")]
+
+        [HttpGet("GetAppointments")]
         public async Task<IActionResult> Get()
         {
             var result = await _appointmentsRepository.GetAll();
@@ -24,15 +25,17 @@ namespace GestionMedicaAPP.Appointment.Api.Controllers
             return Ok(result);
         }
 
-        // GET api/<AsientoController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("GetAppointmentsById")]
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            var result = await _appointmentsRepository.GetEntityBy(id);
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
 
-        // POST api/<AsientoController>
-        [HttpPost("SaveAppointment")]
+        [HttpPost("SaveAppointments")]
         public async Task<IActionResult> Post([FromBody] Appointments appointments)
         {
             var result = await _appointmentsRepository.Save(appointments);
@@ -42,16 +45,24 @@ namespace GestionMedicaAPP.Appointment.Api.Controllers
             return Ok(result);
         }
 
-        // PUT api/<AsientoController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost("UpdateAppointments")]
+        public async Task<IActionResult> Put(int id, [FromBody] Appointments appointments)
         {
+            var result = await _appointmentsRepository.Update(appointments);
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
 
-        // DELETE api/<AsientoController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpPost("RemoveAppointments")]
+        public async Task<IActionResult> Remove(Appointments appointments)
         {
+            var result = await _appointmentsRepository.Remove(appointments);
+            if (result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
     }
 }
