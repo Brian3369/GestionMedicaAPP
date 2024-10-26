@@ -1,8 +1,5 @@
 ﻿using GestionMedicaAPP.Domain.Entities.appointmets;
-using GestionMedicaAPP.Domain.Entities.Medical;
-using GestionMedicaAPP.Domain.Entities.System;
 using GestionMedicaAPP.Persistance.Interfaces.appointmets;
-using GestionMedicaAPP.Persistance.Repositories.appointments;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionMedicaAPP.Appointment.Api.Controllers

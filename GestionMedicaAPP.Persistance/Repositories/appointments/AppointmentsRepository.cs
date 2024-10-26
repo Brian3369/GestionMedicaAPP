@@ -17,32 +17,29 @@ namespace GestionMedicaAPP.Persistance.Repositories.appointments
         {
             OperationResult result = new OperationResult();
 
+            if (entity == null)
+            {
+                result.Success = false;
+                result.Message = "La cita no puede ser nula.";
+                return result;
+            }
+
+            if (entity.AppointmentDate == default)
+            {
+                result.Success = false;
+                result.Message = "La fecha de la cita es requerida.";
+                return result;
+            }
+
+            if (await base.Exists(a => a.DoctorID == entity.DoctorID && a.PatientID == entity.PatientID && a.AppointmentDate == entity.AppointmentDate))
+            {
+                result.Success = false;
+                result.Message = "Ya existe una cita programada para este paciente y doctor en esa fecha.";
+                return result;
+            }
             try
             {
-                if (entity == null)
-                {
-                    result.Success = false;
-                    result.Message = "La cita no puede ser nula.";
-                    return result;
-                }
-
-                if (entity.AppointmentDate == default)
-                {
-                    result.Success = false;
-                    result.Message = "La fecha de la cita es requerida.";
-                    return result;
-                }
-
-                // Verificar si ya existe una cita para el mismo doctor y paciente en la misma fecha
-                if (await base.Exists(a => a.DoctorID == entity.DoctorID && a.PatientID == entity.PatientID && a.AppointmentDate == entity.AppointmentDate))
-                {
-                    result.Success = false;
-                    result.Message = "Ya existe una cita programada para este paciente y doctor en esa fecha.";
-                    return result;
-                }
-
-                await base.Save(entity);
-                result.Success = true;
+                result = await base.Save(entity);
             }
             catch (Exception ex)
             {
@@ -58,24 +55,23 @@ namespace GestionMedicaAPP.Persistance.Repositories.appointments
         {
             OperationResult result = new OperationResult();
 
+            if (entity == null)
+            {
+                result.Success = false;
+                result.Message = "La cita no puede ser nula.";
+                return result;
+            }
+
+            if (entity.AppointmentDate == default)
+            {
+                result.Success = false;
+                result.Message = "La fecha de la cita es requerida.";
+                return result;
+            }
+            
             try
             {
-                if (entity == null)
-                {
-                    result.Success = false;
-                    result.Message = "La cita no puede ser nula.";
-                    return result;
-                }
-
-                if (entity.AppointmentDate == default)
-                {
-                    result.Success = false;
-                    result.Message = "La fecha de la cita es requerida.";
-                    return result;
-                }
-
-                await base.Update(entity);
-                result.Success = true;
+                result = await base.Update(entity);
             }
             catch (Exception ex)
             {
@@ -93,7 +89,7 @@ namespace GestionMedicaAPP.Persistance.Repositories.appointments
             try
             {
                 result.Data = await (from appointments in _context.Appointments
-                                     where appointments.StatusID == 1 
+                                     where appointments.StatusID == 1
                                      select new AppointmentsModel()
                                      {
                                          AppointmentsID = appointments.AppointmentsID,
@@ -102,11 +98,10 @@ namespace GestionMedicaAPP.Persistance.Repositories.appointments
                                          AppointmentDate = appointments.AppointmentDate,
                                          StatusID = appointments.StatusID,
                                          CreatedAt = appointments.CreatedAt,
-                                         UpdatedAt = appointments.UpdatedAt
-                                     })
-                                    .AsNoTracking()
+                                         UpdatedAt = appointments.UpdatedAt,
+
+                                     }).AsNoTracking()
                                     .ToListAsync();
-                result.Success = true;
             }
             catch (Exception ex)
             {
