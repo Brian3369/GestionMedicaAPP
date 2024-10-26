@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+﻿using GestionMedicaAPP.Domain.Entities.System;
+using GestionMedicaAPP.Persistance.Interfaces.System;
+using GestionMedicaAPP.Persistance.Repositories.System;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GestionMedicaAPP.System.Api.Controllers
 {
@@ -8,36 +9,61 @@ namespace GestionMedicaAPP.System.Api.Controllers
     [ApiController]
     public class RolesController : ControllerBase
     {
-        // GET: api/<RolesController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IRolesRepository _rolesRepository;
+        public RolesController(IRolesRepository rolesRepository) 
         {
-            return new string[] { "value1", "value2" };
+            _rolesRepository = rolesRepository;
         }
 
-        // GET api/<RolesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+
+        [HttpGet("GetRoles")]
+        public async Task<IActionResult> Get()
         {
-            return "value";
+            var result = await _rolesRepository.GetAll();
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
 
-        // POST api/<RolesController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpGet("GetRolesById")]
+        public async Task<IActionResult> Get(int id)
         {
+            var result = await _rolesRepository.GetEntityBy(id);
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
 
-        // PUT api/<RolesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost("SaveRoles")]
+        public async Task<IActionResult> Post([FromBody] Roles roles)
         {
+            var result = await _rolesRepository.Save(roles);
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
 
-        // DELETE api/<RolesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpPost("UpdateRoles")]
+        public async Task<IActionResult> Put(int id, [FromBody] Roles roles)
         {
+            var result = await _rolesRepository.Update(roles);
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [HttpPost("RemoveRoles")]
+        public async Task<IActionResult> Remove(Roles roles)
+        {
+            var result = await _rolesRepository.Remove(roles);
+            if (result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
     }
 }

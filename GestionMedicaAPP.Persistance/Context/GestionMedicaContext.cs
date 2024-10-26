@@ -34,7 +34,7 @@ namespace GestionMedicaAPP.Persistance.Context
         #region "System Entities"
         public DbSet<Notifications> Notifications { get; set; }
         public DbSet<Roles> Roles { get; set; }
-        public DbSet<StatusModel> Status { get; set; }
+        public DbSet<Status> Status { get; set; }
         #endregion
 
         #region "Users Entities"
