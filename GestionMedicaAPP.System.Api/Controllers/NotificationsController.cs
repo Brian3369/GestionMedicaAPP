@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+﻿using GestionMedicaAPP.Domain.Entities.System;
+using GestionMedicaAPP.Persistance.Interfaces.System;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GestionMedicaAPP.System.Api.Controllers
 {
@@ -8,36 +8,60 @@ namespace GestionMedicaAPP.System.Api.Controllers
     [ApiController]
     public class NotificationsController : ControllerBase
     {
-        // GET: api/<NotificationsController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly INotificationsRepository _notificationsRepository;
+        public NotificationsController(INotificationsRepository notificationsRepository)
         {
-            return new string[] { "value1", "value2" };
+            _notificationsRepository = notificationsRepository;
         }
 
-        // GET api/<NotificationsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("GetNotifications")]
+        public async Task<IActionResult> Get()
         {
-            return "value";
+            var result = await _notificationsRepository.GetAll();
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
 
-        // POST api/<NotificationsController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpGet("GetById")]
+        public async Task<IActionResult> Get(int id)
         {
+            var result = await _notificationsRepository.GetEntityBy(id);
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
 
-        // PUT api/<NotificationsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost("SaveNotifications")]
+        public async Task<IActionResult> Post([FromBody] Notifications notifications)
         {
+            var result = await _notificationsRepository.Save(notifications);
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
 
-        // DELETE api/<NotificationsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpPost("UpdateNotifications")]
+        public async Task<IActionResult> Put(int id, [FromBody] Notifications notifications)
         {
+            var result = await _notificationsRepository.Update(notifications);
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [HttpPost("RemoveNotifications")]
+        public async Task<IActionResult> Remove(Notifications notifications)
+        {
+            var result = await _notificationsRepository.Remove(notifications);
+            if (result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
     }
 }
