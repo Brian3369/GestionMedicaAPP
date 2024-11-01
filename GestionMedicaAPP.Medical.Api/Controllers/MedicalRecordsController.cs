@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GestionMedicaAPP.Domain.Entities.Medical;
+using GestionMedicaAPP.Domain.Entities.System;
+using GestionMedicaAPP.Persistance.Interfaces.Medical;
+using GestionMedicaAPP.Persistance.Interfaces.System;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,36 +12,60 @@ namespace GestionMedicaAPP.Medical.Api.Controllers
     [ApiController]
     public class MedicalRecordsController : ControllerBase
     {
-        // GET: api/<MedicalRecordsController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IMedicalRecordsRepository _medicalRecordsRepository;
+        public MedicalRecordsController(IMedicalRecordsRepository medicalRecordsRepository)
         {
-            return new string[] { "value1", "value2" };
+            _medicalRecordsRepository = medicalRecordsRepository;
         }
 
-        // GET api/<MedicalRecordsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("GetMedicalRecords")]
+        public async Task<IActionResult> Get()
         {
-            return "value";
+            var result = await _medicalRecordsRepository.GetAll();
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
 
-        // POST api/<MedicalRecordsController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpGet("GetMedicalRecordsById")]
+        public async Task<IActionResult> Get(int id)
         {
+            var result = await _medicalRecordsRepository.GetEntityBy(id);
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
 
-        // PUT api/<MedicalRecordsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost("SaveMedicalRecords")]
+        public async Task<IActionResult> Post([FromBody] MedicalRecords medicalRecords)
         {
+            var result = await _medicalRecordsRepository.Save(medicalRecords);
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
 
-        // DELETE api/<MedicalRecordsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpPost("UpdateMedicalRecords")]
+        public async Task<IActionResult> Put(int id, [FromBody] MedicalRecords medicalRecords)
         {
+            var result = await _medicalRecordsRepository.Update(medicalRecords);
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [HttpPost("RemoveMedicalRecords")]
+        public async Task<IActionResult> Remove(MedicalRecords medicalRecords)
+        {
+            var result = await _medicalRecordsRepository.Remove(medicalRecords);
+            if (result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
     }
 }

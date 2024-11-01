@@ -21,9 +21,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GestionMedicaAPP.Insurance.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GestionMedicaAPP.Medical.Api", "GestionMedicaAPP.Medical.Api\GestionMedicaAPP.Medical.Api.csproj", "{235AFE24-FF67-4296-A7BB-CE409FCC74AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestionMedicaAPP.System.Api", "GestionMedicaAPP.System.Api\GestionMedicaAPP.System.Api.csproj", "{36E7527C-7EC0-4FCF-97AD-3BFF26CFCCA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GestionMedicaAPP.System.Api", "GestionMedicaAPP.System.Api\GestionMedicaAPP.System.Api.csproj", "{36E7527C-7EC0-4FCF-97AD-3BFF26CFCCA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestionMedicaAPP.users.Api", "GestionMedicaAPP.Users.Api\GestionMedicaAPP.users.Api.csproj", "{4F7F9439-EB52-48A9-9A34-F47C16C60653}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GestionMedicaAPP.users.Api", "GestionMedicaAPP.Users.Api\GestionMedicaAPP.users.Api.csproj", "{4F7F9439-EB52-48A9-9A34-F47C16C60653}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestionMedicaAPP.IOC", "GestionMedicaAPP.IOC\GestionMedicaAPP.IOC.csproj", "{92178845-AE5E-496A-9415-A5C186ABDCC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestionMedicaAPP.Application", "GestionMedicaAPP.Application\GestionMedicaAPP.Application.csproj", "{21B2F8A6-CCDB-4183-B529-87E7DB99AA84}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +67,14 @@ Global
 		{4F7F9439-EB52-48A9-9A34-F47C16C60653}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F7F9439-EB52-48A9-9A34-F47C16C60653}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F7F9439-EB52-48A9-9A34-F47C16C60653}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92178845-AE5E-496A-9415-A5C186ABDCC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92178845-AE5E-496A-9415-A5C186ABDCC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92178845-AE5E-496A-9415-A5C186ABDCC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92178845-AE5E-496A-9415-A5C186ABDCC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21B2F8A6-CCDB-4183-B529-87E7DB99AA84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21B2F8A6-CCDB-4183-B529-87E7DB99AA84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21B2F8A6-CCDB-4183-B529-87E7DB99AA84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21B2F8A6-CCDB-4183-B529-87E7DB99AA84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

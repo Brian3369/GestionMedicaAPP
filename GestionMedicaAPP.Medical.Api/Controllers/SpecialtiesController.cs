@@ -1,4 +1,6 @@
-﻿using GestionMedicaAPP.Persistance.Interfaces.Medical;
+﻿using GestionMedicaAPP.Domain.Entities.Medical;
+using GestionMedicaAPP.Persistance.Interfaces.Medical;
+using GestionMedicaAPP.Persistance.Repositories.Medical;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionMedicaAPP.Medical.Api.Controllers
@@ -12,7 +14,7 @@ namespace GestionMedicaAPP.Medical.Api.Controllers
         {
             _specialtiesRepository = specialtiesRepository;
         }
-        // GET: api/<AsientoController>
+
         [HttpGet("GetSpecialties")]
         public async Task<IActionResult> Get()
         {
@@ -23,29 +25,44 @@ namespace GestionMedicaAPP.Medical.Api.Controllers
             return Ok(result);
         }
 
-        // GET api/<AsientoController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("GetSpecialtiesById")]
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            var result = await _specialtiesRepository.GetEntityBy(id);
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
 
-        // POST api/<AsientoController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("SaveSpecialties")]
+        public async Task<IActionResult> Post([FromBody] Specialties specialties)
         {
+            var result = await _specialtiesRepository.Save(specialties);
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
 
-        // PUT api/<AsientoController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost("UpdateSpecialties")]
+        public async Task<IActionResult> Put(int id, [FromBody] Specialties specialties)
         {
+            var result = await _specialtiesRepository.Update(specialties);
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
 
-        // DELETE api/<AsientoController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpPost("RemoveSpecialties")]
+        public async Task<IActionResult> Remove(Specialties specialties)
         {
+            var result = await _specialtiesRepository.Remove(specialties);
+            if (result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
     }
 }

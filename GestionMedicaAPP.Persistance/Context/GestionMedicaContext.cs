@@ -1,9 +1,8 @@
 ﻿using GestionMedicaAPP.Domain.Entities.appointmets;
-using GestionMedicaAPP.Domain.Entities.Insurase;
+using GestionMedicaAPP.Domain.Entities.Insurance;
 using GestionMedicaAPP.Domain.Entities.Medical;
 using GestionMedicaAPP.Domain.Entities.System;
 using GestionMedicaAPP.Domain.Entities.users;
-using GestionMedicaAPP.Persistance.Models.System;
 using Microsoft.EntityFrameworkCore;
 
 namespace GestionMedicaAPP.Persistance.Context
@@ -20,9 +19,9 @@ namespace GestionMedicaAPP.Persistance.Context
         public DbSet<DoctorAvailability> DoctorAvailability { get; set; }
         #endregion
 
-        #region "Insurase Entities"
-        public DbSet<InsuraseProvider> InsuraseProvider { get; set; }
-        public DbSet<NetwordType> NetwordType { get; set; }
+        #region "Insurance Entities"
+        public DbSet<InsuranceProviders> InsuranceProvider { get; set; }
+        public DbSet<NetworkType> NetwordType { get; set; }
         #endregion
 
         #region "Medical Entities"

@@ -8,7 +8,7 @@ namespace GestionMedicaAPP.Domain.Entities.Medical
     public class AvailabilityModes : BaseEntity
     {
         [Key]
-        public int AvailabilityModelID { get; set; }
+        public short SAvailabilityModeID { get; set; }
         public string AvailabilityMode { get; set; }
     }
 }

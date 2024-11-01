@@ -2,10 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GestionMedicaAPP.Domain.Entities.Insurase
+namespace GestionMedicaAPP.Domain.Entities.Insurance
 {
-    [Table("NetwordType", Schema = "insuranse")]
-    public class NetwordType : BaseEntity
+    [Table("NetworkType", Schema = "Insurance")]
+    public class NetworkType : BaseEntity
     {
         [Key]
         public int NetworkTypeId { get; set; }

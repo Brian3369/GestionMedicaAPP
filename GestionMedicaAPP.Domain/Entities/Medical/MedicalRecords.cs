@@ -13,7 +13,7 @@ namespace GestionMedicaAPP.Domain.Entities.Medical
         public int DoctorID { get; set; }
         public string Diagnosis { get; set; }
         public string Treatment { get; set; }
-        public DateTime DateOfVisiy { get; set; }
+        public DateTime DateOfVisit { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }

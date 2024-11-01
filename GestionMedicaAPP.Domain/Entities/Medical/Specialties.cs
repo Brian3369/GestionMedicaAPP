@@ -9,7 +9,7 @@ namespace GestionMedicaAPP.Domain.Entities.Medical
     public class Specialties : BaseEntity
     {
         [Key]
-        public int SpecialtyID { get; set; }
+        public short SpecialtyID { get; set; }
         public string SpecialtyName { get; set; }
     }
 }

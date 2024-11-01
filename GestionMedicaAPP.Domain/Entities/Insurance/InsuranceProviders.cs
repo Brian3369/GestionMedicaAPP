@@ -2,10 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GestionMedicaAPP.Domain.Entities.Insurase
+namespace GestionMedicaAPP.Domain.Entities.Insurance
 {
-    [Table("InsuraseProvider", Schema = "insuranse")]
-    public class InsuraseProvider : BaseEntity
+    [Table("InsuranceProviders", Schema = "Insurance")]
+    public class InsuranceProviders : BaseEntity
     {
         [Key]
         public int InsuranceProviderID { get; set; }
