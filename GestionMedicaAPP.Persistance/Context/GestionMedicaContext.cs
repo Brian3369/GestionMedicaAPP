@@ -21,7 +21,7 @@ namespace GestionMedicaAPP.Persistance.Context
 
         #region "Insurance Entities"
         public DbSet<InsuranceProviders> InsuranceProvider { get; set; }
-        public DbSet<NetworkType> NetwordType { get; set; }
+        public DbSet<NetworkType> NetworkType { get; set; }
         #endregion
 
         #region "Medical Entities"
@@ -38,7 +38,7 @@ namespace GestionMedicaAPP.Persistance.Context
 
         #region "Users Entities"
         public DbSet<Doctors> Doctors { get; set; }
-        public DbSet<Patients> Patiens { get; set; }
+        public DbSet<Patients> Patients { get; set; }
         public DbSet<Users> Users { get; set; }
         #endregion
     }

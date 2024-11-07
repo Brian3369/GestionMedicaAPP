@@ -12,7 +12,7 @@ namespace GestionMedicaAPP.Domain.Entities.appointmets
     public class Appointments
     {
         [Key]
-        public int AppointmentsID { get; set; }
+        public int AppointmentID { get; set; }
         public int PatientID { get; set; }
         public int DoctorID { get; set; }
         public DateTime AppointmentDate { get; set; }

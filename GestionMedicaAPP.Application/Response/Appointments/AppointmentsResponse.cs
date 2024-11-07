@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GestionMedicaAPP.Application.Response.Appointments
+﻿namespace GestionMedicaAPP.Application.Response.Appointments
 {
-    internal class AppointmentsResponse
+    public class AppointmentsResponse
     {
     }
 }

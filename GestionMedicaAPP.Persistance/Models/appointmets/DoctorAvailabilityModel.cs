@@ -1,14 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace GestionMedicaAPP.Domain.Entities.appointmets
+﻿namespace GestionMedicaAPP.Persistance.Models.appointmets
 {
     public sealed class DoctorAvailabilityModel
     {
-        [Key]
         public int AvailabilityID { get; set; }
         public int DoctorID { get; set; }
-        public DateTime AvalitableDate { get; set; }
-        public TimeSpan StarTime { get; set; }
+        public DateTime AvailableDate { get; set; }
+        public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
+        public int StatusID { get; set; }
     }
 }

@@ -3,15 +3,16 @@ using GestionMedicaAPP.Domain.Result;
 using GestionMedicaAPP.Persistance.Base;
 using GestionMedicaAPP.Persistance.Context;
 using GestionMedicaAPP.Persistance.Interfaces.appointmets;
+using GestionMedicaAPP.Persistance.Models.appointmets;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace GestionMedicaAPP.Persistance.Repositories.appointments
 {
-    public sealed class AppointmentsRepository(GestionMedicaContext context, ILogger<AppointmentsRepository> logger) : BaseRepository<Appointments>(context), IAppointmentsRepository
+    public class AppointmentsRepository(GestionMedicaContext Context, ILogger<AppointmentsRepository> logger) : BaseRepository<Appointments>(Context), IAppointmentsRepository
     {
-        private readonly GestionMedicaContext _context = context;
-        private readonly ILogger<AppointmentsRepository> logger = logger;
+        private readonly GestionMedicaContext _context = Context;
+        private readonly ILogger<AppointmentsRepository> _logger = logger;
 
         public async override Task<OperationResult> Save(Appointments entity)
         {
@@ -37,6 +38,7 @@ namespace GestionMedicaAPP.Persistance.Repositories.appointments
                 result.Message = "Ya existe una cita programada para este paciente y doctor en esa fecha.";
                 return result;
             }
+
             try
             {
                 result = await base.Save(entity);
@@ -45,7 +47,7 @@ namespace GestionMedicaAPP.Persistance.Repositories.appointments
             {
                 result.Message = "Ocurrió un error guardando la cita.";
                 result.Success = false;
-                logger.LogError(result.Message, ex.ToString());
+                _logger.LogError(result.Message, ex.ToString());
             }
 
             return result;
@@ -68,7 +70,7 @@ namespace GestionMedicaAPP.Persistance.Repositories.appointments
                 result.Message = "La fecha de la cita es requerida.";
                 return result;
             }
-            
+
             try
             {
                 result = await base.Update(entity);
@@ -77,11 +79,12 @@ namespace GestionMedicaAPP.Persistance.Repositories.appointments
             {
                 result.Message = "Ocurrió un error actualizando la cita.";
                 result.Success = false;
-                logger.LogError(result.Message, ex.ToString());
+                _logger.LogError(result.Message, ex.ToString());
             }
 
             return result;
         }
+
         public async override Task<OperationResult> GetAll()
         {
             OperationResult result = new OperationResult();
@@ -92,37 +95,38 @@ namespace GestionMedicaAPP.Persistance.Repositories.appointments
                                      where appointments.StatusID == 1
                                      select new AppointmentsModel()
                                      {
-                                         AppointmentsID = appointments.AppointmentsID,
+                                         AppointmentID = appointments.AppointmentID,
                                          PatientID = appointments.PatientID,
                                          DoctorID = appointments.DoctorID,
                                          AppointmentDate = appointments.AppointmentDate,
                                          StatusID = appointments.StatusID,
                                          CreatedAt = appointments.CreatedAt,
                                          UpdatedAt = appointments.UpdatedAt,
-
                                      }).AsNoTracking()
                                     .ToListAsync();
+                result.Success = true;
             }
             catch (Exception ex)
             {
                 result.Message = "Ocurrió un error obteniendo las citas.";
                 result.Success = false;
-                logger.LogError(result.Message, ex.ToString());
+                _logger.LogError(result.Message, ex.ToString());
             }
 
             return result;
         }
-        public async override Task<OperationResult> GetEntityBy(int Id)
+
+        public async override Task<OperationResult> GetEntityBy(int id)
         {
             OperationResult result = new OperationResult();
 
             try
             {
                 var appointment = await (from a in this._context.Appointments
-                                         where a.AppointmentsID == Id
+                                         where a.AppointmentID == id
                                          select new AppointmentsModel()
                                          {
-                                             AppointmentsID = a.AppointmentsID,
+                                             AppointmentID = a.AppointmentID,
                                              PatientID = a.PatientID,
                                              DoctorID = a.DoctorID,
                                              AppointmentDate = a.AppointmentDate,
@@ -147,7 +151,7 @@ namespace GestionMedicaAPP.Persistance.Repositories.appointments
             {
                 result.Message = "Ocurrió un error obteniendo la cita.";
                 result.Success = false;
-                logger.LogError(result.Message, ex.ToString());
+                _logger.LogError(result.Message, ex.ToString());
             }
 
             return result;

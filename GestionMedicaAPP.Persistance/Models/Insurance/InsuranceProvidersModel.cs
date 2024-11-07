@@ -1,15 +1,10 @@
-﻿using GestionMedicaAPP.Domain.Base;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace GestionMedicaAPP.Domain.Entities.Insurance
+﻿namespace GestionMedicaAPP.Persistance.Models.Insurance
 {
-    [Table("InsuranceProviders", Schema = "Insurance")]
-    public class InsuranceProviders : BaseEntity
+    public sealed class InsuranceProvidersModel
     {
-        [Key]
         public int InsuranceProviderID { get; set; }
         public string Name { get; set; }
+        public int StatusID { get; set; }
         public string ContactNumber { get; set; }
         public string Email { get; set; }
         public string Website { get; set; }
@@ -25,6 +20,8 @@ namespace GestionMedicaAPP.Domain.Entities.Insurance
         public string CustomerSupportContact { get; set; }
         public string AcceptedRegions { get; set; }
         public decimal? MaxCoverageAmount { get; set; }
-        public int StatusID { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public bool IsActive { get; set; }
     }
 }
