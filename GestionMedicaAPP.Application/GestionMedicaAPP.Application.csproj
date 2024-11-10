@@ -7,8 +7,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\" />
-    <Folder Include="Services\" />
+    <Folder Include="Contracts\Insurance\" />
+    <Folder Include="Contracts\Medical\" />
+    <Folder Include="Contracts\System\" />
+    <Folder Include="Contracts\Users\" />
+    <Folder Include="Dtos\Insurance\" />
+    <Folder Include="Dtos\Medical\" />
+    <Folder Include="Dtos\Users\" />
+    <Folder Include="Dtos\System\" />
+    <Folder Include="Response\Insurance\" />
+    <Folder Include="Response\Medical\" />
+    <Folder Include="Response\System\" />
+    <Folder Include="Response\Users\" />
+    <Folder Include="Services\Insurance\" />
+    <Folder Include="Services\Medical\" />
+    <Folder Include="Services\System\" />
+    <Folder Include="Services\Users\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GestionMedicaAPP.Persistance\GestionMedicaAPP.Persistance.csproj" />
   </ItemGroup>
 
 </Project>

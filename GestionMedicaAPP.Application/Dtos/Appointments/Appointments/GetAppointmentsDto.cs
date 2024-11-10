@@ -1,0 +1,10 @@
+﻿namespace GestionMedicaAPP.Application.Dtos.Appointments.Appointments
+{
+    public class GetAppointmentsDto
+    {
+        public int AppointmentID { get; set; }
+        public int PatientID { get; set; }
+        public int DoctorID { get; set; }
+        public DateTime AppointmentDate { get; set; }
+    }
+}
