@@ -55,9 +55,9 @@ namespace GestionMedicaAPP.users.Api.Controllers
         }
 
         [HttpPost("RemoveUser")]
-        public async Task<IActionResult> Remove(Users users)
+        public async Task<IActionResult> get(int id)
         {
-            var result = await _usersRepository.Remove(users);
+            var result = await _usersRepository.RemoveById(id);
             if (result.Success)
                 return BadRequest(result);
                 

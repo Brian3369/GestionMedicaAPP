@@ -20,22 +20,22 @@ namespace GestionMedicaAPP.Application.Services.appointments
             }
             _doctorAvailabilityRepository = doctorAvailabilityRepository;
         }
-        public Task<AppointmentsResponse> GetAll()
+        public Task<UserResponse> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task<AppointmentsResponse> GetById(int Id)
+        public Task<UserResponse> GetById(int Id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<AppointmentsResponse> SaveAsync(AppointmentsSaveDto dto)
+        public Task<UserResponse> SaveAsync(AppointmentsSaveDto dto)
         {
             throw new NotImplementedException();
         }
 
-        public Task<AppointmentsResponse> UpdateAsync(AppointmentsUpdateDto dto)
+        public Task<UserResponse> UpdateAsync(AppointmentsUpdateDto dto)
         {
             throw new NotImplementedException();
         }

@@ -95,6 +95,26 @@ namespace GestionMedicaAPP.Persistance.Base
             return result;
         }
 
+        public async virtual Task<OperationResult> RemoveById(int id)
+        {
+            OperationResult result = new OperationResult();
+
+            try
+            {
+                var entity = await this.entities.FindAsync(id);
+                entities.Remove(entity);
+                await _gestionMedicaContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = $"Ocurrió un error {ex.Message} removiendo la entidad por id.";
+
+            }
+
+            return result;
+        }
+
         public virtual async Task<OperationResult> Save(TEntity entity)
         {
             OperationResult result = new OperationResult();

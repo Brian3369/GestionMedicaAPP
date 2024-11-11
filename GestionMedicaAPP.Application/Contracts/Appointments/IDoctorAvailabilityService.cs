@@ -4,7 +4,7 @@ using GestionMedicaAPP.Application.Response.Appointments.Appointments;
 
 namespace GestionMedicaAPP.Application.Contracts.Appointments
 {
-    public interface IDoctorAvailabilityService : IBaseService<AppointmentsResponse, AppointmentsSaveDto, AppointmentsUpdateDto>
+    public interface IDoctorAvailabilityService : IBaseService<UserResponse, AppointmentsSaveDto, AppointmentsUpdateDto>
     {
 
     }

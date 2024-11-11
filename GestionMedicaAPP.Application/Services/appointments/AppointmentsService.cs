@@ -23,9 +23,9 @@ namespace GestionMedicaAPP.Application.Services.appointments
             }
             _appointmentsRepository = appointmentsRepository;
         }    
-        public async Task<AppointmentsResponse> GetAll()
+        public async Task<UserResponse> GetAll()
         {
-            AppointmentsResponse appointmentsResponse = new AppointmentsResponse();
+            UserResponse appointmentsResponse = new UserResponse();
 
             try
             {
@@ -55,9 +55,9 @@ namespace GestionMedicaAPP.Application.Services.appointments
             return appointmentsResponse;
         }
 
-        public async Task<AppointmentsResponse> GetById(int Id)
+        public async Task<UserResponse> GetById(int Id)
         {
-            AppointmentsResponse appointmentsResponse = new AppointmentsResponse();
+            UserResponse appointmentsResponse = new UserResponse();
 
             try
             {
@@ -88,9 +88,9 @@ namespace GestionMedicaAPP.Application.Services.appointments
             return appointmentsResponse;
         }
 
-        public async Task<AppointmentsResponse> SaveAsync(AppointmentsSaveDto dto)
+        public async Task<UserResponse> SaveAsync(AppointmentsSaveDto dto)
         {
-            AppointmentsResponse appointmentsResponse = new AppointmentsResponse();
+            UserResponse appointmentsResponse = new UserResponse();
 
             try
             {
@@ -103,6 +103,7 @@ namespace GestionMedicaAPP.Application.Services.appointments
                 appointments.UpdatedAt = dto.UpdatedAt;
 
                 var result = await _appointmentsRepository.Save(appointments);
+                result.Message = "La cita fue creada correctamente.";
             }
 
             catch (Exception ex)
@@ -116,9 +117,9 @@ namespace GestionMedicaAPP.Application.Services.appointments
             return appointmentsResponse;
         }
 
-        public async Task<AppointmentsResponse> UpdateAsync(AppointmentsUpdateDto dto)
+        public async Task<UserResponse> UpdateAsync(AppointmentsUpdateDto dto)
         {
-            AppointmentsResponse appointmentsResponse = new AppointmentsResponse();
+            UserResponse appointmentsResponse = new UserResponse();
 
             try
             {

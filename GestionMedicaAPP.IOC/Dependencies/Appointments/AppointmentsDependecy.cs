@@ -1,10 +1,12 @@
-﻿namespace GestionMedicaAPP.IOC.Dependencies.Appointments
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace GestionMedicaAPP.IOC.Dependencies.Appointments
 {
     public static class AppointmentsDependecy
     {
-        //public static void AddConfigurationDependency(this IServiceCollection service)
-        //{
+        public static void AddAppointmentsDependecy(this IServiceCollection service)
+        {
 
-        //}
+        }
     }
 }

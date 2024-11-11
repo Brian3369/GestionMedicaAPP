@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using GestionMedicaAPP.Domain.Entities.users;
 using GestionMedicaAPP.Domain.Result;
 using Microsoft.EntityFrameworkCore;
+using GestionMedicaAPP.Persistance.Models.users;
 
 namespace GestionMedicaAPP.Persistance.Repositories.users
 {
@@ -23,9 +24,30 @@ namespace GestionMedicaAPP.Persistance.Repositories.users
                 result.Message = "El usuario no puede ser nulo.";
                 return result;
             }
+            if (await base.Exists(u => u.UserID == entity.UserID && u.Email == entity.Email))
+            {
+                result.Success = false;
+                result.Message = "Ya existe un usaurio con este correo";
+                return result;
+            }
+
+            if (entity.FirstName == null || entity.LastName == null || entity.Email == null || entity.Password == null)
+            {
+                result.Success = false;
+                result.Message = "Debe llenar todos los datos";
+                return result;
+            }
+
+            if (entity.RoleID == null)
+            {
+                result.Success = false;
+                result.Message = "Deve asignar un roll";
+                return result;
+            }
 
             try
             {
+                entity.IsActive = true;
                 result = await base.Save(entity);
             }
             catch (Exception ex)
@@ -41,17 +63,40 @@ namespace GestionMedicaAPP.Persistance.Repositories.users
         public async override Task<OperationResult> Update(Users entity)
         {
             OperationResult result = new OperationResult();
+            Users? usersToUpdate = await _context.Users.FindAsync(entity.UserID);
 
-            if (entity == null)
+            if (usersToUpdate == null)
             {
                 result.Success = false;
-                result.Message = "El usuario no puede ser nulo.";
+                result.Message = "El usuario no existe.";
+                return result;
+            }
+
+            if (entity.RoleID == null)
+            {
+                result.Success = false;
+                result.Message = "El rol es requerido.";
+                return result;
+            }
+
+            if (entity.FirstName == null || entity.LastName == null || entity.Email == null || entity.Password == null)
+            {
+                result.Success = false;
+                result.Message = "Debe llenar todos los datos";
                 return result;
             }
 
             try
             {
-                result = await base.Update(entity);
+                usersToUpdate.FirstName = entity.FirstName;
+                usersToUpdate.LastName = entity.LastName;
+                usersToUpdate.Email = entity.Email;
+                usersToUpdate.Password = entity.Password;
+                usersToUpdate.RoleID = entity.RoleID;
+                usersToUpdate.UpdatedAt = entity.UpdatedAt;
+                usersToUpdate.IsActive = entity.IsActive;
+
+                result = await base.Update(usersToUpdate);
             }
             catch (Exception ex)
             {
@@ -69,8 +114,20 @@ namespace GestionMedicaAPP.Persistance.Repositories.users
 
             try
             {
-                result.Data = await _context.Users
-                    .AsNoTracking()
+                result.Data = await (from users in _context.Users
+                                     where users.IsActive == true
+                                     select new UsersModel()
+                                     {
+                                         UserID = users.UserID,
+                                         FirstName = users.FirstName,
+                                         LastName = users.LastName,
+                                         Email = users.Email,
+                                         Password = users.Password,
+                                         RoleID = users.RoleID,
+                                         CreatedAt = users.CreatedAt,
+                                         UpdatedAt = users.UpdatedAt,
+                                         IsActive = users.IsActive
+                                     }).AsNoTracking()
                     .ToListAsync();
                 result.Success = true;
             }
@@ -90,9 +147,22 @@ namespace GestionMedicaAPP.Persistance.Repositories.users
 
             try
             {
-                var user = await _context.Users
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync(u => u.UserID == id);
+                var user = await (from users in this._context.Users
+                                         where users.UserID == id
+                                         select new UsersModel()
+                                         {
+                                             UserID = users.UserID,
+                                             FirstName = users.FirstName,
+                                             LastName = users.LastName,
+                                             Email = users.Email,
+                                             Password = users.Password,
+                                             RoleID = users.RoleID,
+                                             CreatedAt = users.CreatedAt,
+                                             UpdatedAt = users.UpdatedAt,
+                                             IsActive = users.IsActive
+                                         })
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync();
 
                 if (user == null)
                 {

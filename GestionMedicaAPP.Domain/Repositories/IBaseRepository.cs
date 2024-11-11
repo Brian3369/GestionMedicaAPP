@@ -8,6 +8,7 @@ namespace GestionMedicaAPP.Domain.Repositories
         Task<OperationResult> Save(TEntity entity);
         Task<OperationResult> Update(TEntity entity);
         Task<OperationResult> Remove(TEntity entity);
+        Task<OperationResult> RemoveById(int id);
         Task<OperationResult> GetAll();
         Task<OperationResult> GetAll(Expression<Func<TEntity, bool>> filter);
         Task<OperationResult> GetEntityBy(int Id);
