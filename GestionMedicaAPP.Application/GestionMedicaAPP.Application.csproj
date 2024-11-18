@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GestionMedicaAPP.Infraestructure\GestionMedicaAPP.Infraestructure.csproj" />
     <ProjectReference Include="..\GestionMedicaAPP.Persistance\GestionMedicaAPP.Persistance.csproj" />
   </ItemGroup>
 

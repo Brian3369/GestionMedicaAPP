@@ -1,6 +1,6 @@
-﻿using GestionMedicaAPP.Persistance.Interfaces.users;
-using GestionMedicaAPP.Domain.Entities.users;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using GestionMedicaAPP.Application.Contracts.Users;
+using GestionMedicaAPP.Application.Dtos.Users;
 
 namespace GestionMedicaAPP.users.Api.Controllers
 {
@@ -8,17 +8,17 @@ namespace GestionMedicaAPP.users.Api.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUsersRepository _usersRepository;
-        public UsersController(IUsersRepository usersRepository)
+        private readonly IUsersService _usersService;
+        public UsersController(IUsersService usersService)
         {
-            _usersRepository = usersRepository;
+            _usersService = usersService;
         }
 
         [HttpGet("GetUsers")]
         public async Task<IActionResult> Get()
         {
-            var result = await _usersRepository.GetAll();
-            if(!result.Success)
+            var result = await _usersService.GetAll();
+            if(!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
@@ -27,38 +27,40 @@ namespace GestionMedicaAPP.users.Api.Controllers
         [HttpGet("GetById")]
         public async Task<IActionResult> Get(int id)
         {
-            var result = await _usersRepository.GetEntityBy(id);
-            if (!result.Success)
+            var result = await _usersService.GetById(id);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
         [HttpPost("SaveUsers")]
-        public async Task<IActionResult> Post([FromBody] Users users)
+        public async Task<IActionResult> Post([FromBody] UsersSaveDto usersSaveDto)
         {
-            var result = await _usersRepository.Save(users);
-            if(!result.Success)
+            var result = await _usersService.SaveAsync(usersSaveDto);
+
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
-        [HttpPost("UpdateUsers")]
-        public async Task<IActionResult> Put(int id, [FromBody] Users users)
+        [HttpPut("UpdateUsers")]
+        public async Task<IActionResult> Put([FromBody] UsersUpdateDto usersUpdateDto)
         {
-            var result = await _usersRepository.Update(users);
-            if(!result.Success)
+            var result = await _usersService.UpdateAsync(usersUpdateDto);
+
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
-        [HttpPost("RemoveUser")]
+        [HttpDelete("RemoveUser")]
         public async Task<IActionResult> get(int id)
         {
-            var result = await _usersRepository.RemoveById(id);
-            if (result.Success)
+            var result = await _usersService.RemoveById(id);
+            if (result.IsSuccess)
                 return BadRequest(result);
                 
             return Ok(result);

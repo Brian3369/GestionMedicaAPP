@@ -41,7 +41,9 @@ namespace GestionMedicaAPP.Persistance.Repositories.appointments
 
             try
             {
+                result.Success = true;
                 result = await base.Save(entity);
+                result.Message = "Cita guardada correctamente";
             }
             catch (Exception ex)
             {
@@ -56,28 +58,46 @@ namespace GestionMedicaAPP.Persistance.Repositories.appointments
         public async override Task<OperationResult> Update(Appointments entity)
         {
             OperationResult result = new OperationResult();
+            var AppointmentsToUpdate = await _context.Appointments.FindAsync(entity.AppointmentID);
 
-            if (entity == null)
+            if (AppointmentsToUpdate == null)
             {
                 result.Success = false;
-                result.Message = "La cita no puede ser nula.";
+                result.Message = "La cita no existe.";
                 return result;
             }
 
-            if (entity.AppointmentDate == default)
+            if (entity.StatusID == null)
             {
                 result.Success = false;
-                result.Message = "La fecha de la cita es requerida.";
+                result.Message = "El estatus es requerido.";
+                return result;
+            }
+
+            if (entity.DoctorID == null || entity.PatientID == null || entity.StatusID == null || entity.AppointmentDate == null)
+            {
+                result.Success = false;
+                result.Message = "Debe llenar todos los datos";
                 return result;
             }
 
             try
             {
-                result = await base.Update(entity);
+                AppointmentsToUpdate.AppointmentID = entity.AppointmentID;
+                AppointmentsToUpdate.PatientID = entity.PatientID;
+                AppointmentsToUpdate.DoctorID = entity.DoctorID;
+                AppointmentsToUpdate.AppointmentDate = entity.AppointmentDate;
+                AppointmentsToUpdate.StatusID = entity.StatusID;
+                AppointmentsToUpdate.UpdatedAt = entity.UpdatedAt;
+                AppointmentsToUpdate.CreatedAt = entity.CreatedAt;
+
+                await _context.SaveChangesAsync();
+                result.Success = true;
+                result.Message = "Cita actualizada correctamente.";
             }
             catch (Exception ex)
             {
-                result.Message = "Ocurrió un error actualizando la cita.";
+                result.Message = "Ocurrió un error actualizando cita.";
                 result.Success = false;
                 _logger.LogError(result.Message, ex.ToString());
             }
@@ -91,17 +111,17 @@ namespace GestionMedicaAPP.Persistance.Repositories.appointments
 
             try
             {
-                result.Data = await (from appointments in _context.Appointments
-                                     where appointments.StatusID == 1
+                result.Data = await (from Appointments in _context.Appointments
+                                     where Appointments.StatusID == 3
                                      select new AppointmentsModel()
                                      {
-                                         AppointmentID = appointments.AppointmentID,
-                                         PatientID = appointments.PatientID,
-                                         DoctorID = appointments.DoctorID,
-                                         AppointmentDate = appointments.AppointmentDate,
-                                         StatusID = appointments.StatusID,
-                                         CreatedAt = appointments.CreatedAt,
-                                         UpdatedAt = appointments.UpdatedAt,
+                                         AppointmentID = Appointments.AppointmentID,
+                                         PatientID = Appointments.PatientID,
+                                         DoctorID = Appointments.DoctorID,
+                                         AppointmentDate = Appointments.AppointmentDate,
+                                         StatusID = Appointments.StatusID,
+                                         CreatedAt = Appointments.CreatedAt,
+                                         UpdatedAt = Appointments.UpdatedAt,
                                      }).AsNoTracking()
                                     .ToListAsync();
                 result.Success = true;

@@ -1,3 +1,4 @@
+using GestionMedicaAPP.IOC.Dependencies.Appointments;
 using GestionMedicaAPP.Persistance.Context;
 using GestionMedicaAPP.Persistance.Interfaces.appointmets;
 using GestionMedicaAPP.Persistance.Repositories.appointments;
@@ -9,8 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<GestionMedicaContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("GestionMedicaDb")));
 
 //El registro de cada una de las dependecias Repositorios de appointments. //
-builder.Services.AddScoped<IAppointmentsRepository, AppointmentsRepository>();
-builder.Services.AddScoped<IDoctorAvailabilityRepository, DoctorAvailabilityRepository>();
+builder.Services.AddAppointmentsDependecy();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

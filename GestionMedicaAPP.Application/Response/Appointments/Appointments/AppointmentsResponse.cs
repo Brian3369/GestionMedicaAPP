@@ -2,7 +2,7 @@
 
 namespace GestionMedicaAPP.Application.Response.Appointments.Appointments
 {
-    public class UserResponse : BaseResponse
+    public class AppointmentsResponse : BaseResponse
     { 
         public dynamic? Model { get; set; }
     }

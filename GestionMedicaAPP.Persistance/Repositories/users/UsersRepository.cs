@@ -24,31 +24,34 @@ namespace GestionMedicaAPP.Persistance.Repositories.users
                 result.Message = "El usuario no puede ser nulo.";
                 return result;
             }
-            if (await base.Exists(u => u.UserID == entity.UserID && u.Email == entity.Email))
+
+            if(entity.IsActive == false)
             {
                 result.Success = false;
-                result.Message = "Ya existe un usaurio con este correo";
+                result.Message = "El usuario debe ser creado como activo.";
                 return result;
             }
 
-            if (entity.FirstName == null || entity.LastName == null || entity.Email == null || entity.Password == null)
+            if (await base.Exists(u => u.UserID == entity.UserID && u.Email == entity.Email))
+            {
+                result.Success = false;
+                result.Message = "Ya existe un usuario con este correo";
+                return result;
+            }
+
+            if (string.IsNullOrEmpty(entity.FirstName) || string.IsNullOrEmpty(entity.LastName) ||
+                string.IsNullOrEmpty(entity.Email) || string.IsNullOrEmpty(entity.Password) || entity.RoleID == null)
             {
                 result.Success = false;
                 result.Message = "Debe llenar todos los datos";
                 return result;
             }
 
-            if (entity.RoleID == null)
-            {
-                result.Success = false;
-                result.Message = "Deve asignar un roll";
-                return result;
-            }
-
             try
             {
-                entity.IsActive = true;
+                result.Success = true;
                 result = await base.Save(entity);
+                result.Message = "Usuario guardado correctamente";
             }
             catch (Exception ex)
             {
@@ -63,7 +66,7 @@ namespace GestionMedicaAPP.Persistance.Repositories.users
         public async override Task<OperationResult> Update(Users entity)
         {
             OperationResult result = new OperationResult();
-            Users? usersToUpdate = await _context.Users.FindAsync(entity.UserID);
+            var usersToUpdate = await _context.Users.FindAsync(entity.UserID);
 
             if (usersToUpdate == null)
             {
@@ -88,6 +91,7 @@ namespace GestionMedicaAPP.Persistance.Repositories.users
 
             try
             {
+                usersToUpdate.UserID = entity.UserID;
                 usersToUpdate.FirstName = entity.FirstName;
                 usersToUpdate.LastName = entity.LastName;
                 usersToUpdate.Email = entity.Email;
@@ -96,7 +100,9 @@ namespace GestionMedicaAPP.Persistance.Repositories.users
                 usersToUpdate.UpdatedAt = entity.UpdatedAt;
                 usersToUpdate.IsActive = entity.IsActive;
 
-                result = await base.Update(usersToUpdate);
+                await _context.SaveChangesAsync();
+                result.Success = true;
+                result.Message = "Usuario actualizado correctamente.";
             }
             catch (Exception ex)
             {
@@ -116,6 +122,7 @@ namespace GestionMedicaAPP.Persistance.Repositories.users
             {
                 result.Data = await (from users in _context.Users
                                      where users.IsActive == true
+                                     orderby users.CreatedAt descending
                                      select new UsersModel()
                                      {
                                          UserID = users.UserID,

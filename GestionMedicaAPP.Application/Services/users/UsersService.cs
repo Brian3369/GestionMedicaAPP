@@ -1,6 +1,6 @@
 ﻿using GestionMedicaAPP.Application.Contracts.Users;
 using GestionMedicaAPP.Application.Dtos.Users;
-using GestionMedicaAPP.Application.Response.Users;
+using GestionMedicaAPP.Application.Response.Users.users;
 using GestionMedicaAPP.Domain.Entities.users;
 using GestionMedicaAPP.Persistance.Interfaces.users;
 using Microsoft.Extensions.Logging;
@@ -14,12 +14,10 @@ namespace GestionMedicaAPP.Application.Services.users
 
         public UsersService(IUsersRepository usersRepository, ILogger<UsersService> logger)
         {
-            if (usersRepository is null)
-            {
-                throw new ArgumentNullException(nameof(usersRepository));
-            }
             _usersRepository = usersRepository;
+            _logger = logger;
         }
+
         public async Task<UsersResponse> GetAll()
         {
             UsersResponse usersResponse = new UsersResponse();
@@ -28,18 +26,14 @@ namespace GestionMedicaAPP.Application.Services.users
             {
                 var result = await _usersRepository.GetAll();
 
-                List<GetUsersDto> users = ((List<Users>)result.Data)
-                                                   .Select(users => new GetUsersDto()
-                                                   {
-                                                       UserID = users.UserID,
-                                                       FirstName = users.FirstName,
-                                                       LastName = users.LastName,
-                                                       RoleID = users.RoleID,
-                                                       IsActive = users.IsActive  
-                                                   }).ToList();
+                if (!result.Success)
+                {
+                    usersResponse.Message = result.Message;
+                    usersResponse.IsSuccess = result.Success;
+                    return usersResponse;
+                }
 
-                usersResponse.IsSuccess = result.Success;
-                usersResponse.Model = result;
+                usersResponse.Model = result.Data;
             }
 
             catch (Exception ex)
@@ -61,19 +55,15 @@ namespace GestionMedicaAPP.Application.Services.users
             {
                 var result = await _usersRepository.GetEntityBy(Id);
 
-                Users users = (Users)result.Data;
-
-                GetUsersDto getUsersDto = new GetUsersDto()
+                if (!result.Success)
                 {
-                    UserID = users.UserID,
-                    FirstName = users.FirstName,
-                    LastName = users.LastName,
-                    RoleID = users.RoleID,
-                    IsActive = users.IsActive
-                };
+                    usersResponse.Message = result.Message;
+                    usersResponse.IsSuccess = result.Success;
+                    return usersResponse;
+                }
 
-                usersResponse.IsSuccess = result.Success;
                 usersResponse.Model = result.Data;
+                usersResponse.IsSuccess = result.Success;
             }
 
             catch (Exception ex)
@@ -91,6 +81,13 @@ namespace GestionMedicaAPP.Application.Services.users
         {
             UsersResponse usersResponse = new UsersResponse();
 
+            if (dto == null)
+            {
+                usersResponse.IsSuccess = false;
+                usersResponse.Message = "El usuario no puede ser nulo.";
+                return usersResponse;
+            }
+
             try
             {
                 Users users = new Users();
@@ -100,17 +97,18 @@ namespace GestionMedicaAPP.Application.Services.users
                 users.Email = dto.Email;
                 users.Password = dto.Password;
                 users.RoleID = dto.RoleID;
-                users.CreatedAt = dto.CreatedAt;
                 users.UpdatedAt = dto.UpdatedAt;
-                users.IsActive = dto.IsActive;
+                users.CreatedAt = dto.CreatedAt;
+                users.IsActive = true;
 
                 var result = await _usersRepository.Save(users);
-                result.Message = "El usuario fue creado correctamente.";
+                usersResponse.IsSuccess = result.Success;
+                usersResponse.Message = result.Message;
             }
             catch (Exception ex)
             {
                 usersResponse.IsSuccess = false;
-                usersResponse.Model = "Error guardando el usuario";
+                usersResponse.Message = "Error guardando el usuario";
                 _logger.LogError(usersResponse.Message, ex.ToString());
             }
             return usersResponse;
@@ -123,25 +121,101 @@ namespace GestionMedicaAPP.Application.Services.users
             try
             {
                 var resultEntity = await _usersRepository.GetEntityBy(dto.UserID);
-                Users usersToUpdate = (Users)resultEntity.Data;
 
-                usersToUpdate.FirstName = dto.FirstName;
-                usersToUpdate.LastName = dto.LastName;
-                usersToUpdate.Email = dto.Email;
-                usersToUpdate.Password = dto.Password;
-                usersToUpdate.RoleID = dto.RoleID;
-                usersToUpdate.UpdatedAt = dto.UpdatedAt;
-                usersToUpdate.IsActive = dto.IsActive;
+                if (!resultEntity.Success)
+                {
+                    usersResponse.IsSuccess = resultEntity.Success;
+                    usersResponse.Message = resultEntity.Message;
+                    return usersResponse;
+                }
 
-                var result = await _usersRepository.Update(usersToUpdate);
-                result.Message = "El usuario fue actualizado correctamente.";
+                var data = resultEntity.Data;
+                if (data == null)
+                {
+                    usersResponse.IsSuccess = false;
+                    usersResponse.Message = "Los datos del usuario no están disponibles.";
+                    return usersResponse;
+                }
+
+                Users users = data as Users ?? new Users
+                {
+                    UserID = (int)(data.GetType().GetProperty("UserID")?.GetValue(data) ?? 0),
+                    FirstName = data.GetType().GetProperty("FirstName")?.GetValue(data)?.ToString(),
+                    LastName = data.GetType().GetProperty("LastName")?.GetValue(data)?.ToString(),
+                    Email = data.GetType().GetProperty("Email")?.GetValue(data)?.ToString(),
+                    Password = data.GetType().GetProperty("Password")?.GetValue(data)?.ToString(),
+                    RoleID = (int)(data.GetType().GetProperty("RoleID")?.GetValue(data) ?? 0),
+                    CreatedAt = (DateTime)(data.GetType().GetProperty("CreatedAt")?.GetValue(data) ?? DateTime.MinValue),
+                    UpdatedAt = (DateTime)(data.GetType().GetProperty("UpdatedAt")?.GetValue(data) ?? DateTime.MinValue),
+                    IsActive = (bool)(data.GetType().GetProperty("IsActive")?.GetValue(data) ?? false)
+                };
+
+                users.UserID = dto.UserID;
+                users.FirstName = dto.FirstName;
+                users.LastName = dto.LastName;
+                users.Email = dto.Email;
+                users.Password = dto.Password;
+                users.RoleID = dto.RoleID;
+                users.UpdatedAt = dto.UpdatedAt;
+                users.CreatedAt = dto.CreatedAt;
+                users.IsActive = dto.IsActive;
+
+                var result = await _usersRepository.Update(users);
+                usersResponse.IsSuccess = result.Success;
+                usersResponse.Message = result.Success ? "Usuario actualizado con éxito." : "Error al actualizar el usuario.";
             }
             catch (Exception ex)
             {
                 usersResponse.IsSuccess = false;
-                usersResponse.Model = "Error actualizando el usuario";
+                usersResponse.Message = "Error actualizando el usuario.";
                 _logger.LogError(usersResponse.Message, ex.ToString());
             }
+
+            return usersResponse;
+        }
+
+        public async Task<UsersResponse> RemoveById(int id)
+        {
+            UsersResponse usersResponse = new UsersResponse();
+
+            try
+            {
+                var resultEntity = await _usersRepository.GetEntityBy(id);
+
+                if (!resultEntity.Success)
+                {
+                    usersResponse.IsSuccess = resultEntity.Success;
+                    usersResponse.Message = resultEntity.Message;
+                    return usersResponse;
+                }
+
+                var data = resultEntity.Data;
+
+                Users users = new Users
+                {
+                    UserID = data.UserID,
+                    FirstName = data.FirstName,
+                    LastName = data.LastName,
+                    Email = data.Email,
+                    Password = data.Password,
+                    RoleID = data.RoleID,
+                    UpdatedAt = data.UpdatedAt,
+                    CreatedAt = data.CreatedAt,
+                    IsActive = data.IsActive
+                };
+
+                var deleteResult = await _usersRepository.Remove(users);
+
+                usersResponse.IsSuccess = deleteResult.Success;
+                usersResponse.Message = deleteResult.Message;
+            }
+            catch (Exception ex)
+            {
+                usersResponse.IsSuccess = false;
+                usersResponse.Message = "Error eliminando el usuario.";
+                _logger.LogError(usersResponse.Message, ex.ToString());
+            }
+
             return usersResponse;
         }
     }
