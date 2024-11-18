@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GestionMedicaAPP.Application.Core;
 
 namespace GestionMedicaAPP.Application.Response.Medical.MedicalRecords
 {
-    internal class SaveMedicalRecordsResponse
+    public class SaveMedicalRecordsResponse : BaseResponse
     {
+        public int RecordID { get; set; }
     }
 }

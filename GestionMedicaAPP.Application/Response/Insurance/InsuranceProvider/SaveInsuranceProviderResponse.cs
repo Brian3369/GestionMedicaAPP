@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GestionMedicaAPP.Application.Core;
 
 namespace GestionMedicaAPP.Application.Response.Insurance.InsuranceProvider
 {
-    internal class SaveInsuranceProviderResponse
+    public class SaveInsuranceProviderResponse : BaseResponse
     {
+        public int ProviderID { get; set; }
     }
 }

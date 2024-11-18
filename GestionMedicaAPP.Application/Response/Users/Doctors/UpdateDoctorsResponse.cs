@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GestionMedicaAPP.Application.Core;
 
 namespace GestionMedicaAPP.Application.Response.Users.Doctors
 {
-    internal class UpdateDoctorsResponse
+    internal class UpdateDoctorsResponse : BaseResponse
     {
     }
 }

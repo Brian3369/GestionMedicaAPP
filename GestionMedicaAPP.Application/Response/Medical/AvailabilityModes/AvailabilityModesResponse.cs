@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GestionMedicaAPP.Application.Core;
 
 namespace GestionMedicaAPP.Application.Response.Medical.AvailabilityModes
 {
-    internal class AvailabilityModesResponse
+    public class AvailabilityModesResponse : BaseResponse
     {
+        public dynamic? Model { get; set; }
     }
 }

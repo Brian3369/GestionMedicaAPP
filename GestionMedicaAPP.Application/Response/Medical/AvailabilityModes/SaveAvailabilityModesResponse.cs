@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GestionMedicaAPP.Application.Core;
 
 namespace GestionMedicaAPP.Application.Response.Medical.AvailabilityModes
 {
-    internal class SaveAvailabilityModesResponse
+    public class SaveAvailabilityModesResponse : BaseResponse
     {
+        public int SAvailabilityModeID { get; set; }
     }
 }

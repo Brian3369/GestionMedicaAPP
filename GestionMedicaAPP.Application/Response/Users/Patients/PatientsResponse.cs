@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GestionMedicaAPP.Application.Core;
 
 namespace GestionMedicaAPP.Application.Response.Users.Patients
 {
-    internal class PatientsResponse
+    public class PatientsResponse : BaseResponse
     {
+        public dynamic? Model { get; set; }
     }
 }
