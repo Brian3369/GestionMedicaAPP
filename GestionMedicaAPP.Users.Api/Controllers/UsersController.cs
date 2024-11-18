@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using GestionMedicaAPP.Application.Contracts.Users;
-using GestionMedicaAPP.Application.Dtos.Users;
+using GestionMedicaAPP.Application.Dtos.Users.users;
 
 namespace GestionMedicaAPP.users.Api.Controllers
 {

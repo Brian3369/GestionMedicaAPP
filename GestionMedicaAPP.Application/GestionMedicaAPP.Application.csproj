@@ -7,15 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Contracts\Insurance\" />
-    <Folder Include="Contracts\Medical\" />
-    <Folder Include="Contracts\System\" />
-    <Folder Include="Dtos\Insurance\" />
-    <Folder Include="Dtos\Medical\" />
-    <Folder Include="Dtos\System\" />
-    <Folder Include="Response\Insurance\" />
-    <Folder Include="Response\Medical\" />
-    <Folder Include="Response\System\" />
     <Folder Include="Services\Insurance\" />
     <Folder Include="Services\Medical\" />
     <Folder Include="Services\System\" />

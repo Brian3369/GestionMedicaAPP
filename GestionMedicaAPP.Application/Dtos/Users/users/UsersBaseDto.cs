@@ -1,4 +1,4 @@
-﻿namespace GestionMedicaAPP.Application.Dtos.Users
+﻿namespace GestionMedicaAPP.Application.Dtos.Users.users
 {
     public class UsersBaseDto
     {

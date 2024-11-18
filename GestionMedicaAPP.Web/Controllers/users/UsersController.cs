@@ -1,5 +1,5 @@
 ﻿using GestionMedicaAPP.Application.Contracts.Users;
-using GestionMedicaAPP.Application.Dtos.Users;
+using GestionMedicaAPP.Application.Dtos.Users.users;
 using GestionMedicaAPP.Persistance.Models.users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

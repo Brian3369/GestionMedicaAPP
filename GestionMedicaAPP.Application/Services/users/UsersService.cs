@@ -1,5 +1,5 @@
 ﻿using GestionMedicaAPP.Application.Contracts.Users;
-using GestionMedicaAPP.Application.Dtos.Users;
+using GestionMedicaAPP.Application.Dtos.Users.users;
 using GestionMedicaAPP.Application.Response.Users.users;
 using GestionMedicaAPP.Domain.Entities.users;
 using GestionMedicaAPP.Persistance.Interfaces.users;

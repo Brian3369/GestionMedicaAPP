@@ -1,6 +1,6 @@
-﻿namespace GestionMedicaAPP.Persistance.Models.Insurance
+﻿namespace GestionMedicaAPP.Application.Dtos.Insurance.NetworkType
 {
-    public sealed class NetworkTypeModel
+    public class NetworkTypeBaseDto
     {
         public int NetworkTypeId { get; set; }
         public string Name { get; set; }
