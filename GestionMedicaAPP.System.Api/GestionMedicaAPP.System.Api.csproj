@@ -11,8 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GestionMedicaAPP.Application\GestionMedicaAPP.Application.csproj" />
-    <ProjectReference Include="..\GestionMedicaAPP.Persistance\GestionMedicaAPP.Persistance.csproj" />
+    <ProjectReference Include="..\GestionMedicaAPP.IOC\GestionMedicaAPP.IOC.csproj" />
   </ItemGroup>
 
 </Project>

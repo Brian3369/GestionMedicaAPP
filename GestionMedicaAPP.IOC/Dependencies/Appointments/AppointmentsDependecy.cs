@@ -1,7 +1,5 @@
 ﻿using GestionMedicaAPP.Application.Contracts.Appointments;
-using GestionMedicaAPP.Application.Contracts.Users;
 using GestionMedicaAPP.Application.Services.appointments;
-using GestionMedicaAPP.Application.Services.users;
 using GestionMedicaAPP.Persistance.Interfaces.appointmets;
 using GestionMedicaAPP.Persistance.Repositories.appointments;
 using Microsoft.Extensions.DependencyInjection;

@@ -14,6 +14,8 @@ namespace GestionMedicaAPP.IOC.Dependencies.users
             service.AddScoped<IPatientsRepository, PatientsRepository>();
             service.AddScoped<IUsersRepository, UsersRepository>();
 
+            service.AddTransient<IDoctorsService, DoctorsService>();
+            service.AddTransient<IPatientsService, PatientsService>();
             service.AddTransient<IUsersService, UsersService>();
         }
     }

@@ -7,7 +7,7 @@ using GestionMedicaAPP.Persistance.Models.Insurance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace GestionMedicaAPP.Persistance.Repositories.insurance
+namespace GestionMedicaAPP.Persistance.Repositories.Insurance
 {
     public class InsuranceProvidersRepository(GestionMedicaContext context, ILogger<InsuranceProvidersRepository> logger) : BaseRepository<InsuranceProviders>(context), IInsuranceProvidersRepository
     {
