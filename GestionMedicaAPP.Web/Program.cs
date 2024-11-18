@@ -15,7 +15,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<GestionMedicaContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("GestionMedicaDb")));
 
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
-
 builder.Services.AddTransient<IUsersService, UsersService>();
 
 builder.Services.AddScoped<IAppointmentsRepository, AppointmentsRepository>();

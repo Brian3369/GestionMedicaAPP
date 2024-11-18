@@ -1,7 +1,5 @@
 ﻿using GestionMedicaAPP.Application.Contracts.Appointments;
-using GestionMedicaAPP.Application.Dtos.Appointments.Appointments;
 using GestionMedicaAPP.Application.Dtos.Appointments.DoctorAvailability;
-using GestionMedicaAPP.Application.Services.appointments;
 using GestionMedicaAPP.Persistance.Models.appointmets;
 using Microsoft.AspNetCore.Mvc;
 

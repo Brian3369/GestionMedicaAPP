@@ -71,6 +71,7 @@ namespace GestionMedicaAPP.Persistance.Repositories.users
             try
             {
                 result.Data = await (from Patients in _context.Patients
+                                     where Patients.IsActive == true
                                      select new PatientsModel()
                                      {
                                          PatientID = Patients.PatientID,

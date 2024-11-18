@@ -53,7 +53,7 @@ namespace GestionMedicaAPP.users.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("RemovePatients")]
+        [HttpDelete("RemovePatients")]
         public async Task<IActionResult> get(int id)
         {
             var result = await _patientsService.RemoveById(id);
