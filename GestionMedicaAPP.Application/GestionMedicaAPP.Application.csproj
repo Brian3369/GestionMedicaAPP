@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Insurance\" />
-    <Folder Include="Services\Medical\" />
-    <Folder Include="Services\System\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\GestionMedicaAPP.Infraestructure\GestionMedicaAPP.Infraestructure.csproj" />
     <ProjectReference Include="..\GestionMedicaAPP.Persistance\GestionMedicaAPP.Persistance.csproj" />
   </ItemGroup>

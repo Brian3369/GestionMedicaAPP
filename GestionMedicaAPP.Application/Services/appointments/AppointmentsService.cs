@@ -14,10 +14,7 @@ namespace GestionMedicaAPP.Application.Services.appointments
 
         public AppointmentsService(IAppointmentsRepository appointmentsRepository, ILogger<AppointmentsService> logger) 
         {
-            if (appointmentsRepository is null)
-            {
-                throw new ArgumentNullException(nameof(appointmentsRepository));
-            }
+            _logger = logger;
             _appointmentsRepository = appointmentsRepository;
         }    
         public async Task<AppointmentsResponse> GetAll()

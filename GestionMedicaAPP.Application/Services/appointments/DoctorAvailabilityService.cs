@@ -4,11 +4,8 @@ using GestionMedicaAPP.Application.Dtos.Appointments.DoctorAvailability;
 using GestionMedicaAPP.Application.Response.Appointments.Appointments;
 using GestionMedicaAPP.Application.Response.Appointments.DoctorAvailability;
 using GestionMedicaAPP.Domain.Entities.appointmets;
-using GestionMedicaAPP.Domain.Entities.users;
 using GestionMedicaAPP.Persistance.Interfaces.appointmets;
-using GestionMedicaAPP.Persistance.Repositories.appointments;
 using Microsoft.Extensions.Logging;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GestionMedicaAPP.Application.Services.appointments
 {
@@ -19,10 +16,7 @@ namespace GestionMedicaAPP.Application.Services.appointments
 
         public DoctorAvailabilityService(IDoctorAvailabilityRepository doctorAvailabilityRepository, ILogger<DoctorAvailabilityService> logger)
         {
-            if (doctorAvailabilityRepository is null)
-            {
-                throw new ArgumentNullException(nameof(doctorAvailabilityRepository));
-            }
+            _logger = logger;
             _doctorAvailabilityRepository = doctorAvailabilityRepository;
         }
         public async Task<DoctorAvailabilityResponse> GetAll()
