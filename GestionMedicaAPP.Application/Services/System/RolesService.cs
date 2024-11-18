@@ -15,9 +15,33 @@ namespace GestionMedicaAPP.Application.Services.System
             _logger = logger;
             _RolesRepository = RolesRepository;
         }
-        public Task<RolesResponse> GetAll()
+        public async Task<RolesResponse> GetAll()
         {
-            throw new NotImplementedException();
+            RolesResponse RolessResponse = new RolesResponse();
+
+            try
+            {
+                var result = await _RolesRepository.GetAll();
+
+                if (!result.Success)
+                {
+                    RolessResponse.Message = result.Message;
+                    RolessResponse.IsSuccess = result.Success;
+                    return RolessResponse;
+                }
+
+                RolessResponse.Model = result.Data;
+            }
+
+            catch (Exception ex)
+            {
+
+                RolessResponse.IsSuccess = false;
+                RolessResponse.Model = "Error obteniedo los roles";
+                _logger.LogError(RolessResponse.Message, ex.ToString());
+            }
+
+            return RolessResponse;
         }
 
         public Task<RolesResponse> GetById(int Id)

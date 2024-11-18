@@ -6,7 +6,7 @@ using GestionMedicaAPP.Application.Response.Medical.AvailabilityModes;
 
 namespace GestionMedicaAPP.Application.Contracts.Medical
 {
-    public interface IAvailabilityModesService : IBaseService<AvailabilityModesResponse, AvailabilityModesSaveDto, AvailabilityModesUpdate>
+    public interface IAvailabilityModesService : IBaseService<AvailabilityModesResponse, AvailabilityModesSaveDto, AvailabilityModesUpdateDto>
     {
     }
 }

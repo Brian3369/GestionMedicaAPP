@@ -3,7 +3,7 @@
     public sealed class DoctorsModel
     {
         public int DoctorID { get; set; }
-        public int SpecialtyID { get; set; }
+        public short SpecialtyID { get; set; }
         public string licenseNumber { get; set; }
         public string PhoneNumber { get; set; }
         public int YearsOfExperience { get; set; }

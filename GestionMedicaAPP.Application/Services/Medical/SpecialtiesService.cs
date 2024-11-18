@@ -1,7 +1,9 @@
 ﻿using GestionMedicaAPP.Application.Contracts.Medical;
 using GestionMedicaAPP.Application.Dtos.Medical.Specialties;
 using GestionMedicaAPP.Application.Response.Medical.Specialties;
+using GestionMedicaAPP.Application.Response.Medical.Specialties;
 using GestionMedicaAPP.Persistance.Interfaces.Medical;
+using GestionMedicaAPP.Persistance.Repositories.Medical;
 using Microsoft.Extensions.Logging;
 
 namespace GestionMedicaAPP.Application.Services.Medical
@@ -15,9 +17,33 @@ namespace GestionMedicaAPP.Application.Services.Medical
             _logger = logger;
             _SpecialtiesRepository = SpecialtiesRepository;
         }
-        public Task<SpecialtiesResponse> GetAll()
+        public async Task<SpecialtiesResponse> GetAll()
         {
-            throw new NotImplementedException();
+            SpecialtiesResponse SpecialtiessResponse = new SpecialtiesResponse();
+
+            try
+            {
+                var result = await _SpecialtiesRepository.GetAll();
+
+                if (!result.Success)
+                {
+                    SpecialtiessResponse.Message = result.Message;
+                    SpecialtiessResponse.IsSuccess = result.Success;
+                    return SpecialtiessResponse;
+                }
+
+                SpecialtiessResponse.Model = result.Data;
+            }
+
+            catch (Exception ex)
+            {
+
+                SpecialtiessResponse.IsSuccess = false;
+                SpecialtiessResponse.Model = "Error obteniendo las especialidades";
+                _logger.LogError(SpecialtiessResponse.Message, ex.ToString());
+            }
+
+            return SpecialtiessResponse;
         }
 
         public Task<SpecialtiesResponse> GetById(int Id)

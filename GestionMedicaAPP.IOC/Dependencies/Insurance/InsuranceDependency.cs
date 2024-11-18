@@ -1,6 +1,4 @@
-﻿using GestionMedicaAPP.Application.Contracts.Appointments;
-using GestionMedicaAPP.Application.Contracts.Insurance;
-using GestionMedicaAPP.Application.Services.appointments;
+﻿using GestionMedicaAPP.Application.Contracts.Insurance;
 using GestionMedicaAPP.Application.Services.Insurance;
 using GestionMedicaAPP.Persistance.Interfaces.Insurance;
 using GestionMedicaAPP.Persistance.Repositories.Insurance;
@@ -16,7 +14,7 @@ namespace GestionMedicaAPP.IOC.Dependencies.Insurance
             service.AddScoped<INetworkTypeRepository, NetworkTypeRepository>();
 
             service.AddTransient<IInsuranceProvidersService, InsuranceProviderService>();
-            service.AddTransient<IAppointmentsService, AppointmentsService>();
+            service.AddTransient<INetworkTypeService, NetworkTypeService>();
         }
     }
 }

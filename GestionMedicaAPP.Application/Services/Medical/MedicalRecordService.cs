@@ -1,5 +1,6 @@
 ﻿using GestionMedicaAPP.Application.Contracts.Medical;
 using GestionMedicaAPP.Application.Dtos.Medical.MedicalRecords;
+using GestionMedicaAPP.Application.Response.Medical.MedicalRecords;
 using GestionMedicaAPP.Persistance.Interfaces.Medical;
 using GestionMedicaAPP.Persistance.Repositories.Medical;
 using Microsoft.Extensions.Logging;
@@ -15,27 +16,51 @@ namespace GestionMedicaAPP.Application.Services.Medical
             _logger = logger;
             _MedicalRecordsRepository = MedicalRecordssRepository;
         }
-        public Task<MedicalRecordsRepository> GetAll()
+        public async Task<MedicalRecordsResponse> GetAll()
+        {
+            MedicalRecordsResponse MedicalRecordssResponse = new MedicalRecordsResponse();
+
+            try
+            {
+                var result = await _MedicalRecordsRepository.GetAll();
+
+                if (!result.Success)
+                {
+                    MedicalRecordssResponse.Message = result.Message;
+                    MedicalRecordssResponse.IsSuccess = result.Success;
+                    return MedicalRecordssResponse;
+                }
+
+                MedicalRecordssResponse.Model = result.Data;
+            }
+
+            catch (Exception ex)
+            {
+
+                MedicalRecordssResponse.IsSuccess = false;
+                MedicalRecordssResponse.Model = "Error obteniendo el historial medico";
+                _logger.LogError(MedicalRecordssResponse.Message, ex.ToString());
+            }
+
+            return MedicalRecordssResponse;
+        }
+
+        public Task<MedicalRecordsResponse> GetById(int Id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<MedicalRecordsRepository> GetById(int Id)
+        public Task<MedicalRecordsResponse> RemoveById(int Id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<MedicalRecordsRepository> RemoveById(int Id)
+        public Task<MedicalRecordsResponse> SaveAsync(MedicalRecordsSaveDto dto)
         {
             throw new NotImplementedException();
         }
 
-        public Task<MedicalRecordsRepository> SaveAsync(MedicalRecordsSaveDto dto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<MedicalRecordsRepository> UpdateAsync(MedicalRecordsUpdateDto dto)
+        public Task<MedicalRecordsResponse> UpdateAsync(MedicalRecordsUpdateDto dto)
         {
             throw new NotImplementedException();
         }

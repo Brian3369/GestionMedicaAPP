@@ -3,6 +3,7 @@ using GestionMedicaAPP.Domain.Result;
 using GestionMedicaAPP.Persistance.Base;
 using GestionMedicaAPP.Persistance.Context;
 using GestionMedicaAPP.Persistance.Interfaces.users;
+using GestionMedicaAPP.Persistance.Models.users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -69,7 +70,25 @@ namespace GestionMedicaAPP.Persistance.Repositories.users
 
             try
             {
-                result.Data = await _context.Doctors
+                result.Data = await (from Doctors in _context.Doctors
+                                     where Doctors.IsActive == true
+                                     select new DoctorsModel()
+                                     {
+                                         DoctorID = Doctors.DoctorID,
+                                         SpecialtyID = Doctors.SpecialtyID,
+                                         licenseNumber = Doctors.licenseNumber,
+                                         PhoneNumber = Doctors.PhoneNumber,
+                                         YearsOfExperience = Doctors.YearsOfExperience,
+                                         Education = Doctors.Education,
+                                         Bio = Doctors.Bio,
+                                         ConsultationFee = Doctors.ConsultationFee,
+                                         ClinicAddress = Doctors.ClinicAddress,
+                                         AvailabilityModeId = Doctors.AvailabilityModeId,
+                                         LicenseExpirationDate = Doctors.LicenseExpirationDate,
+                                         CreatedAt = Doctors.CreatedAt,
+                                         UpdatedAt = Doctors.UpdatedAt,
+                                         IsActive = Doctors.IsActive
+                                     })
                     .AsNoTracking()
                     .ToListAsync();
                 result.Success = true;
@@ -90,9 +109,27 @@ namespace GestionMedicaAPP.Persistance.Repositories.users
 
             try
             {
-                var doctor = await _context.Doctors
+                var doctor = await (from Doctors in _context.Doctors
+                                     where Doctors.DoctorID == id
+                                     select new DoctorsModel()
+                                     {
+                                         DoctorID = Doctors.DoctorID,
+                                         SpecialtyID = Doctors.SpecialtyID,
+                                         licenseNumber = Doctors.licenseNumber,
+                                         PhoneNumber = Doctors.PhoneNumber,
+                                         YearsOfExperience = Doctors.YearsOfExperience,
+                                         Education = Doctors.Education,
+                                         Bio = Doctors.Bio,
+                                         ConsultationFee = Doctors.ConsultationFee,
+                                         ClinicAddress = Doctors.ClinicAddress,
+                                         AvailabilityModeId = Doctors.AvailabilityModeId,
+                                         LicenseExpirationDate = Doctors.LicenseExpirationDate,
+                                         CreatedAt = Doctors.CreatedAt,
+                                         UpdatedAt = Doctors.UpdatedAt,
+                                         IsActive = Doctors.IsActive
+                                     })
                     .AsNoTracking()
-                    .FirstOrDefaultAsync(d => d.DoctorID == id);
+                    .FirstOrDefaultAsync();
 
                 if (doctor == null)
                 {

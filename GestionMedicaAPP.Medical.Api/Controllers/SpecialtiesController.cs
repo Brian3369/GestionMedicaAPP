@@ -1,6 +1,6 @@
-﻿using GestionMedicaAPP.Domain.Entities.Medical;
-using GestionMedicaAPP.Persistance.Interfaces.Medical;
-using GestionMedicaAPP.Persistance.Repositories.Medical;
+﻿using GestionMedicaAPP.Application.Contracts.Medical;
+using GestionMedicaAPP.Application.Dtos.Medical.Specialties;
+using GestionMedicaAPP.Domain.Entities.Medical;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionMedicaAPP.Medical.Api.Controllers
@@ -9,17 +9,17 @@ namespace GestionMedicaAPP.Medical.Api.Controllers
     [Route("[controller]")]
     public class SpecialtiesController : ControllerBase
     {
-        private readonly ISpecialtiesRepository _specialtiesRepository;
-        public SpecialtiesController(ISpecialtiesRepository specialtiesRepository) 
+        private readonly ISpecialtiesService _specialtiesService;
+        public SpecialtiesController(ISpecialtiesService specialtiesService) 
         {
-            _specialtiesRepository = specialtiesRepository;
+            _specialtiesService = specialtiesService;
         }
 
         [HttpGet("GetSpecialties")]
         public async Task<IActionResult> Get()
         {
-            var result = await _specialtiesRepository.GetAll();
-            if (!result.Success)
+            var result = await _specialtiesService.GetAll();
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
@@ -28,38 +28,38 @@ namespace GestionMedicaAPP.Medical.Api.Controllers
         [HttpGet("GetSpecialtiesById")]
         public async Task<IActionResult> Get(int id)
         {
-            var result = await _specialtiesRepository.GetEntityBy(id);
-            if (!result.Success)
+            var result = await _specialtiesService.GetById(id);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
         [HttpPost("SaveSpecialties")]
-        public async Task<IActionResult> Post([FromBody] Specialties specialties)
+        public async Task<IActionResult> Post([FromBody] SpecialtiesSaveDto specialties)
         {
-            var result = await _specialtiesRepository.Save(specialties);
-            if (!result.Success)
+            var result = await _specialtiesService.SaveAsync(specialties);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
-        [HttpPost("UpdateSpecialties")]
-        public async Task<IActionResult> Put(int id, [FromBody] Specialties specialties)
+        [HttpPut("UpdateSpecialties")]
+        public async Task<IActionResult> Put([FromBody] SpecialtiesUpdateDto specialties)
         {
-            var result = await _specialtiesRepository.Update(specialties);
-            if (!result.Success)
+            var result = await _specialtiesService.UpdateAsync(specialties);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
-        [HttpPost("RemoveSpecialties")]
-        public async Task<IActionResult> Remove(Specialties specialties)
+        [HttpDelete("RemoveSpecialties")]
+        public async Task<IActionResult> get(int id)
         {
-            var result = await _specialtiesRepository.Remove(specialties);
-            if (result.Success)
+            var result = await _specialtiesService.RemoveById(id);
+            if (result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);

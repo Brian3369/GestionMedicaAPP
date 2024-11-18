@@ -142,7 +142,7 @@ namespace GestionMedicaAPP.Persistance.Repositories.appointments
 
             try
             {
-                var appointment = await (from a in this._context.Appointments
+                var appointment = await (from a in _context.Appointments
                                          where a.AppointmentID == id
                                          select new AppointmentsModel()
                                          {

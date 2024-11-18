@@ -1,6 +1,7 @@
-﻿using GestionMedicaAPP.Domain.Entities.Medical;
-using GestionMedicaAPP.Persistance.Interfaces.Medical;
-using GestionMedicaAPP.Persistance.Repositories.Medical;
+﻿using GestionMedicaAPP.Application.Contracts.Medical;
+using GestionMedicaAPP.Application.Dtos.Medical.AvailabilityModes;
+using GestionMedicaAPP.Domain.Entities.Medical;
+
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -11,17 +12,17 @@ namespace GestionMedicaAPP.Medical.Api.Controllers
     [ApiController]
     public class AvailabilityModesController : ControllerBase
     {
-        private readonly IAvailabilityModesRepository _availabilityModesRepository;
-        public AvailabilityModesController(IAvailabilityModesRepository availabilityModesRepository)
+        private readonly IAvailabilityModesService _availabilityModesService;
+        public AvailabilityModesController(IAvailabilityModesService availabilityModesService)
         {
-            _availabilityModesRepository = availabilityModesRepository;
+            _availabilityModesService = availabilityModesService;
         }
 
         [HttpGet("GetAvailabilityModes")]
         public async Task<IActionResult> Get()
         {
-           var result = await _availabilityModesRepository.GetAll();
-            if (!result.Success)
+           var result = await _availabilityModesService.GetAll();
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
@@ -30,38 +31,38 @@ namespace GestionMedicaAPP.Medical.Api.Controllers
         [HttpGet("GetAvailabilityModesById")]
         public async Task<IActionResult> Get(int id)
         {
-            var result = await _availabilityModesRepository.GetEntityBy(id);
-            if (!result.Success)
+            var result = await _availabilityModesService.GetById(id);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
         [HttpPost("SaveAvailabilityModes")]
-        public async Task<IActionResult> Post([FromBody] AvailabilityModes availabilityModes)
+        public async Task<IActionResult> Post([FromBody] AvailabilityModesSaveDto availabilityModes)
         {
-            var result = await _availabilityModesRepository.Save(availabilityModes);
-            if (!result.Success)
+            var result = await _availabilityModesService.SaveAsync(availabilityModes);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
-        [HttpPost("UpdateAvailabilityModes")]
-        public async Task<IActionResult> Put(int id, [FromBody] AvailabilityModes availabilityModes)
+        [HttpPut("UpdateAvailabilityModes")]
+        public async Task<IActionResult> Put([FromBody] AvailabilityModesUpdateDto availabilityModes)
         {
-            var result = await _availabilityModesRepository.Update(availabilityModes);
-            if (!result.Success)
+            var result = await _availabilityModesService.UpdateAsync(availabilityModes);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
-        [HttpPost("RemoveAvailabilityModes")]
-        public async Task<IActionResult> Remove(AvailabilityModes availabilityModes)
+        [HttpDelete("RemoveAvailabilityModes")]
+        public async Task<IActionResult> get(int id)
         {
-            var result = await _availabilityModesRepository.Remove(availabilityModes);
-            if (result.Success)
+            var result = await _availabilityModesService.RemoveById(id);
+            if (result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);

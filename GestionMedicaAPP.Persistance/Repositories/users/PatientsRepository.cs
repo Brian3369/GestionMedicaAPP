@@ -3,6 +3,7 @@ using GestionMedicaAPP.Domain.Result;
 using GestionMedicaAPP.Persistance.Base;
 using GestionMedicaAPP.Persistance.Context;
 using GestionMedicaAPP.Persistance.Interfaces.users;
+using GestionMedicaAPP.Persistance.Models.users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -69,7 +70,23 @@ namespace GestionMedicaAPP.Persistance.Repositories.users
 
             try
             {
-                result.Data = await _context.Patients
+                result.Data = await (from Patients in _context.Patients
+                                     select new PatientsModel()
+                                     {
+                                         PatientID = Patients.PatientID,
+                                         DateOfBirth = Patients.DateOfBirth,
+                                         Gender = Patients.Gender,
+                                         PhoneNumber = Patients.PhoneNumber,
+                                         Address = Patients.Address,
+                                         EmergencyContactName = Patients.EmergencyContactName,
+                                         EmergencyContactPhone = Patients.EmergencyContactPhone,
+                                         BloodType = Patients.BloodType,
+                                         Allergies = Patients.Allergies,
+                                         InsuranceProviderID = Patients.InsuranceProviderID,
+                                         CreatedAt = Patients.CreatedAt,
+                                         UpdatedAt = Patients.UpdatedAt,
+                                         IsActive = Patients.IsActive
+                                     })
                     .AsNoTracking()
                     .ToListAsync();
                 result.Success = true;
@@ -90,14 +107,31 @@ namespace GestionMedicaAPP.Persistance.Repositories.users
 
             try
             {
-                var patient = await _context.Patients
+                var patient = await (from Patients in _context.Patients
+                                    where Patients.PatientID == id
+                                    select new PatientsModel()
+                                    {
+                                        PatientID = Patients.PatientID,
+                                        DateOfBirth = Patients.DateOfBirth,
+                                        Gender = Patients.Gender,
+                                        PhoneNumber = Patients.PhoneNumber,
+                                        Address = Patients.Address,
+                                        EmergencyContactName = Patients.EmergencyContactName,
+                                        EmergencyContactPhone = Patients.EmergencyContactPhone,
+                                        BloodType = Patients.BloodType,
+                                        Allergies = Patients.Allergies,
+                                        InsuranceProviderID = Patients.InsuranceProviderID,
+                                        CreatedAt = Patients.CreatedAt,
+                                        UpdatedAt = Patients.UpdatedAt,
+                                        IsActive = Patients.IsActive
+                                    })
                     .AsNoTracking()
-                    .FirstOrDefaultAsync(p => p.PatientID == id);
+                    .FirstOrDefaultAsync();
 
                 if (patient == null)
                 {
                     result.Success = false;
-                    result.Message = "No se encontró el paciente.";
+                    result.Message = "No se encontró el pasiente.";
                     return result;
                 }
 

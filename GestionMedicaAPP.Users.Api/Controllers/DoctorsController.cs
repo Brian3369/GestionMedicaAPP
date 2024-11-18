@@ -1,5 +1,5 @@
-﻿using GestionMedicaAPP.Domain.Entities.users;
-using GestionMedicaAPP.Persistance.Interfaces.users;
+﻿using GestionMedicaAPP.Application.Contracts.Users;
+using GestionMedicaAPP.Application.Dtos.Users.Doctors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionMedicaAPP.users.Api.Controllers
@@ -8,17 +8,17 @@ namespace GestionMedicaAPP.users.Api.Controllers
     [ApiController]
     public class DoctorsController : ControllerBase
     {
-        private readonly IDoctorsRepository _doctorsRepository;
-        public DoctorsController(IDoctorsRepository doctorsRepository)
+        private readonly IDoctorsService _doctorsService;
+        public DoctorsController(IDoctorsService doctorsService)
         {
-            _doctorsRepository = doctorsRepository;
+            _doctorsService = doctorsService;
         }
 
         [HttpGet("GetDoctors")]
         public async Task<IActionResult> Get()
         {
-            var result = await _doctorsRepository.GetAll();
-            if (!result.Success)
+            var result = await _doctorsService.GetAll();
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
@@ -27,38 +27,38 @@ namespace GestionMedicaAPP.users.Api.Controllers
         [HttpGet("GetById")]
         public async Task<IActionResult> Get(int id)
         {
-            var result = await _doctorsRepository.GetEntityBy(id);
-            if (!result.Success)
+            var result = await _doctorsService.GetById(id);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
         [HttpPost("SaveDoctors")]
-        public async Task<IActionResult> Post([FromBody] Doctors doctors)
+        public async Task<IActionResult> Post([FromBody] DoctorsSaveDto doctors)
         {
-            var result = await _doctorsRepository.Save(doctors);
-            if (!result.Success)
+            var result = await _doctorsService.SaveAsync(doctors);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
-        [HttpPost("UpdateDoctors")]
-        public async Task<IActionResult> Put(int id, [FromBody] Doctors doctors)
+        [HttpPut("UpdateDoctors")]
+        public async Task<IActionResult> Put([FromBody] DoctorsUpdateDto doctors)
         {
-            var result = await _doctorsRepository.Update(doctors);
-            if (!result.Success)
+            var result = await _doctorsService.UpdateAsync(doctors);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
-        [HttpPost("RemoveDoctors")]
-        public async Task<IActionResult> Remove(Doctors doctors)
+        [HttpDelete("RemoveDoctors")]
+        public async Task<IActionResult> get(int id)
         {
-            var result = await _doctorsRepository.Remove(doctors);
-            if (result.Success)
+            var result = await _doctorsService.RemoveById(id);
+            if (result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);

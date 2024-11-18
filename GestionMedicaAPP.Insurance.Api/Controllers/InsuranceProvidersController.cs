@@ -1,5 +1,5 @@
-﻿using GestionMedicaAPP.Domain.Entities.Insurance;
-using GestionMedicaAPP.Persistance.Interfaces.Insurance;
+﻿using GestionMedicaAPP.Application.Contracts.Insurance;
+using GestionMedicaAPP.Application.Dtos.Insurance.InsuranceProvider;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionMedicaAPP.Insurance.Api.Controllers
@@ -8,17 +8,17 @@ namespace GestionMedicaAPP.Insurance.Api.Controllers
     [ApiController]
     public class InsuranceProvidersController : ControllerBase
     {
-        private readonly IInsuranceProvidersRepository _insuranceProvidersRepository;
-        public InsuranceProvidersController(IInsuranceProvidersRepository insuranceProviderRepository)
+        private readonly IInsuranceProvidersService _insuranceProvidersService;
+        public InsuranceProvidersController(IInsuranceProvidersService insuranceProviderService)
         {
-            _insuranceProvidersRepository = insuranceProviderRepository;
+            _insuranceProvidersService = insuranceProviderService;
         }
 
         [HttpGet("GetInsuranceProvider")]
         public async Task<IActionResult> Get()
         {
-            var result = await _insuranceProvidersRepository.GetAll();
-            if (!result.Success)
+            var result = await _insuranceProvidersService.GetAll();
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
@@ -27,38 +27,38 @@ namespace GestionMedicaAPP.Insurance.Api.Controllers
         [HttpGet("GetInsuranceProviderById")]
         public async Task<IActionResult> Get(int id)
         {
-            var result = await _insuranceProvidersRepository.GetEntityBy(id);
-            if (!result.Success)
+            var result = await _insuranceProvidersService.GetById(id);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
         [HttpPost("SaveInsuranceProvider")]
-        public async Task<IActionResult> Post([FromBody] InsuranceProviders insuranceProviders)
+        public async Task<IActionResult> Post([FromBody] InsuranceProviderSaveDto insuranceProviders)
         {
-            var result = await _insuranceProvidersRepository.Save(insuranceProviders);
-            if (!result.Success)
+            var result = await _insuranceProvidersService.SaveAsync(insuranceProviders);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
-        [HttpPost("UpdateInsuranceProvider")]
-        public async Task<IActionResult> Put(int id, [FromBody] InsuranceProviders insuranceProviders)
+        [HttpPut("UpdateInsuranceProvider")]
+        public async Task<IActionResult> Put([FromBody] InsuranceProviderUpdateDto insuranceProviders)
         {
-            var result = await _insuranceProvidersRepository.Update(insuranceProviders);
-            if (!result.Success)
+            var result = await _insuranceProvidersService.UpdateAsync(insuranceProviders);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
-        [HttpPost("RemoveInsuranceProvider")]
-        public async Task<IActionResult> Remove(InsuranceProviders insuranceProviders)
+        [HttpDelete("RemoveInsuranceProvider")]
+        public async Task<IActionResult> get(int id)
         {
-            var result = await _insuranceProvidersRepository.Remove(insuranceProviders);
-            if (result.Success)
+            var result = await _insuranceProvidersService.RemoveById(id);
+            if (result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);

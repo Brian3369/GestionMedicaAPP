@@ -15,9 +15,33 @@ namespace GestionMedicaAPP.Application.Services.users
             _logger = logger;
             _DoctorsRepository = DoctorsRepository;
         }
-        public Task<DoctorsResponse> GetAll()
+        public async Task<DoctorsResponse> GetAll()
         {
-            throw new NotImplementedException();
+            DoctorsResponse DoctorssResponse = new DoctorsResponse();
+
+            try
+            {
+                var result = await _DoctorsRepository.GetAll();
+
+                if (!result.Success)
+                {
+                    DoctorssResponse.Message = result.Message;
+                    DoctorssResponse.IsSuccess = result.Success;
+                    return DoctorssResponse;
+                }
+
+                DoctorssResponse.Model = result.Data;
+            }
+
+            catch (Exception ex)
+            {
+
+                DoctorssResponse.IsSuccess = false;
+                DoctorssResponse.Model = "Error obteniedo los doctores";
+                _logger.LogError(DoctorssResponse.Message, ex.ToString());
+            }
+
+            return DoctorssResponse;
         }
 
         public Task<DoctorsResponse> GetById(int Id)

@@ -15,9 +15,33 @@ namespace GestionMedicaAPP.Application.Services.Insurance
             _logger = logger;
             _insuranceProvidersRepository = insuranceProvidersRepository;
         }
-        public Task<InsuranceProviderResponse> GetAll()
+        public async Task<InsuranceProviderResponse> GetAll()
         {
-            throw new NotImplementedException();
+            InsuranceProviderResponse InsuranceProvidersResponse = new InsuranceProviderResponse();
+
+            try
+            {
+                var result = await _insuranceProvidersRepository.GetAll();
+
+                if (!result.Success)
+                {
+                    InsuranceProvidersResponse.Message = result.Message;
+                    InsuranceProvidersResponse.IsSuccess = result.Success;
+                    return InsuranceProvidersResponse;
+                }
+
+                InsuranceProvidersResponse.Model = result.Data;
+            }
+
+            catch (Exception ex)
+            {
+
+                InsuranceProvidersResponse.IsSuccess = false;
+                InsuranceProvidersResponse.Model = "Error obteniendo los provedores de seguro";
+                _logger.LogError(InsuranceProvidersResponse.Message, ex.ToString());
+            }
+
+            return InsuranceProvidersResponse;
         }
 
         public Task<InsuranceProviderResponse> GetById(int Id)

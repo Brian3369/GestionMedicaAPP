@@ -1,7 +1,9 @@
 ﻿using GestionMedicaAPP.Application.Contracts.Insurance;
 using GestionMedicaAPP.Application.Dtos.Insurance.NetworkType;
 using GestionMedicaAPP.Application.Response.Insurance.NetworkType;
+using GestionMedicaAPP.Application.Response.Insurance.NetworkType;
 using GestionMedicaAPP.Persistance.Interfaces.Insurance;
+using GestionMedicaAPP.Persistance.Repositories.Insurance;
 using Microsoft.Extensions.Logging;
 
 namespace GestionMedicaAPP.Application.Services.Insurance
@@ -15,9 +17,33 @@ namespace GestionMedicaAPP.Application.Services.Insurance
             _logger = logger;
             _NetworkTypeRepository = NetworkTypesRepository;
         }
-        public Task<NetworkTypeResponse> GetAll()
+        public async Task<NetworkTypeResponse> GetAll()
         {
-            throw new NotImplementedException();
+            NetworkTypeResponse NetworkTypesResponse = new NetworkTypeResponse();
+
+            try
+            {
+                var result = await _NetworkTypeRepository.GetAll();
+
+                if (!result.Success)
+                {
+                    NetworkTypesResponse.Message = result.Message;
+                    NetworkTypesResponse.IsSuccess = result.Success;
+                    return NetworkTypesResponse;
+                }
+
+                NetworkTypesResponse.Model = result.Data;
+            }
+
+            catch (Exception ex)
+            {
+
+                NetworkTypesResponse.IsSuccess = false;
+                NetworkTypesResponse.Model = "Error obteniendo tipos de conexion";
+                _logger.LogError(NetworkTypesResponse.Message, ex.ToString());
+            }
+
+            return NetworkTypesResponse;
         }
 
         public Task<NetworkTypeResponse> GetById(int Id)

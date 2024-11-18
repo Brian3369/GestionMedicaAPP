@@ -15,9 +15,33 @@ namespace GestionMedicaAPP.Application.Services.System
             _logger = logger;
             _StatusRepository = StatusRepository;
         }
-        public Task<StatusResponse> GetAll()
+        public async Task<StatusResponse> GetAll()
         {
-            throw new NotImplementedException();
+            StatusResponse StatussResponse = new StatusResponse();
+
+            try
+            {
+                var result = await _StatusRepository.GetAll();
+
+                if (!result.Success)
+                {
+                    StatussResponse.Message = result.Message;
+                    StatussResponse.IsSuccess = result.Success;
+                    return StatussResponse;
+                }
+
+                StatussResponse.Model = result.Data;
+            }
+
+            catch (Exception ex)
+            {
+
+                StatussResponse.IsSuccess = false;
+                StatussResponse.Model = "Error obteniedo los Status";
+                _logger.LogError(StatussResponse.Message, ex.ToString());
+            }
+
+            return StatussResponse;
         }
 
         public Task<StatusResponse> GetById(int Id)

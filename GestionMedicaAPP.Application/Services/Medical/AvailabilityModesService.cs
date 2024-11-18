@@ -1,8 +1,6 @@
 ﻿using GestionMedicaAPP.Application.Contracts.Medical;
 using GestionMedicaAPP.Application.Dtos.Medical.AvailabilityModes;
 using GestionMedicaAPP.Application.Response.Medical.AvailabilityModes;
-using GestionMedicaAPP.Application.Services.Insurance;
-using GestionMedicaAPP.Persistance.Interfaces.Insurance;
 using GestionMedicaAPP.Persistance.Interfaces.Medical;
 using Microsoft.Extensions.Logging;
 
@@ -17,9 +15,33 @@ namespace GestionMedicaAPP.Application.Services.Medical
             _logger = logger;
             _AvailabilityModesRepository = AvailabilityModessRepository;
         }
-        public Task<AvailabilityModesResponse> GetAll()
+        public async Task<AvailabilityModesResponse> GetAll()
         {
-            throw new NotImplementedException();
+            AvailabilityModesResponse AvailabilityModessResponse = new AvailabilityModesResponse();
+
+            try
+            {
+                var result = await _AvailabilityModesRepository.GetAll();
+
+                if (!result.Success)
+                {
+                    AvailabilityModessResponse.Message = result.Message;
+                    AvailabilityModessResponse.IsSuccess = result.Success;
+                    return AvailabilityModessResponse;
+                }
+
+                AvailabilityModessResponse.Model = result.Data;
+            }
+
+            catch (Exception ex)
+            {
+
+                AvailabilityModessResponse.IsSuccess = false;
+                AvailabilityModessResponse.Model = "Error obteniendo tipos de conexion";
+                _logger.LogError(AvailabilityModessResponse.Message, ex.ToString());
+            }
+
+            return AvailabilityModessResponse;
         }
 
         public Task<AvailabilityModesResponse> GetById(int Id)
@@ -37,7 +59,7 @@ namespace GestionMedicaAPP.Application.Services.Medical
             throw new NotImplementedException();
         }
 
-        public Task<AvailabilityModesResponse> UpdateAsync(AvailabilityModesUpdate dto)
+        public Task<AvailabilityModesResponse> UpdateAsync(AvailabilityModesUpdateDto dto)
         {
             throw new NotImplementedException();
         }

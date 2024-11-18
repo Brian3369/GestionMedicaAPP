@@ -92,14 +92,28 @@ namespace GestionMedicaAPP.Persistance.Repositories.Insurance
             try
             {
                 result.Data = await (from provider in _context.InsuranceProvider
-                                     where provider.StatusID == 1
                                      select new InsuranceProvidersModel()
                                      {
                                          InsuranceProviderID = provider.InsuranceProviderID,
                                          Name = provider.Name,
-                                         StatusID = provider.StatusID,
+                                         ContactNumber = provider.ContactNumber,
+                                         Email = provider.Email,
+                                         Website = provider.Website,
+                                         Address = provider.Address,
+                                         City = provider.City,
+                                         State = provider.State,
+                                         Country = provider.Country,
+                                         ZipCode = provider.ZipCode,
+                                         CoverageDetails = provider.CoverageDetails,
+                                         LogoUrl = provider.LogoUrl,
+                                         IsPreferred = provider.IsPreferred,
+                                         NetworkTypeId = provider.NetworkTypeId,
+                                         CustomerSupportContact = provider.CustomerSupportContact,
+                                         AcceptedRegions = provider.AcceptedRegions,
+                                         MaxCoverageAmount = provider.MaxCoverageAmount,
                                          CreatedAt = provider.CreatedAt,
-                                         UpdatedAt = provider.UpdatedAt
+                                         UpdatedAt = provider.UpdatedAt,
+                                         IsActive = provider.IsActive
                                      }).AsNoTracking()
                                     .ToListAsync();
                 result.Success = true;

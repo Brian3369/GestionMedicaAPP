@@ -1,4 +1,6 @@
-﻿using GestionMedicaAPP.Domain.Entities.Insurance;
+﻿using GestionMedicaAPP.Application.Contracts.Insurance;
+using GestionMedicaAPP.Application.Dtos.Insurance.NetworkType;
+using GestionMedicaAPP.Domain.Entities.Insurance;
 using GestionMedicaAPP.Persistance.Interfaces.Insurance;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,17 +12,17 @@ namespace GestionMedicaAPP.Insurance.Api.Controllers
     [ApiController]
     public class NetworkTypeController : ControllerBase
     {
-        private readonly INetworkTypeRepository _NetwordTypeRepository;
-        public NetworkTypeController(INetworkTypeRepository NetwordTypeRepository)
+        private readonly INetworkTypeService _NetwordTypeService;
+        public NetworkTypeController(INetworkTypeService NetwordTypeService)
         {
-            _NetwordTypeRepository = NetwordTypeRepository;
+            _NetwordTypeService = NetwordTypeService;
         }
 
         [HttpGet("GetNetwordType")]
         public async Task<IActionResult> Get()
         {
-            var result = await _NetwordTypeRepository.GetAll();
-            if (!result.Success)
+            var result = await _NetwordTypeService.GetAll();
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
@@ -29,38 +31,38 @@ namespace GestionMedicaAPP.Insurance.Api.Controllers
         [HttpGet("GetNetwordTypeById")]
         public async Task<IActionResult> Get(int id)
         {
-            var result = await _NetwordTypeRepository.GetEntityBy(id);
-            if (!result.Success)
+            var result = await _NetwordTypeService.GetById(id);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
         [HttpPost("SaveNetwordType")]
-        public async Task<IActionResult> Post([FromBody] NetworkType networdType)
+        public async Task<IActionResult> Post([FromBody] NetworkTypeSaveDto networdType)
         {
-            var result = await _NetwordTypeRepository.Save(networdType);
-            if (!result.Success)
+            var result = await _NetwordTypeService.SaveAsync(networdType);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
-        [HttpPost("UpdateNetwordType")]
-        public async Task<IActionResult> Put(int id, [FromBody] NetworkType networdType)
+        [HttpPut("UpdateNetwordType")]
+        public async Task<IActionResult> Put([FromBody] NetworkTypeUpdateDto networdType)
         {
-            var result = await _NetwordTypeRepository.Update(networdType);
-            if (!result.Success)
+            var result = await _NetwordTypeService.UpdateAsync(networdType);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
-        [HttpPost("RemoveNetwordType")]
-        public async Task<IActionResult> Remove(NetworkType networdType)
+        [HttpDelete("RemoveNetwordType")]
+        public async Task<IActionResult> get(int id)
         {
-            var result = await _NetwordTypeRepository.Remove(networdType);
-            if (result.Success)
+            var result = await _NetwordTypeService.RemoveById(id);
+            if (result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);

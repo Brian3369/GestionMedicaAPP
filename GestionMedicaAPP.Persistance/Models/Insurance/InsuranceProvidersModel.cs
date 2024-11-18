@@ -4,7 +4,6 @@
     {
         public int InsuranceProviderID { get; set; }
         public string Name { get; set; }
-        public int StatusID { get; set; }
         public string ContactNumber { get; set; }
         public string Email { get; set; }
         public string Website { get; set; }
