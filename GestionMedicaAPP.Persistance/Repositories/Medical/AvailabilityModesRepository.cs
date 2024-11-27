@@ -3,6 +3,7 @@ using GestionMedicaAPP.Domain.Result;
 using GestionMedicaAPP.Persistance.Base;
 using GestionMedicaAPP.Persistance.Context;
 using GestionMedicaAPP.Persistance.Interfaces.Medical;
+using GestionMedicaAPP.Persistance.Models.Medical;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -69,7 +70,16 @@ namespace GestionMedicaAPP.Persistance.Repositories.Medical
 
             try
             {
-                result.Data = await _context.AvailabilityModes
+                result.Data = await (from availabilityMode in _context.AvailabilityModes
+                                     where availabilityMode.IsActive == true
+                                     select new AvailabilityModesModel()
+                                     {
+                                         SAvailabilityModeID = availabilityMode.SAvailabilityModeID,
+                                         AvailabilityMode = availabilityMode.AvailabilityMode,
+                                         CreatedAt = availabilityMode.CreatedAt,
+                                         UpdatedAt = availabilityMode.UpdatedAt,
+                                         IsActive = availabilityMode.IsActive
+                                     })
                     .AsNoTracking()
                     .ToListAsync();
                 result.Success = true;

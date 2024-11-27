@@ -3,8 +3,10 @@ using GestionMedicaAPP.Domain.Result;
 using GestionMedicaAPP.Persistance.Base;
 using GestionMedicaAPP.Persistance.Context;
 using GestionMedicaAPP.Persistance.Interfaces.Insurance;
+using GestionMedicaAPP.Persistance.Models.Insurance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Net;
 
 namespace GestionMedicaAPP.Persistance.Repositories.Insurance
 {
@@ -69,7 +71,16 @@ namespace GestionMedicaAPP.Persistance.Repositories.Insurance
 
             try
             {
-                result.Data = await _context.NetworkType
+                result.Data = await (from network in _context.NetworkType
+                                     select new NetworkTypeModel()
+                                     {
+                                         NetworkTypeId = network.NetworkTypeId,
+                                         Name = network.Name,
+                                         Description = network.Description,
+                                         CreatedAt = network.CreatedAt,
+                                         UpdatedAt = network.UpdatedAt,
+                                         IsActive = network.IsActive
+                                     })
                     .AsNoTracking()
                     .ToListAsync();
                 result.Success = true;

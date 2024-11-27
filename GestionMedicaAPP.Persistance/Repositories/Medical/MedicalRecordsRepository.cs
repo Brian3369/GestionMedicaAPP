@@ -3,6 +3,7 @@ using GestionMedicaAPP.Domain.Result;
 using GestionMedicaAPP.Persistance.Base;
 using GestionMedicaAPP.Persistance.Context;
 using GestionMedicaAPP.Persistance.Interfaces.Medical;
+using GestionMedicaAPP.Persistance.Models.Medical;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -70,7 +71,18 @@ namespace GestionMedicaAPP.Persistance.Repositories.Medical
 
             try
             {
-                result.Data = await _context.MedicalRecords
+                result.Data = await (from record in _context.MedicalRecords
+                                     select new MedicalRecordsModel()
+                                     {
+                                         RecordID = record.RecordID,
+                                         PatientID = record.PatientID,
+                                         DoctorID = record.DoctorID,
+                                         Diagnosis = record.Diagnosis,
+                                         Treatment = record.Treatment,
+                                         DateOfVisit = record.DateOfVisit,
+                                         CreatedAt = record.CreatedAt,
+                                         UpdatedAt = record.UpdatedAt,
+                                     })
                     .AsNoTracking()
                     .ToListAsync();
                 result.Success = true;

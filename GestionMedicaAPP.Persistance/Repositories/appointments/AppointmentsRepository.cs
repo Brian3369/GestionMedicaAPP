@@ -111,8 +111,9 @@ namespace GestionMedicaAPP.Persistance.Repositories.appointments
 
             try
             {
+
                 result.Data = await (from Appointments in _context.Appointments
-                                     where Appointments.StatusID == 3
+                                     where Appointments.StatusID == 1
                                      select new AppointmentsModel()
                                      {
                                          AppointmentID = Appointments.AppointmentID,

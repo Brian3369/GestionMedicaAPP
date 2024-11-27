@@ -1,43 +1,53 @@
-﻿using GestionMedicaAPP.Application.Contracts.Insurance;
-using GestionMedicaAPP.Persistance.Models.Insurance;
+﻿using GestionMedicaAPP.Web.Models.appointments.appoitments;
+using GestionMedicaAPP.Web.Models.Insurance.InsuranceProviders;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using static System.Net.WebRequestMethods;
 
 namespace GestionMedicaAPP.Web.Controllers.Insurance
 {
-    public class NetworkTypesController : Controller
+    public class InsuranceProvidersAdmController : Controller
     {
-        private readonly INetworkTypeService _NetworkTypesService;
-
-        public NetworkTypesController(INetworkTypeService networkTypesService)
-        {
-            _NetworkTypesService = networkTypesService;
-        }
-
+        // GET: InsuranceProvidersAdmController
         public async Task<IActionResult> Index()
         {
-            var result = await _NetworkTypesService.GetAll();
-            if (result.IsSuccess)
+            string url = "http://localhost:5222/api/InsuranceProviders/";
+            InsuranceProvidersGetAllModel insuranceProvidersGetAllModel = new InsuranceProvidersGetAllModel();
+
+
+            using (var client = new HttpClient())
             {
-                List<NetworkTypeModel> networkTypesModel = (List<NetworkTypeModel>)result.Model;
-                return View(networkTypesModel);
+                client.BaseAddress = new Uri(url);
+                var responseTask = await client.GetAsync("GetInsuranceProvider");
+
+                if (responseTask.IsSuccessStatusCode)
+                {
+                    string response = await responseTask.Content.ReadAsStringAsync();
+
+                    insuranceProvidersGetAllModel = JsonConvert.DeserializeObject<InsuranceProvidersGetAllModel>(response);
+                }
+                else
+                {
+                    ViewBag.Message = "";
+                }
             }
-            return View();
+            return View(insuranceProvidersGetAllModel.model);
         }
 
-        // GET: NetworkTypesController/Details/5
+        // GET: InsuranceProvidersAdmController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: NetworkTypesController/Create
+        // GET: InsuranceProvidersAdmController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: NetworkTypesController/Create
+        // POST: InsuranceProvidersAdmController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -52,13 +62,13 @@ namespace GestionMedicaAPP.Web.Controllers.Insurance
             }
         }
 
-        // GET: NetworkTypesController/Edit/5
+        // GET: InsuranceProvidersAdmController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: NetworkTypesController/Edit/5
+        // POST: InsuranceProvidersAdmController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -73,13 +83,13 @@ namespace GestionMedicaAPP.Web.Controllers.Insurance
             }
         }
 
-        // GET: NetworkTypesController/Delete/5
+        // GET: InsuranceProvidersAdmController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: NetworkTypesController/Delete/5
+        // POST: InsuranceProvidersAdmController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)

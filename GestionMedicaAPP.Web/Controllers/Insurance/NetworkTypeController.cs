@@ -1,43 +1,43 @@
 ﻿using GestionMedicaAPP.Application.Contracts.Insurance;
-using GestionMedicaAPP.Application.Contracts.Medical;
 using GestionMedicaAPP.Persistance.Models.Insurance;
-using GestionMedicaAPP.Persistance.Models.Medical;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GestionMedicaAPP.Web.Controllers.Medical
+namespace GestionMedicaAPP.Web.Controllers.Insurance
 {
-    public class AvailabilityModesController : Controller
+    public class NetworkTypeController : Controller
     {
-        private readonly IAvailabilityModesService _AvailabilityModesService;
+        private readonly INetworkTypeService _NetworkTypeService;
 
-        public AvailabilityModesController(IAvailabilityModesService AvailabilityModessService)
+        public NetworkTypeController(INetworkTypeService networkTypesService)
         {
-            _AvailabilityModesService = AvailabilityModessService;
+            _NetworkTypeService = networkTypesService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var result = await _AvailabilityModesService.GetAll();
+            var result = await _NetworkTypeService.GetAll();
             if (result.IsSuccess)
             {
-                List<AvailabilityModesModel> availabilityModesModel = (List<AvailabilityModesModel>)result.Model;
-                return View(availabilityModesModel);
+                List<NetworkTypeModel> networkTypeModel = (List<NetworkTypeModel>)result.Model;
+                return View(networkTypeModel);
             }
             return View();
         }
 
+        // GET: NetworkTypesController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
+        // GET: NetworkTypesController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: AvailabilityModesController/Create
+        // POST: NetworkTypesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -52,13 +52,13 @@ namespace GestionMedicaAPP.Web.Controllers.Medical
             }
         }
 
-        // GET: AvailabilityModesController/Edit/5
+        // GET: NetworkTypesController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: AvailabilityModesController/Edit/5
+        // POST: NetworkTypesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -73,13 +73,13 @@ namespace GestionMedicaAPP.Web.Controllers.Medical
             }
         }
 
-        // GET: AvailabilityModesController/Delete/5
+        // GET: NetworkTypesController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: AvailabilityModesController/Delete/5
+        // POST: NetworkTypesController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)

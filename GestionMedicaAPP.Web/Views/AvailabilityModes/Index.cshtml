@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Availability Modes List</h1>
+<h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -16,19 +16,16 @@
                 @Html.DisplayNameFor(model => model.SAvailabilityModeID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StatusID)
+                @Html.DisplayNameFor(model => model.AvailabilityMode)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedAt)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.UpdatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
             </th>
             <th></th>
         </tr>
@@ -40,13 +37,7 @@
                 @Html.DisplayFor(modelItem => item.SAvailabilityModeID)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StatusID)
+                @Html.DisplayFor(modelItem => item.AvailabilityMode)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)
@@ -55,9 +46,12 @@
                 @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.SAvailabilityModeID }) |
-                @Html.ActionLink("Details", "Details", new { id=item.SAvailabilityModeID }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.SAvailabilityModeID })
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
             </td>
         </tr>
 }

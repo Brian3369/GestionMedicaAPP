@@ -1,10 +1,10 @@
-﻿@model IEnumerable<GestionMedicaAPP.Persistance.Models.Medical.MedicalRecordsModel>
+﻿@model IEnumerable<GestionMedicaAPP.Persistance.Models.appointmets.AppointmentsModel>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Medical Records List</h1>
+<h1>Appointments Api</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,7 +13,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.RecordID)
+                @Html.DisplayNameFor(model => model.AppointmentID)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PatientID)
@@ -22,13 +22,10 @@
                 @Html.DisplayNameFor(model => model.DoctorID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Diagnosis)
+                @Html.DisplayNameFor(model => model.AppointmentDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Treatment)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOfVisit)
+                @Html.DisplayNameFor(model => model.StatusID)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedAt)
@@ -43,7 +40,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.RecordID)
+                @Html.DisplayFor(modelItem => item.AppointmentID)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PatientID)
@@ -52,13 +49,10 @@
                 @Html.DisplayFor(modelItem => item.DoctorID)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Diagnosis)
+                @Html.DisplayFor(modelItem => item.AppointmentDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Treatment)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfVisit)
+                @Html.DisplayFor(modelItem => item.StatusID)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)
@@ -67,9 +61,9 @@
                 @Html.DisplayFor(modelItem => item.UpdatedAt)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.RecordID }) |
-                @Html.ActionLink("Details", "Details", new { id=item.RecordID }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.RecordID })
+                @Html.ActionLink("Edit", "Edit", new { id=item.AppointmentID }) |
+                @Html.ActionLink("Details", "Details", new { id=item.AppointmentID }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.AppointmentID }) 
             </td>
         </tr>
 }

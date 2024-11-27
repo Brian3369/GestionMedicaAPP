@@ -3,6 +3,7 @@ using GestionMedicaAPP.Domain.Result;
 using GestionMedicaAPP.Persistance.Base;
 using GestionMedicaAPP.Persistance.Context;
 using GestionMedicaAPP.Persistance.Interfaces.Medical;
+using GestionMedicaAPP.Persistance.Models.Medical;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -69,7 +70,16 @@ namespace GestionMedicaAPP.Persistance.Repositories.Medical
 
             try
             {
-                result.Data = await _context.Specialties
+                result.Data = await (from specialties in _context.Specialties
+                                     where specialties.IsActive == true
+                                     select new SpecialtiesModel() 
+                                     {
+                                         SpecialtyID = specialties.SpecialtyID,
+                                         SpecialtyName = specialties.SpecialtyName,
+                                         CreatedAt = specialties.CreatedAt,
+                                         UpdatedAt = specialties.UpdatedAt,
+                                         IsActive = specialties.IsActive
+                                     })
                     .AsNoTracking()
                     .ToListAsync();
                 result.Success = true;

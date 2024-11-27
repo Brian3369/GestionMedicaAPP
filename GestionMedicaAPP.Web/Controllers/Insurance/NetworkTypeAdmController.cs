@@ -1,43 +1,52 @@
-﻿using GestionMedicaAPP.Application.Contracts.Insurance;
-using GestionMedicaAPP.Application.Contracts.Medical;
-using GestionMedicaAPP.Persistance.Models.Insurance;
-using GestionMedicaAPP.Persistance.Models.Medical;
+﻿using GestionMedicaAPP.Web.Models.Insurance.InsuranceProviders;
+using GestionMedicaAPP.Web.Models.Insurance.NetworkType;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
-namespace GestionMedicaAPP.Web.Controllers.Medical
+namespace GestionMedicaAPP.Web.Controllers.Insurance
 {
-    public class AvailabilityModesController : Controller
+    public class NetworkTypeAdmController : Controller
     {
-        private readonly IAvailabilityModesService _AvailabilityModesService;
-
-        public AvailabilityModesController(IAvailabilityModesService AvailabilityModessService)
-        {
-            _AvailabilityModesService = AvailabilityModessService;
-        }
-
+        // GET: NetworkTypeAdmController
         public async Task<IActionResult> Index()
         {
-            var result = await _AvailabilityModesService.GetAll();
-            if (result.IsSuccess)
+            string url = "http://localhost:5222/api/InsuranceProviders/";
+            NetworkTypeGetAllModel networkTypeGetAllModel = new NetworkTypeGetAllModel();
+
+
+            using (var client = new HttpClient())
             {
-                List<AvailabilityModesModel> availabilityModesModel = (List<AvailabilityModesModel>)result.Model;
-                return View(availabilityModesModel);
+                client.BaseAddress = new Uri(url);
+                var responseTask = await client.GetAsync("GetNetworkType");
+
+                if (responseTask.IsSuccessStatusCode)
+                {
+                    string response = await responseTask.Content.ReadAsStringAsync();
+
+                    networkTypeGetAllModel = JsonConvert.DeserializeObject<NetworkTypeGetAllModel>(response);
+                }
+                else
+                {
+                    ViewBag.Message = "";
+                }
             }
-            return View();
+            return View(networkTypeGetAllModel.model);
         }
 
+        // GET: NetworkTypeAdmController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
+        // GET: NetworkTypeAdmController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: AvailabilityModesController/Create
+        // POST: NetworkTypeAdmController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -52,13 +61,13 @@ namespace GestionMedicaAPP.Web.Controllers.Medical
             }
         }
 
-        // GET: AvailabilityModesController/Edit/5
+        // GET: NetworkTypeAdmController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: AvailabilityModesController/Edit/5
+        // POST: NetworkTypeAdmController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -73,13 +82,13 @@ namespace GestionMedicaAPP.Web.Controllers.Medical
             }
         }
 
-        // GET: AvailabilityModesController/Delete/5
+        // GET: NetworkTypeAdmController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: AvailabilityModesController/Delete/5
+        // POST: NetworkTypeAdmController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
