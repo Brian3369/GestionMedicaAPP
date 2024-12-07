@@ -1,83 +1,100 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace GestionMedicaAPP.Web.Controllers.System
+namespace GestionMedicaAPP.Web.Controllers
 {
     public class NotificationsAdmController : Controller
     {
-        // GET: NotificationsAdmController
-        public ActionResult Index()
+        private readonly INotificationsApiService _notificationsService;
+
+        public NotificationsAdmController(INotificationsApiService notificationsService)
+        {
+            _notificationsService = notificationsService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var notifications = await _notificationsService.GetAllAsync();
+            return View(notifications);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var notification = await _notificationsService.GetByIdAsync(id);
+            if (notification == null)
+            {
+                return NotFound();
+            }
+            return View(notification);
+        }
+
+        public IActionResult Create()
         {
             return View();
         }
 
-        // GET: NotificationsAdmController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: NotificationsAdmController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: NotificationsAdmController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(NotificationSaveDto notification)
         {
-            try
+            if (!ModelState.IsValid) return View(notification);
+
+            var result = await _notificationsService.CreateAsync(notification);
+
+            if (!result.IsSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.Message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: NotificationsAdmController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var notification = await _notificationsService.GetByIdAsync(id);
+            if (notification == null)
+            {
+                return NotFound();
+            }
+            return View(notification);
         }
 
-        // POST: NotificationsAdmController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, NotificationSaveDto notification)
         {
-            try
+            if (!ModelState.IsValid) return View(notification);
+
+            var result = await _notificationsService.UpdateAsync(id, notification);
+
+            if (!result.IsSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.Message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: NotificationsAdmController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
+            var notification = await _notificationsService.GetByIdAsync(id);
+            if (notification == null)
+            {
+                return NotFound();
+            }
+            return View(notification);
         }
 
-        // POST: NotificationsAdmController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
+            var result = await _notificationsService.DeleteAsync(id);
+            if (!result.IsSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.Message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

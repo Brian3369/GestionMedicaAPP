@@ -1,83 +1,102 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using GestionMedicaAPP.Application.Dtos.Medical.AvailabilityModes;
+using GestionMedicaAPP.Web.Service.Base.Medical.AvailabilityModes;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GestionMedicaAPP.Web.Controllers.Medical
+namespace GestionMedicaAPP.Web.Controllers
 {
     public class AvailabilityModesAdmController : Controller
     {
-        // GET: AvailabilityModesAdmController
-        public ActionResult Index()
+        private readonly IAvailabilityModesApiService _availabilityModesService;
+
+        public AvailabilityModesAdmController(IAvailabilityModesApiService availabilityModesService)
+        {
+            _availabilityModesService = availabilityModesService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var availabilityModes = await _availabilityModesService.GetAllAsync();
+            return View(availabilityModes);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var availabilityMode = await _availabilityModesService.GetByIdAsync(id);
+            if (availabilityMode == null)
+            {
+                return NotFound();
+            }
+            return View(availabilityMode);
+        }
+
+        public IActionResult Create()
         {
             return View();
         }
 
-        // GET: AvailabilityModesAdmController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: AvailabilityModesAdmController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: AvailabilityModesAdmController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(AvailabilityModesSaveDto availabilityMode)
         {
-            try
+            if (!ModelState.IsValid) return View(availabilityMode);
+
+            var result = await _availabilityModesService.CreateAsync(availabilityMode);
+
+            if (!result.isSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: AvailabilityModesAdmController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var availabilityMode = await _availabilityModesService.GetByIdAsync(id);
+            if (availabilityMode == null)
+            {
+                return NotFound();
+            }
+            return View(availabilityMode);
         }
 
-        // POST: AvailabilityModesAdmController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, AvailabilityModesSaveDto availabilityMode)
         {
-            try
+            if (!ModelState.IsValid) return View(availabilityMode);
+
+            var result = await _availabilityModesService.UpdateAsync(id, availabilityMode);
+
+            if (!result.isSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: AvailabilityModesAdmController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
+            var availabilityMode = await _availabilityModesService.GetByIdAsync(id);
+            if (availabilityMode == null)
+            {
+                return NotFound();
+            }
+            return View(availabilityMode);
         }
 
-        // POST: AvailabilityModesAdmController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
+            var result = await _availabilityModesService.DeleteAsync(id);
+            if (!result.isSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

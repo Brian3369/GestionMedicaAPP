@@ -1,9 +1,6 @@
 ﻿using GestionMedicaAPP.Application.Contracts.Appointments;
 using GestionMedicaAPP.Application.Dtos.Appointments.Appointments;
-using GestionMedicaAPP.Application.Dtos.Users;
 using GestionMedicaAPP.Persistance.Models.appointmets;
-using GestionMedicaAPP.Persistance.Models.users;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionMedicaAPP.Web.Controllers.appointments

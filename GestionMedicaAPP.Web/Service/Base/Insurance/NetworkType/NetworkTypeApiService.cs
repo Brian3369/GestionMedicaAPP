@@ -2,6 +2,7 @@
 using GestionMedicaAPP.Application.Dtos.Insurance.NetworkType;
 using GestionMedicaAPP.Persistance.Interfaces.Insurance;
 using GestionMedicaAPP.Web.Models.Base;
+using GestionMedicaAPP.Web.Service.Repository.Insurance.NetworkType;
 
 namespace GestionMedicaAPP.Web.Service.Base.Insurance.NetworkType
 {
@@ -9,7 +10,7 @@ namespace GestionMedicaAPP.Web.Service.Base.Insurance.NetworkType
     {
         private readonly INetworkTypeApiRepository _repository;
 
-        public NetworkTypeService(INetworkTypeApiRepository repository)
+        public NetworkTypeApiService(INetworkTypeApiRepository repository)
         {
             _repository = repository;
         }

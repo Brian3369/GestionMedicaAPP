@@ -1,83 +1,100 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace GestionMedicaAPP.Web.Controllers.Medical
+namespace GestionMedicaAPP.Web.Controllers
 {
     public class SpecialtiesAdmController : Controller
     {
-        // GET: SpecialtiesAdmController
-        public ActionResult Index()
+        private readonly ISpecialtiesApiService _specialtiesService;
+
+        public SpecialtiesAdmController(ISpecialtiesApiService specialtiesService)
+        {
+            _specialtiesService = specialtiesService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var specialties = await _specialtiesService.GetAllAsync();
+            return View(specialties);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var specialty = await _specialtiesService.GetByIdAsync(id);
+            if (specialty == null)
+            {
+                return NotFound();
+            }
+            return View(specialty);
+        }
+
+        public IActionResult Create()
         {
             return View();
         }
 
-        // GET: SpecialtiesAdmController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: SpecialtiesAdmController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: SpecialtiesAdmController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(SpecialtySaveDto specialty)
         {
-            try
+            if (!ModelState.IsValid) return View(specialty);
+
+            var result = await _specialtiesService.CreateAsync(specialty);
+
+            if (!result.IsSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.Message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: SpecialtiesAdmController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var specialty = await _specialtiesService.GetByIdAsync(id);
+            if (specialty == null)
+            {
+                return NotFound();
+            }
+            return View(specialty);
         }
 
-        // POST: SpecialtiesAdmController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, SpecialtySaveDto specialty)
         {
-            try
+            if (!ModelState.IsValid) return View(specialty);
+
+            var result = await _specialtiesService.UpdateAsync(id, specialty);
+
+            if (!result.IsSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.Message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: SpecialtiesAdmController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
+            var specialty = await _specialtiesService.GetByIdAsync(id);
+            if (specialty == null)
+            {
+                return NotFound();
+            }
+            return View(specialty);
         }
 
-        // POST: SpecialtiesAdmController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
+            var result = await _specialtiesService.DeleteAsync(id);
+            if (!result.IsSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.Message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

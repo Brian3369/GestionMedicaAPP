@@ -1,83 +1,100 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace GestionMedicaAPP.Web.Controllers.users
+namespace GestionMedicaAPP.Web.Controllers
 {
     public class UsersAdmController : Controller
     {
-        // GET: UsersAdmController
-        public ActionResult Index()
+        private readonly IUsersApiService _usersService;
+
+        public UsersAdmController(IUsersApiService usersService)
+        {
+            _usersService = usersService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var users = await _usersService.GetAllAsync();
+            return View(users);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var user = await _usersService.GetByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        public IActionResult Create()
         {
             return View();
         }
 
-        // GET: UsersAdmController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: UsersAdmController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: UsersAdmController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(UserSaveDto user)
         {
-            try
+            if (!ModelState.IsValid) return View(user);
+
+            var result = await _usersService.CreateAsync(user);
+
+            if (!result.IsSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.Message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: UsersAdmController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var user = await _usersService.GetByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
         }
 
-        // POST: UsersAdmController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, UserSaveDto user)
         {
-            try
+            if (!ModelState.IsValid) return View(user);
+
+            var result = await _usersService.UpdateAsync(id, user);
+
+            if (!result.IsSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.Message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: UsersAdmController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
+            var user = await _usersService.GetByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
         }
 
-        // POST: UsersAdmController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
+            var result = await _usersService.DeleteAsync(id);
+            if (!result.IsSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.Message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -1,83 +1,103 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using GestionMedicaAPP.Application.Contracts.System;
+using GestionMedicaAPP.Application.Dtos.System.Status;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GestionMedicaAPP.Web.Controllers.System
+namespace GestionMedicaAPP.Web.Controllers
 {
     public class StatusAdmController : Controller
     {
-        // GET: StatusAdmController
-        public ActionResult Index()
+        private readonly IStatusApiService _statusService;
+
+        public StatusAdmController(IStatusApiService statusService)
+        {
+            _statusService = statusService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var statuses = await _statusService.GetAllAsync();
+            return View(statuses);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var status = await _statusService.GetByIdAsync(id);
+            if (status == null)
+            {
+                return NotFound();
+            }
+            return View(status);
+        }
+
+        public IActionResult Create()
         {
             return View();
         }
 
-        // GET: StatusAdmController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: StatusAdmController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: StatusAdmController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(StatusSaveDto status)
         {
-            try
+            if (!ModelState.IsValid) return View(status);
+
+            var result = await _statusService.CreateAsync(status);
+
+            if (!result.IsSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.Message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: StatusAdmController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var status = await _statusService.GetByIdAsync(id);
+            if (status == null)
+            {
+                return NotFound();
+            }
+            return View(status);
         }
 
-        // POST: StatusAdmController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, StatusSaveDto status)
         {
-            try
+            if (!ModelState.IsValid) return View(status);
+
+            var result = await _statusService.UpdateAsync(id, status);
+
+            if (!result.IsSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.Message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: StatusAdmController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
+            var status = await _statusService.GetByIdAsync(id);
+            if (status == null)
+            {
+                return NotFound();
+            }
+            return View(status);
         }
 
-        // POST: StatusAdmController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
+            var result = await _statusService.DeleteAsync(id);
+            if (!result.IsSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.Message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
