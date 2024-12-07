@@ -1,106 +1,102 @@
-﻿using GestionMedicaAPP.Web.Models.Insurance.InsuranceProviders;
-using GestionMedicaAPP.Web.Models.Insurance.NetworkType;
-using Microsoft.AspNetCore.Http;
+﻿using GestionMedicaAPP.Application.Dtos.Insurance.NetworkType;
+using GestionMedicaAPP.Web.Service.Base.Insurance.NetworkType;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
-namespace GestionMedicaAPP.Web.Controllers.Insurance
+namespace GestionMedicaAPP.Web.Controllers
 {
     public class NetworkTypeAdmController : Controller
     {
-        // GET: NetworkTypeAdmController
+        private readonly INetworkTypeApiService _networkTypeService;
+
+        public NetworkTypeAdmController(INetworkTypeApiService networkTypeService)
+        {
+            _networkTypeService = networkTypeService;
+        }
+
         public async Task<IActionResult> Index()
         {
-            string url = "http://localhost:5222/api/InsuranceProviders/";
-            NetworkTypeGetAllModel networkTypeGetAllModel = new NetworkTypeGetAllModel();
+            var networkTypes = await _networkTypeService.GetAllAsync();
+            return View(networkTypes);
+        }
 
-
-            using (var client = new HttpClient())
+        public async Task<IActionResult> Details(int id)
+        {
+            var networkType = await _networkTypeService.GetByIdAsync(id);
+            if (networkType == null)
             {
-                client.BaseAddress = new Uri(url);
-                var responseTask = await client.GetAsync("GetNetworkType");
-
-                if (responseTask.IsSuccessStatusCode)
-                {
-                    string response = await responseTask.Content.ReadAsStringAsync();
-
-                    networkTypeGetAllModel = JsonConvert.DeserializeObject<NetworkTypeGetAllModel>(response);
-                }
-                else
-                {
-                    ViewBag.Message = "";
-                }
+                return NotFound();
             }
-            return View(networkTypeGetAllModel.model);
+            return View(networkType);
         }
 
-        // GET: NetworkTypeAdmController/Details/5
-        public ActionResult Details(int id)
+        public IActionResult Create()
         {
             return View();
         }
 
-        // GET: NetworkTypeAdmController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: NetworkTypeAdmController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(NetworkTypeSaveDto networkType)
         {
-            try
+            if (!ModelState.IsValid) return View(networkType);
+
+            var result = await _networkTypeService.CreateAsync(networkType);
+
+            if (!result.isSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: NetworkTypeAdmController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var networkType = await _networkTypeService.GetByIdAsync(id);
+            if (networkType == null)
+            {
+                return NotFound();
+            }
+            return View(networkType);
         }
 
-        // POST: NetworkTypeAdmController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, NetworkTypeSaveDto networkType)
         {
-            try
+            if (!ModelState.IsValid) return View(networkType);
+
+            var result = await _networkTypeService.UpdateAsync(id, networkType);
+
+            if (!result.isSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: NetworkTypeAdmController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
+            var networkType = await _networkTypeService.GetByIdAsync(id);
+            if (networkType == null)
+            {
+                return NotFound();
+            }
+            return View(networkType);
         }
 
-        // POST: NetworkTypeAdmController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
+            var result = await _networkTypeService.DeleteAsync(id);
+            if (!result.isSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

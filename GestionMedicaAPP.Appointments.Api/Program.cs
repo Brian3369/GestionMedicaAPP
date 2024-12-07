@@ -1,7 +1,5 @@
 using GestionMedicaAPP.IOC.Dependencies.Appointments;
 using GestionMedicaAPP.Persistance.Context;
-using GestionMedicaAPP.Persistance.Interfaces.appointmets;
-using GestionMedicaAPP.Persistance.Repositories.appointments;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

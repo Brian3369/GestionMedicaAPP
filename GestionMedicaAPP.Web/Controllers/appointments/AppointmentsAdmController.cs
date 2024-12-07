@@ -1,121 +1,102 @@
-﻿using GestionMedicaAPP.Web.Models.appointments.appoitments;
-using GestionMedicaAPP.Web.Models.appointments.DoctorAvailability;
+﻿using GestionMedicaAPP.Application.Dtos.Appointments.Appointments;
+using GestionMedicaAPP.Web.Service.Base.Appointmets.Appointments;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
-namespace GestionMedicaAPP.Web.Controllers.appointments
+namespace GestionMedicaAPP.Web.Controllers
 {
     public class AppointmentsAdmController : Controller
     {
+        private readonly IAppointmentsApiService _appointmentsService;
+
+        public AppointmentsAdmController(IAppointmentsApiService appointmentsService)
+        {
+            _appointmentsService = appointmentsService;
+        }
+
         public async Task<IActionResult> Index()
         {
-            string url = "http://localhost:5184/Appointments/";
-            AppointmentsGetAllModel appointmentsGetAllModel = new AppointmentsGetAllModel();
-
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(url);
-                var responseTask = await client.GetAsync("GetAppointments");
-
-                if (responseTask.IsSuccessStatusCode)
-                {
-                    string response = await responseTask.Content.ReadAsStringAsync();
-
-                    appointmentsGetAllModel = JsonConvert.DeserializeObject<AppointmentsGetAllModel>(response);
-                }
-                else
-                {
-                    ViewBag.Message = "";
-                }
-            }
-            return View(appointmentsGetAllModel.model);
+            var appointments = await _appointmentsService.GetAllAsync();
+            return View(appointments);
         }
 
-        // GET: AppointmentsAdmController/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            string url = "http://localhost:5184/Appointments/";
-
-            AppointmentsGetAllModel appointmentsGetAllModel = new AppointmentsGetAllModel();
-
-            using (var client = new HttpClient())
+            var appointment = await _appointmentsService.GetByIdAsync(id);
+            if (appointment == null)
             {
-                client.BaseAddress = new Uri(url);
-
-                var responseTask = await client.GetAsync($"GetAppointmentsById?id={id}");
-
-                if (responseTask.IsSuccessStatusCode)
-                {
-                    string response = await responseTask.Content.ReadAsStringAsync();
-                    appointmentsGetAllModel = JsonConvert.DeserializeObject<AppointmentsGetAllModel>(response);
-
-                }
+                return NotFound();
             }
-            return View(appointmentsGetAllModel.model);
+            return View(appointment);
         }
 
-        // GET: AppointmentsAdmController/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
 
-        // POST: AppointmentsAdmController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(AppointmentsSaveDto appointment)
         {
-            try
+            if (!ModelState.IsValid) return View(appointment);
+
+            var result = await _appointmentsService.CreateAsync(appointment);
+
+            if (!result.isSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: AppointmentsAdmController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var appointment = await _appointmentsService.GetByIdAsync(id);
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+            return View(appointment);
         }
 
-        // POST: AppointmentsAdmController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, AppointmentsSaveDto appointment)
         {
-            try
+            if (!ModelState.IsValid) return View(appointment);
+
+            var result = await _appointmentsService.UpdateAsync(id, appointment);
+
+            if (!result.isSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: AppointmentsAdmController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
+            var appointment = await _appointmentsService.GetByIdAsync(id);
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+            return View(appointment);
         }
 
-        // POST: AppointmentsAdmController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
+            var result = await _appointmentsService.DeleteAsync(id);
+            if (!result.isSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

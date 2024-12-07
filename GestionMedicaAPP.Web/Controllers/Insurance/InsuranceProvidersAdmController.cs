@@ -1,107 +1,103 @@
-﻿using GestionMedicaAPP.Web.Models.appointments.appoitments;
-using GestionMedicaAPP.Web.Models.Insurance.InsuranceProviders;
-using Microsoft.AspNetCore.Http;
+﻿using GestionMedicaAPP.Application.Dtos.Insurance.InsuranceProvider;
+using GestionMedicaAPP.Web.Service.Base.Insurance.InsuranceProviders;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using static System.Net.WebRequestMethods;
 
-namespace GestionMedicaAPP.Web.Controllers.Insurance
+namespace GestionMedicaAPP.Web.Controllers
 {
     public class InsuranceProvidersAdmController : Controller
     {
-        // GET: InsuranceProvidersAdmController
+        private readonly IInsuranceProvidersApiService _insuranceProvidersService;
+
+        public InsuranceProvidersAdmController(IInsuranceProvidersApiService insuranceProvidersService)
+        {
+            _insuranceProvidersService = insuranceProvidersService;
+        }
+
         public async Task<IActionResult> Index()
         {
-            string url = "http://localhost:5222/api/InsuranceProviders/";
-            InsuranceProvidersGetAllModel insuranceProvidersGetAllModel = new InsuranceProvidersGetAllModel();
+            var providers = await _insuranceProvidersService.GetAllAsync();
+            return View(providers);
+        }
 
-
-            using (var client = new HttpClient())
+        public async Task<IActionResult> Details(int id)
+        {
+            var provider = await _insuranceProvidersService.GetByIdAsync(id);
+            if (provider == null)
             {
-                client.BaseAddress = new Uri(url);
-                var responseTask = await client.GetAsync("GetInsuranceProvider");
-
-                if (responseTask.IsSuccessStatusCode)
-                {
-                    string response = await responseTask.Content.ReadAsStringAsync();
-
-                    insuranceProvidersGetAllModel = JsonConvert.DeserializeObject<InsuranceProvidersGetAllModel>(response);
-                }
-                else
-                {
-                    ViewBag.Message = "";
-                }
+                return NotFound();
             }
-            return View(insuranceProvidersGetAllModel.model);
+            return View(provider);
         }
 
-        // GET: InsuranceProvidersAdmController/Details/5
-        public ActionResult Details(int id)
+        public IActionResult Create()
         {
             return View();
         }
 
-        // GET: InsuranceProvidersAdmController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: InsuranceProvidersAdmController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(InsuranceProviderSaveDto provider)
         {
-            try
+            if (!ModelState.IsValid) return View(provider);
+
+            var result = await _insuranceProvidersService.CreateAsync(provider);
+
+            if (!result.isSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: InsuranceProvidersAdmController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var provider = await _insuranceProvidersService.GetByIdAsync(id);
+            if (provider == null)
+            {
+                return NotFound();
+            }
+            return View(provider);
         }
 
-        // POST: InsuranceProvidersAdmController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, InsuranceProviderSaveDto provider)
         {
-            try
+            if (!ModelState.IsValid) return View(provider);
+
+            var result = await _insuranceProvidersService.UpdateAsync(id, provider);
+
+            if (!result.isSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: InsuranceProvidersAdmController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
+            var provider = await _insuranceProvidersService.GetByIdAsync(id);
+            if (provider == null)
+            {
+                return NotFound();
+            }
+            return View(provider);
         }
 
-        // POST: InsuranceProvidersAdmController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
+            var result = await _insuranceProvidersService.DeleteAsync(id);
+            if (!result.isSuccess)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                ViewBag.Message = result.message;
                 return View();
             }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
+
