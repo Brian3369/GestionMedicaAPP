@@ -1,4 +1,5 @@
 ﻿using GestionMedicaAPP.Application.Contracts.Users;
+using GestionMedicaAPP.Application.Dtos.Users.Doctors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,7 +37,7 @@ namespace GestionMedicaAPP.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(DoctorSaveDto doctor)
+        public async Task<IActionResult> Create(DoctorsSaveDto doctor)
         {
             if (!ModelState.IsValid) return View(doctor);
 
@@ -62,7 +63,7 @@ namespace GestionMedicaAPP.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, DoctorSaveDto doctor)
+        public async Task<IActionResult> Edit(int id, DoctorsSaveDto doctor)
         {
             if (!ModelState.IsValid) return View(doctor);
 

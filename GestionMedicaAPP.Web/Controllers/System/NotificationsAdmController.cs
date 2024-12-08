@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GestionMedicaAPP.Application.Dtos.System.Notifications;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GestionMedicaAPP.Web.Controllers
 {
@@ -34,7 +35,7 @@ namespace GestionMedicaAPP.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(NotificationSaveDto notification)
+        public async Task<IActionResult> Create(NotificationsSaveDto notification)
         {
             if (!ModelState.IsValid) return View(notification);
 
@@ -60,7 +61,7 @@ namespace GestionMedicaAPP.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, NotificationSaveDto notification)
+        public async Task<IActionResult> Edit(int id, NotificationsSaveDto notification)
         {
             if (!ModelState.IsValid) return View(notification);
 
