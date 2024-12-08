@@ -1,35 +1,40 @@
-﻿using GestionMedicaAPP.Application.Contracts.System;
-using GestionMedicaAPP.Application.Contracts.Users;
-using GestionMedicaAPP.Persistance.Models.System;
+﻿using GestionMedicaAPP.Application.Contracts.Users;
+using GestionMedicaAPP.Application.Dtos.Users.Doctors;
 using GestionMedicaAPP.Persistance.Models.users;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionMedicaAPP.Web.Controllers.users
 {
     public class DoctorsController : Controller
     {
-        private readonly IDoctorsService _DoctorssService;
+        private readonly IDoctorsService _doctorsService;
 
-        public DoctorsController(IDoctorsService DoctorssService)
+        public DoctorsController(IDoctorsService doctorsService)
         {
-            _DoctorssService = DoctorssService;
+            _doctorsService = doctorsService;
         }
 
+        // GET: DoctorsController/Index
         public async Task<IActionResult> Index()
         {
-            var result = await _DoctorssService.GetAll();
+            var result = await _doctorsService.GetAll();
             if (result.IsSuccess)
             {
-                List<DoctorsModel> DoctorssModel = (List<DoctorsModel>)result.Model;
-                return View(DoctorssModel);
+                List<DoctorsModel> doctorModels = (List<DoctorsModel>)result.Model;
+                return View(doctorModels);
             }
             return View();
         }
 
         // GET: DoctorsController/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
+            var result = await _doctorsService.GetById(id);
+            if (result.IsSuccess)
+            {
+                DoctorsModel doctorModel = (DoctorsModel)result.Model;
+                return View(doctorModel);
+            }
             return View();
         }
 
@@ -42,11 +47,20 @@ namespace GestionMedicaAPP.Web.Controllers.users
         // POST: DoctorsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(DoctorsSaveDto doctorSaveDto)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var result = await _doctorsService.SaveAsync(doctorSaveDto);
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Message = result.Message;
+                    return View();
+                }
             }
             catch
             {
@@ -55,40 +69,34 @@ namespace GestionMedicaAPP.Web.Controllers.users
         }
 
         // GET: DoctorsController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
+            var result = await _doctorsService.GetById(id);
+            if (result.IsSuccess)
+            {
+                DoctorsModel doctorModel = (DoctorsModel)result.Model;
+                return View(doctorModel);
+            }
             return View();
         }
 
         // POST: DoctorsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(DoctorsUpdateDto doctorUpdateDto)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: DoctorsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: DoctorsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
+                var result = await _doctorsService.UpdateAsync(doctorUpdateDto);
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Message = result.Message;
+                    return View();
+                }
             }
             catch
             {

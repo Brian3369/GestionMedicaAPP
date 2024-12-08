@@ -1,5 +1,6 @@
 ﻿using GestionMedicaAPP.Application.Contracts.Medical;
 using GestionMedicaAPP.Application.Contracts.System;
+using GestionMedicaAPP.Application.Dtos.System.Notifications;
 using GestionMedicaAPP.Persistance.Models.Medical;
 using GestionMedicaAPP.Persistance.Models.System;
 using Microsoft.AspNetCore.Http;
@@ -9,27 +10,34 @@ namespace GestionMedicaAPP.Web.Controllers.System
 {
     public class NotificationsController : Controller
     {
-        private readonly INotificationsService _NotificationssService;
+        private readonly INotificationsService _notificationsService;
 
-        public NotificationsController(INotificationsService NotificationssService)
+        public NotificationsController(INotificationsService notificationsService)
         {
-            _NotificationssService = NotificationssService;
+            _notificationsService = notificationsService;
         }
 
+        // GET: NotificationsController/Index
         public async Task<IActionResult> Index()
         {
-            var result = await _NotificationssService.GetAll();
+            var result = await _notificationsService.GetAll();
             if (result.IsSuccess)
             {
-                List<NotificationsModel> NotificationssModel = (List<NotificationsModel>)result.Model;
-                return View(NotificationssModel);
+                List<NotificationsModel> notificationModels = (List<NotificationsModel>)result.Model;
+                return View(notificationModels);
             }
             return View();
         }
 
         // GET: NotificationsController/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
+            var result = await _notificationsService.GetById(id);
+            if (result.IsSuccess)
+            {
+                NotificationsModel notificationModel = (NotificationsModel)result.Model;
+                return View(notificationModel);
+            }
             return View();
         }
 
@@ -42,11 +50,20 @@ namespace GestionMedicaAPP.Web.Controllers.System
         // POST: NotificationsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(NotificationsSaveDto notificationSaveDto)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var result = await _notificationsService.SaveAsync(notificationSaveDto);
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Message = result.Message;
+                    return View();
+                }
             }
             catch
             {
@@ -55,40 +72,34 @@ namespace GestionMedicaAPP.Web.Controllers.System
         }
 
         // GET: NotificationsController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
+            var result = await _notificationsService.GetById(id);
+            if (result.IsSuccess)
+            {
+                NotificationsModel notificationModel = (NotificationsModel)result.Model;
+                return View(notificationModel);
+            }
             return View();
         }
 
         // POST: NotificationsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(NotificationsUpdateDto notificationUpdateDto)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: NotificationsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: NotificationsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
+                var result = await _notificationsService.UpdateAsync(notificationUpdateDto);
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Message = result.Message;
+                    return View();
+                }
             }
             catch
             {

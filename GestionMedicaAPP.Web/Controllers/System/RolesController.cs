@@ -1,33 +1,40 @@
 ﻿using GestionMedicaAPP.Application.Contracts.System;
+using GestionMedicaAPP.Application.Dtos.System.Roles;
 using GestionMedicaAPP.Persistance.Models.System;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionMedicaAPP.Web.Controllers.System
 {
     public class RolesController : Controller
     {
-        private readonly IRolesService _RolessService;
+        private readonly IRolesService _rolesService;
 
-        public RolesController(IRolesService RolessService)
+        public RolesController(IRolesService rolesService)
         {
-            _RolessService = RolessService;
+            _rolesService = rolesService;
         }
 
+        // GET: RolesController/Index
         public async Task<IActionResult> Index()
         {
-            var result = await _RolessService.GetAll();
+            var result = await _rolesService.GetAll();
             if (result.IsSuccess)
             {
-                List<RolesModel> RolessModel = (List<RolesModel>)result.Model;
-                return View(RolessModel);
+                List<RolesModel> roleModels = (List<RolesModel>)result.Model;
+                return View(roleModels);
             }
             return View();
         }
 
         // GET: RolesController/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
+            var result = await _rolesService.GetById(id);
+            if (result.IsSuccess)
+            {
+                RolesModel roleModel = (RolesModel)result.Model;
+                return View(roleModel);
+            }
             return View();
         }
 
@@ -40,11 +47,20 @@ namespace GestionMedicaAPP.Web.Controllers.System
         // POST: RolesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(RolesSaveDto roleSaveDto)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var result = await _rolesService.SaveAsync(roleSaveDto);
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Message = result.Message;
+                    return View();
+                }
             }
             catch
             {
@@ -53,40 +69,34 @@ namespace GestionMedicaAPP.Web.Controllers.System
         }
 
         // GET: RolesController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
+            var result = await _rolesService.GetById(id);
+            if (result.IsSuccess)
+            {
+                RolesModel roleModel = (RolesModel)result.Model;
+                return View(roleModel);
+            }
             return View();
         }
 
         // POST: RolesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(RolesUpdateDto roleUpdateDto)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: RolesController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: RolesController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
+                var result = await _rolesService.UpdateAsync(roleUpdateDto);
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Message = result.Message;
+                    return View();
+                }
             }
             catch
             {

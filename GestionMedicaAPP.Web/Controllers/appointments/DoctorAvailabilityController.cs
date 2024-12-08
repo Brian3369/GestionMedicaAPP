@@ -101,31 +101,5 @@ namespace GestionMedicaAPP.Web.Controllers.appointments
                 return View();
             }
         }
-
-        // GET: AppointmentsController/Delete/5
-        public async Task<IActionResult> Delete(int id)
-        {
-            var result = await _doctorAvailabilityService.RemoveById(id);
-            if (result.IsSuccess)
-            {
-                return View();
-            }
-            return View();
-        }
-
-        // POST: UsersController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

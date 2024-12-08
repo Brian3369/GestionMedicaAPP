@@ -1,4 +1,5 @@
 ﻿using GestionMedicaAPP.Application.Contracts.Medical;
+using GestionMedicaAPP.Application.Dtos.Medical.MedicalRecords;
 using GestionMedicaAPP.Persistance.Models.Medical;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,27 +8,34 @@ namespace GestionMedicaAPP.Web.Controllers.Medical
 {
     public class MedicalRecordsController : Controller
     {
-        private readonly IMedicalRecordsService _MedicalRecordssService;
+        private readonly IMedicalRecordsService _medicalRecordsService;
 
-        public MedicalRecordsController(IMedicalRecordsService medicalRecordssService)
+        public MedicalRecordsController(IMedicalRecordsService medicalRecordsService)
         {
-            _MedicalRecordssService = medicalRecordssService;
+            _medicalRecordsService = medicalRecordsService;
         }
 
+        // GET: MedicalRecordsController/Index
         public async Task<IActionResult> Index()
         {
-            var result = await _MedicalRecordssService.GetAll();
+            var result = await _medicalRecordsService.GetAll();
             if (result.IsSuccess)
             {
-                List<MedicalRecordsModel> medicalRecordssModel = (List<MedicalRecordsModel>)result.Model;
-                return View(medicalRecordssModel);
+                List<MedicalRecordsModel> medicalRecordModels = (List<MedicalRecordsModel>)result.Model;
+                return View(medicalRecordModels);
             }
             return View();
         }
 
         // GET: MedicalRecordsController/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
+            var result = await _medicalRecordsService.GetById(id);
+            if (result.IsSuccess)
+            {
+                MedicalRecordsModel medicalRecordModel = (MedicalRecordsModel)result.Model;
+                return View(medicalRecordModel);
+            }
             return View();
         }
 
@@ -40,11 +48,20 @@ namespace GestionMedicaAPP.Web.Controllers.Medical
         // POST: MedicalRecordsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(MedicalRecordsSaveDto medicalRecordSaveDto)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var result = await _medicalRecordsService.SaveAsync(medicalRecordSaveDto);
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Message = result.Message;
+                    return View();
+                }
             }
             catch
             {
@@ -53,40 +70,34 @@ namespace GestionMedicaAPP.Web.Controllers.Medical
         }
 
         // GET: MedicalRecordsController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
+            var result = await _medicalRecordsService.GetById(id);
+            if (result.IsSuccess)
+            {
+                MedicalRecordsModel medicalRecordModel = (MedicalRecordsModel)result.Model;
+                return View(medicalRecordModel);
+            }
             return View();
         }
 
         // POST: MedicalRecordsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(MedicalRecordsUpdateDto medicalRecordUpdateDto)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: MedicalRecordsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: MedicalRecordsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
+                var result = await _medicalRecordsService.UpdateAsync(medicalRecordUpdateDto);
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Message = result.Message;
+                    return View();
+                }
             }
             catch
             {

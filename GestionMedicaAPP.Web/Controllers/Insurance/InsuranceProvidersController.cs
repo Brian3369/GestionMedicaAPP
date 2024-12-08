@@ -1,4 +1,5 @@
 ﻿using GestionMedicaAPP.Application.Contracts.Insurance;
+using GestionMedicaAPP.Application.Dtos.Insurance.InsuranceProvider;
 using GestionMedicaAPP.Domain.Entities.Insurance;
 using GestionMedicaAPP.Persistance.Models.appointmets;
 using GestionMedicaAPP.Persistance.Models.Insurance;
@@ -16,20 +17,27 @@ namespace GestionMedicaAPP.Web.Controllers.Insurance
             _insuranceProvidersService = insuranceProvidersService;
         }
 
+        // GET: InsuranceProvidersController/Index
         public async Task<IActionResult> Index()
         {
             var result = await _insuranceProvidersService.GetAll();
             if (result.IsSuccess)
             {
-                List<InsuranceProvidersModel> insuranceProvidersModel = (List<InsuranceProvidersModel>)result.Model;
-                return View(insuranceProvidersModel);
+                List<InsuranceProvidersModel> insuranceProviderModels = (List<InsuranceProvidersModel>)result.Model;
+                return View(insuranceProviderModels);
             }
             return View();
         }
 
         // GET: InsuranceProvidersController/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
+            var result = await _insuranceProvidersService.GetById(id);
+            if (result.IsSuccess)
+            {
+                InsuranceProvidersModel insuranceProviderModel = (InsuranceProvidersModel)result.Model;
+                return View(insuranceProviderModel);
+            }
             return View();
         }
 
@@ -42,11 +50,20 @@ namespace GestionMedicaAPP.Web.Controllers.Insurance
         // POST: InsuranceProvidersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(InsuranceProviderSaveDto insuranceProviderSaveDto)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var result = await _insuranceProvidersService.SaveAsync(insuranceProviderSaveDto);
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Message = result.Message;
+                    return View();
+                }
             }
             catch
             {
@@ -55,40 +72,34 @@ namespace GestionMedicaAPP.Web.Controllers.Insurance
         }
 
         // GET: InsuranceProvidersController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
+            var result = await _insuranceProvidersService.GetById(id);
+            if (result.IsSuccess)
+            {
+                InsuranceProvidersModel insuranceProviderModel = (InsuranceProvidersModel)result.Model;
+                return View(insuranceProviderModel);
+            }
             return View();
         }
 
         // POST: InsuranceProvidersController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(InsuranceProviderUpdateDto insuranceProviderUpdateDto)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: InsuranceProvidersController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: InsuranceProvidersController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
+                var result = await _insuranceProvidersService.UpdateAsync(insuranceProviderUpdateDto);
+                if (result.IsSuccess)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Message = result.Message;
+                    return View();
+                }
             }
             catch
             {

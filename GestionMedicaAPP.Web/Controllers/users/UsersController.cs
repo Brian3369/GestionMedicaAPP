@@ -1,9 +1,7 @@
 ﻿using GestionMedicaAPP.Application.Contracts.Users;
 using GestionMedicaAPP.Application.Dtos.Users.users;
 using GestionMedicaAPP.Persistance.Models.users;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.CompilerServices;
 
 namespace GestionMedicaAPP.Web.Controllers.users
 {
@@ -16,41 +14,44 @@ namespace GestionMedicaAPP.Web.Controllers.users
             _usersService = usersService;
         }
 
+        // GET: UsersController/Index
         public async Task<IActionResult> Index()
         {
             var result = await _usersService.GetAll();
             if (result.IsSuccess)
             {
-                List<UsersModel> usersModels = (List<UsersModel>)result.Model;
-                return View(usersModels);
+                List<UsersModel> userModels = (List<UsersModel>)result.Model;
+                return View(userModels);
             }
             return View();
         }
 
+        // GET: UsersController/Details/5
         public async Task<IActionResult> Details(int id)
         {
             var result = await _usersService.GetById(id);
             if (result.IsSuccess)
             {
-                UsersModel usersModels = (UsersModel)result.Model;
-                return View(usersModels);
+                UsersModel userModel = (UsersModel)result.Model;
+                return View(userModel);
             }
             return View();
         }
 
+        // GET: UsersController/Create
         public ActionResult Create()
         {
             return View();
         }
 
+        // POST: UsersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(UsersSaveDto usersSaveDto)
+        public async Task<IActionResult> Create(UsersSaveDto userSaveDto)
         {
             try
             {
-                usersSaveDto.UpdatedAt = DateTime.Now;
-                var result = await _usersService.SaveAsync(usersSaveDto);
+                var result = await _usersService.SaveAsync(userSaveDto);
                 if (result.IsSuccess)
                 {
                     return RedirectToAction(nameof(Index));
@@ -73,8 +74,8 @@ namespace GestionMedicaAPP.Web.Controllers.users
             var result = await _usersService.GetById(id);
             if (result.IsSuccess)
             {
-                UsersModel usersModels = (UsersModel)result.Model;
-                return View(usersModels);
+                UsersModel userModel = (UsersModel)result.Model;
+                return View(userModel);
             }
             return View();
         }
@@ -82,12 +83,11 @@ namespace GestionMedicaAPP.Web.Controllers.users
         // POST: UsersController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(UsersUpdateDto usersUpdateDto)
+        public async Task<IActionResult> Edit(UsersUpdateDto userUpdateDto)
         {
             try
             {
-                usersUpdateDto.UpdatedAt = DateTime.Now;
-                var result = await _usersService.UpdateAsync(usersUpdateDto);
+                var result = await _usersService.UpdateAsync(userUpdateDto);
                 if (result.IsSuccess)
                 {
                     return RedirectToAction(nameof(Index));
@@ -97,32 +97,6 @@ namespace GestionMedicaAPP.Web.Controllers.users
                     ViewBag.Message = result.Message;
                     return View();
                 }
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: UsersController/Delete/5
-        public async Task<IActionResult> Delete(int id)
-        {
-            var result = await _usersService.RemoveById(id);
-            if (result.IsSuccess)
-            {
-                return View();
-            }
-            return View();
-        }
-
-        // POST: UsersController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
             }
             catch
             {
