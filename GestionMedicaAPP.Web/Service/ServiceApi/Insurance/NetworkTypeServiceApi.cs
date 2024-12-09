@@ -1,46 +1,46 @@
-﻿using GestionMedicaAPP.Application.Dtos.Medical.AvailabilityModes;
+﻿using GestionMedicaAPP.Application.Dtos.Insurance.NetworkType;
 using GestionMedicaAPP.Web.Models.Base;
-using GestionMedicaAPP.Web.Models.ControllersModels.Medical.AvailabilityMode;
-using GestionMedicaAPP.Web.Models.ControllersModels.Medical.AvailabilityModes;
+using GestionMedicaAPP.Web.Models.ControllersModels.Insurance.NetworkType;
+using GestionMedicaAPP.Web.Service.Interfaces.Insurance;
 using Newtonsoft.Json;
 
-namespace GestionMedicaAPP.Web.Service.Base.Medical
+namespace GestionMedicaAPP.Web.Service.ServiceApi.Insurance
 {
-    public class AvailabilityModeServiceApi
+    public class NetworkTypeServiceApi : INetworkTypeServiceApi
     {
         private readonly HttpClient _httpClient;
 
-        public AvailabilityModeServiceApi(HttpClient httpClient)
+        public NetworkTypeServiceApi(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("http://localhost:5184/AvailabilityModes/");
+            _httpClient.BaseAddress = new Uri("http://localhost:5184/NetworkType/");
         }
 
-        public async Task<AvailabilityModeGetAllModel> GetAllAsync()
+        public async Task<NetworkTypeGetAllModel> GetAllAsync()
         {
-            var response = await _httpClient.GetAsync("GetAvailabilityModes");
+            var response = await _httpClient.GetAsync("GetNetworkTypes");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<AvailabilityModeGetAllModel>(responseString);
+                return JsonConvert.DeserializeObject<NetworkTypeGetAllModel>(responseString);
             }
             return null;
         }
 
-        public async Task<AvailabilityModeGetByIdModel> GetByIdAsync(int id)
+        public async Task<NetworkTypeGetByIdModel> GetByIdAsync(int id)
         {
-            var response = await _httpClient.GetAsync($"GetAvailabilityModeById?id={id}");
+            var response = await _httpClient.GetAsync($"GetNetworkTypeById?id={id}");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<AvailabilityModeGetByIdModel>(responseString);
+                return JsonConvert.DeserializeObject<NetworkTypeGetByIdModel>(responseString);
             }
             return null;
         }
 
-        public async Task<BaseApiResponse> CreateAsync(AvailabilityModesSaveDto availabilityMode)
+        public async Task<BaseApiResponse> CreateAsync(NetworkTypeSaveDto networkType)
         {
-            var response = await _httpClient.PostAsJsonAsync("SaveAvailabilityMode", availabilityMode);
+            var response = await _httpClient.PostAsJsonAsync("SaveNetworkType", networkType);
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -49,9 +49,9 @@ namespace GestionMedicaAPP.Web.Service.Base.Medical
             return null;
         }
 
-        public async Task<BaseApiResponse> UpdateAsync(AvailabilityModesSaveDto availabilityMode)
+        public async Task<BaseApiResponse> UpdateAsync(NetworkTypeSaveDto networkType)
         {
-            var response = await _httpClient.PutAsJsonAsync($"UpdateAvailabilityMode", availabilityMode);
+            var response = await _httpClient.PutAsJsonAsync($"UpdateNetworkType", networkType);
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -62,7 +62,7 @@ namespace GestionMedicaAPP.Web.Service.Base.Medical
 
         public async Task<BaseApiResponse> DeleteAsync(int id)
         {
-            var response = await _httpClient.DeleteAsync($"DeleteAvailabilityMode/{id}");
+            var response = await _httpClient.DeleteAsync($"DeleteNetworkType/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();

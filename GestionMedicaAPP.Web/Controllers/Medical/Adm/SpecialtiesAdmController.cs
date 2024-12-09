@@ -1,5 +1,5 @@
 ﻿using GestionMedicaAPP.Application.Dtos.Medical.Specialties;
-using GestionMedicaAPP.Web.Service.Base.Medical;
+using GestionMedicaAPP.Web.Service.ServiceApi.Medical;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

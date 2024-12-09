@@ -1,7 +1,6 @@
 ﻿using GestionMedicaAPP.Application.Contracts.Medical;
 using GestionMedicaAPP.Application.Dtos.Medical.Specialties;
 using GestionMedicaAPP.Persistance.Models.Medical;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionMedicaAPP.Web.Controllers.Medical

@@ -1,5 +1,5 @@
 ﻿using GestionMedicaAPP.Application.Dtos.Medical.AvailabilityModes;
-using GestionMedicaAPP.Web.Service.Base.Medical;
+using GestionMedicaAPP.Web.Service.ServiceApi.Medical;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionMedicaAPP.Web.Controllers.Medical.Adm

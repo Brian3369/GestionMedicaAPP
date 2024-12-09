@@ -1,24 +1,25 @@
-﻿using GestionMedicaAPP.Application.Dtos.Appointments.Appointments;
+﻿using GestionMedicaAPP.Application.Dtos.Medical.AvailabilityModes;
 using GestionMedicaAPP.Web.Models.Base;
 using GestionMedicaAPP.Web.Models.ControllersModels.Medical.AvailabilityMode;
 using GestionMedicaAPP.Web.Models.ControllersModels.Medical.AvailabilityModes;
+using GestionMedicaAPP.Web.Service.Interfaces.Medical;
 using Newtonsoft.Json;
 
-namespace GestionMedicaAPP.Web.Service.Base.Appointmets
+namespace GestionMedicaAPP.Web.Service.ServiceApi.Medical
 {
-    public class AppointmentServiceApi
+    public class AvailabilityModeServiceApi : IAvailabilityModesServiceApi
     {
         private readonly HttpClient _httpClient;
 
-        public AppointmentServiceApi(HttpClient httpClient)
+        public AvailabilityModeServiceApi(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("http://localhost:5184/Appointments/");
+            _httpClient.BaseAddress = new Uri("http://localhost:5184/AvailabilityModes/");
         }
 
         public async Task<AvailabilityModeGetAllModel> GetAllAsync()
         {
-            var response = await _httpClient.GetAsync("GetAppointments");
+            var response = await _httpClient.GetAsync("GetAvailabilityModes");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -29,7 +30,7 @@ namespace GestionMedicaAPP.Web.Service.Base.Appointmets
 
         public async Task<AvailabilityModeGetByIdModel> GetByIdAsync(int id)
         {
-            var response = await _httpClient.GetAsync($"GetAppointmentsById?id={id}");
+            var response = await _httpClient.GetAsync($"GetAvailabilityModeById?id={id}");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -38,9 +39,9 @@ namespace GestionMedicaAPP.Web.Service.Base.Appointmets
             return null;
         }
 
-        public async Task<BaseApiResponse> CreateAsync(AppointmentsSaveDto appointment)
+        public async Task<BaseApiResponse> CreateAsync(AvailabilityModesSaveDto availabilityMode)
         {
-            var response = await _httpClient.PostAsJsonAsync("SaveAppointments", appointment);
+            var response = await _httpClient.PostAsJsonAsync("SaveAvailabilityMode", availabilityMode);
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -49,9 +50,9 @@ namespace GestionMedicaAPP.Web.Service.Base.Appointmets
             return null;
         }
 
-        public async Task<BaseApiResponse> UpdateAsync(AppointmentsSaveDto appointment)
+        public async Task<BaseApiResponse> UpdateAsync(AvailabilityModesSaveDto availabilityMode)
         {
-            var response = await _httpClient.PutAsJsonAsync($"UpdateAppointments", appointment);
+            var response = await _httpClient.PutAsJsonAsync($"UpdateAvailabilityMode", availabilityMode);
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -62,7 +63,7 @@ namespace GestionMedicaAPP.Web.Service.Base.Appointmets
 
         public async Task<BaseApiResponse> DeleteAsync(int id)
         {
-            var response = await _httpClient.DeleteAsync($"RemoveAppointments?id={id}");
+            var response = await _httpClient.DeleteAsync($"DeleteAvailabilityMode/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();

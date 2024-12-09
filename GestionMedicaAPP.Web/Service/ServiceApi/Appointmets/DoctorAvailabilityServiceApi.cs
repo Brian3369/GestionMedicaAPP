@@ -1,11 +1,12 @@
 ﻿using GestionMedicaAPP.Application.Dtos.Appointments.DoctorAvailability;
 using GestionMedicaAPP.Web.Models.Base;
 using GestionMedicaAPP.Web.Models.ControllersModels.appointments.DoctorAvailability;
+using GestionMedicaAPP.Web.Service.Interfaces.Appointmets;
 using Newtonsoft.Json;
 
-namespace GestionMedicaAPP.Web.Service.Base.Appointmets
+namespace GestionMedicaAPP.Web.Service.ServiceApi.Appointmets
 {
-    public class DoctorAvailabilityServiceApi
+    public class DoctorAvailabilityServiceApi : IDoctorAvailabilityServiceApi
     {
         private readonly HttpClient _httpClient;
 

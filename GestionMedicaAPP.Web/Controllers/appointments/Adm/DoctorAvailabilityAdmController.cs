@@ -1,5 +1,5 @@
 ﻿using GestionMedicaAPP.Application.Dtos.Appointments.DoctorAvailability;
-using GestionMedicaAPP.Web.Service.Base.Appointmets;
+using GestionMedicaAPP.Web.Service.ServiceApi.Appointmets;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionMedicaAPP.Web.Controllers.appointments.Adm

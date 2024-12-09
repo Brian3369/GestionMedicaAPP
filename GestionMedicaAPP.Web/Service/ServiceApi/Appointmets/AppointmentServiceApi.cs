@@ -1,45 +1,46 @@
-﻿using GestionMedicaAPP.Application.Dtos.Medical.Specialties;
+﻿using GestionMedicaAPP.Application.Dtos.Appointments.Appointments;
 using GestionMedicaAPP.Web.Models.Base;
-using GestionMedicaAPP.Web.Models.ControllersModels.Medical.Specialties;
+using GestionMedicaAPP.Web.Models.ControllersModels.appointments.appoitments;
+using GestionMedicaAPP.Web.Service.Interfaces.Appointmets;
 using Newtonsoft.Json;
 
-namespace GestionMedicaAPP.Web.Service.Base.Medical
+namespace GestionMedicaAPP.Web.Service.ServiceApi.Appointmets
 {
-    public class SpecialtiesServiceApi
+    public class AppointmentServiceApi : IAppointmentsServiceApi
     {
         private readonly HttpClient _httpClient;
 
-        public SpecialtiesServiceApi(HttpClient httpClient)
+        public AppointmentServiceApi(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("http://localhost:5184/Specialties/");
+            _httpClient.BaseAddress = new Uri("http://localhost:5184/Appointments/");
         }
 
-        public async Task<SpecialtyGetAllModel> GetAllAsync()
+        public async Task<AppointmentsGetAllModel> GetAllAsync()
         {
-            var response = await _httpClient.GetAsync("GetSpecialties");
+            var response = await _httpClient.GetAsync("GetAppointments");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<SpecialtyGetAllModel>(responseString);
+                return JsonConvert.DeserializeObject<AppointmentsGetAllModel>(responseString);
             }
             return null;
         }
 
-        public async Task<SpecialtiesGetByIdModel> GetByIdAsync(int id)
+        public async Task<AppointmentsGetByIdModel> GetByIdAsync(int id)
         {
-            var response = await _httpClient.GetAsync($"GetSpecialtyById?id={id}");
+            var response = await _httpClient.GetAsync($"GetAppointmentsById?id={id}");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<SpecialtiesGetByIdModel>(responseString);
+                return JsonConvert.DeserializeObject<AppointmentsGetByIdModel>(responseString);
             }
             return null;
         }
 
-        public async Task<BaseApiResponse> CreateAsync(SpecialtiesSaveDto specialty)
+        public async Task<BaseApiResponse> CreateAsync(AppointmentsSaveDto appointment)
         {
-            var response = await _httpClient.PostAsJsonAsync("SaveSpecialty", specialty);
+            var response = await _httpClient.PostAsJsonAsync("SaveAppointments", appointment);
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -48,9 +49,9 @@ namespace GestionMedicaAPP.Web.Service.Base.Medical
             return null;
         }
 
-        public async Task<BaseApiResponse> UpdateAsync(int id, SpecialtiesSaveDto specialty)
+        public async Task<BaseApiResponse> UpdateAsync(AppointmentsSaveDto appointment)
         {
-            var response = await _httpClient.PutAsJsonAsync($"UpdateSpecialty/{id}", specialty);
+            var response = await _httpClient.PutAsJsonAsync($"UpdateAppointments", appointment);
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -61,7 +62,7 @@ namespace GestionMedicaAPP.Web.Service.Base.Medical
 
         public async Task<BaseApiResponse> DeleteAsync(int id)
         {
-            var response = await _httpClient.DeleteAsync($"DeleteSpecialty/{id}");
+            var response = await _httpClient.DeleteAsync($"RemoveAppointments?id={id}");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();

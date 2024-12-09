@@ -1,45 +1,46 @@
-﻿using GestionMedicaAPP.Application.Dtos.Insurance.NetworkType;
+﻿using GestionMedicaAPP.Application.Dtos.Medical.MedicalRecords;
 using GestionMedicaAPP.Web.Models.Base;
-using GestionMedicaAPP.Web.Models.ControllersModels.Insurance.NetworkType;
+using GestionMedicaAPP.Web.Models.ControllersModels.Medical.MedicalRecords;
+using GestionMedicaAPP.Web.Service.Interfaces.Medical;
 using Newtonsoft.Json;
 
-namespace GestionMedicaAPP.Web.Service.Base.Insurance
+namespace GestionMedicaAPP.Web.Service.ServiceApi.Medical
 {
-    public class NetworkTypeServiceApi
+    public class MedicalRecordServiceApi : IMedicalRecordServiceApi
     {
         private readonly HttpClient _httpClient;
 
-        public NetworkTypeServiceApi(HttpClient httpClient)
+        public MedicalRecordServiceApi(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("http://localhost:5184/NetworkType/");
+            _httpClient.BaseAddress = new Uri("http://localhost:5184/MedicalRecords/");
         }
 
-        public async Task<NetworkTypeGetAllModel> GetAllAsync()
+        public async Task<MedicalRecordsGetAllModel> GetAllAsync()
         {
-            var response = await _httpClient.GetAsync("GetNetworkTypes");
+            var response = await _httpClient.GetAsync("GetMedicalRecords");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<NetworkTypeGetAllModel>(responseString);
+                return JsonConvert.DeserializeObject<MedicalRecordsGetAllModel>(responseString);
             }
             return null;
         }
 
-        public async Task<NetworkTypeGetByIdModel> GetByIdAsync(int id)
+        public async Task<MedicalRecordsGetByIdModel> GetByIdAsync(int id)
         {
-            var response = await _httpClient.GetAsync($"GetNetworkTypeById?id={id}");
+            var response = await _httpClient.GetAsync($"GetMedicalRecordById?id={id}");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<NetworkTypeGetByIdModel>(responseString);
+                return JsonConvert.DeserializeObject<MedicalRecordsGetByIdModel>(responseString);
             }
             return null;
         }
 
-        public async Task<BaseApiResponse> CreateAsync(NetworkTypeSaveDto networkType)
+        public async Task<BaseApiResponse> CreateAsync(MedicalRecordsSaveDto medicalRecord)
         {
-            var response = await _httpClient.PostAsJsonAsync("SaveNetworkType", networkType);
+            var response = await _httpClient.PostAsJsonAsync("SaveMedicalRecord", medicalRecord);
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -48,9 +49,9 @@ namespace GestionMedicaAPP.Web.Service.Base.Insurance
             return null;
         }
 
-        public async Task<BaseApiResponse> UpdateAsync(int id, NetworkTypeSaveDto networkType)
+        public async Task<BaseApiResponse> UpdateAsync(MedicalRecordsSaveDto medicalRecord)
         {
-            var response = await _httpClient.PutAsJsonAsync($"UpdateNetworkType/{id}", networkType);
+            var response = await _httpClient.PutAsJsonAsync($"UpdateMedicalRecord/{id}", medicalRecord);
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -61,7 +62,7 @@ namespace GestionMedicaAPP.Web.Service.Base.Insurance
 
         public async Task<BaseApiResponse> DeleteAsync(int id)
         {
-            var response = await _httpClient.DeleteAsync($"DeleteNetworkType/{id}");
+            var response = await _httpClient.DeleteAsync($"DeleteMedicalRecord/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();

@@ -1,11 +1,12 @@
 ﻿using GestionMedicaAPP.Application.Dtos.Insurance.InsuranceProvider;
 using GestionMedicaAPP.Web.Models.Base;
 using GestionMedicaAPP.Web.Models.ControllersModels.Insurance.InsuranceProviders;
+using GestionMedicaAPP.Web.Service.Interfaces.Insurance;
 using Newtonsoft.Json;
 
-namespace GestionMedicaAPP.Web.Service.Base.Insurance
+namespace GestionMedicaAPP.Web.Service.ServiceApi.Insurance
 {
-    public class InsuranceProviderServiceApi
+    public class InsuranceProviderServiceApi : IInsuranceProvidersServiceApi
     {
         private readonly HttpClient _httpClient;
 
@@ -48,9 +49,9 @@ namespace GestionMedicaAPP.Web.Service.Base.Insurance
             return null;
         }
 
-        public async Task<BaseApiResponse> UpdateAsync(int id, InsuranceProviderSaveDto insuranceProvider)
+        public async Task<BaseApiResponse> UpdateAsync(InsuranceProviderSaveDto insuranceProvider)
         {
-            var response = await _httpClient.PutAsJsonAsync($"UpdateInsuranceProvider/{id}", insuranceProvider);
+            var response = await _httpClient.PutAsJsonAsync($"UpdateInsuranceProvider", insuranceProvider);
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();

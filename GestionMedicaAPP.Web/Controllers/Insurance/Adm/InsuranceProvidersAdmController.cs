@@ -1,5 +1,5 @@
 ﻿using GestionMedicaAPP.Application.Dtos.Insurance.InsuranceProvider;
-using GestionMedicaAPP.Web.Service.Base.Insurance;
+using GestionMedicaAPP.Web.Service.ServiceApi.Insurance;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionMedicaAPP.Web.Controllers.Insurance.Adm

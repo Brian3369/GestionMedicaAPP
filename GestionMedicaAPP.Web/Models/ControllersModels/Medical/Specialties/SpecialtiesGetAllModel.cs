@@ -4,7 +4,7 @@ using GestionMedicaAPP.Web.Models.Base;
 
 namespace GestionMedicaAPP.Web.Models.ControllersModels.Medical.Specialties
 {
-    public class SpecialtyGetAllModel : BaseApiResponse
+    public class SpecialtiesGetAllModel : BaseApiResponse
     {
         public List<SpecialtiesModel> model { get; set; }
     }
