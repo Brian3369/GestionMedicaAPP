@@ -47,7 +47,7 @@ namespace GestionMedicaAPP.System.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("UpdateStatus")]
+        [HttpPut("UpdateStatus")]
         public async Task<IActionResult> Put(int id, [FromBody] Status status)
         {
             var result = await _statusRepository.Update(status);
@@ -57,7 +57,7 @@ namespace GestionMedicaAPP.System.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("RemoveStatus")]
+        [HttpDelete("RemoveStatus")]
         public async Task<IActionResult> Remove(Status status)
         {
             var result = await _statusRepository.Remove(status);

@@ -19,6 +19,9 @@ using GestionMedicaAPP.Persistance.Repositories.Insurance;
 using GestionMedicaAPP.Persistance.Repositories.Medical;
 using GestionMedicaAPP.Persistance.Repositories.System;
 using GestionMedicaAPP.Persistance.Repositories.users;
+using GestionMedicaAPP.Web.Service.Base.Appointmets;
+using GestionMedicaAPP.Web.Service.Base.Insurance;
+using GestionMedicaAPP.Web.Service.Base.Medical;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -62,6 +65,17 @@ builder.Services.AddTransient<IDoctorsService, DoctorsService>();
 builder.Services.AddTransient<IPatientsService, PatientsService>();
 builder.Services.AddTransient<IUsersService, UsersService>();
 
+////////////////////////////////////////////////////////////////////////////////
+
+builder.Services.AddHttpClient<AppointmentServiceApi>();
+builder.Services.AddHttpClient<DoctorAvailabilityServiceApi>();
+
+builder.Services.AddHttpClient<InsuranceProviderServiceApi>();
+builder.Services.AddHttpClient<AvailabilityModeServiceApi>();
+
+builder.Services.AddHttpClient<AvailabilityModeServiceApi>();
+builder.Services.AddHttpClient<MedicalRecordServiceApi>();
+builder.Services.AddHttpClient<SpecialtiesServiceApi>();
 
 
 

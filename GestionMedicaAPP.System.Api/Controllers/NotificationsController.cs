@@ -44,7 +44,7 @@ namespace GestionMedicaAPP.System.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("UpdateNotifications")]
+        [HttpPut("UpdateNotifications")]
         public async Task<IActionResult> Put(int id, [FromBody] Notifications notifications)
         {
             var result = await _notificationsRepository.Update(notifications);
@@ -54,7 +54,7 @@ namespace GestionMedicaAPP.System.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("RemoveNotifications")]
+        [HttpDelete("RemoveNotifications")]
         public async Task<IActionResult> Remove(Notifications notifications)
         {
             var result = await _notificationsRepository.Remove(notifications);

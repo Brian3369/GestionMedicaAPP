@@ -14,9 +14,4 @@
     <ProjectReference Include="..\GestionMedicaAPP.Application\GestionMedicaAPP.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Service\Base\Medical\Specialties\" />
-    <Folder Include="Service\Repository\Medical\Specialties\" />
-  </ItemGroup>
-
 </Project>

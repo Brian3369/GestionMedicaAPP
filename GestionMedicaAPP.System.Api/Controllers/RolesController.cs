@@ -46,7 +46,7 @@ namespace GestionMedicaAPP.System.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("UpdateRoles")]
+        [HttpPut("UpdateRoles")]
         public async Task<IActionResult> Put(int id, [FromBody] Roles roles)
         {
             var result = await _rolesRepository.Update(roles);
@@ -56,7 +56,7 @@ namespace GestionMedicaAPP.System.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("RemoveRoles")]
+        [HttpDelete("RemoveRoles")]
         public async Task<IActionResult> Remove(Roles roles)
         {
             var result = await _rolesRepository.Remove(roles);
