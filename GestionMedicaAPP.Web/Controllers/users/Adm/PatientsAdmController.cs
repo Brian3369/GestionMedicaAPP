@@ -1,40 +1,39 @@
-﻿using GestionMedicaAPP.Application.Dtos.Medical.Specialties;
-using GestionMedicaAPP.Web.Service.ServiceApi.Medical;
+﻿using GestionMedicaAPP.Application.Dtos.Users.Patients;
+using GestionMedicaAPP.Web.Service.ServiceApi.Users;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
-namespace GestionMedicaAPP.Web.Controllers.Medical.Adm
+namespace GestionMedicaAPP.Web.Controllers.users.Adm
 {
-    public class SpecialtiesAdmController : Controller
+    public class PatientsAdmController : Controller
     {
-        private readonly SpecialtiesServiceApi _specialtyService;
+        private readonly PatientServiceApi _patientService;
 
-        public SpecialtiesAdmController(SpecialtiesServiceApi specialtyService)
+        public PatientsAdmController(PatientServiceApi patientService)
         {
-            _specialtyService = specialtyService;
+            _patientService = patientService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var model = await _specialtyService.GetAllAsync();
+            var model = await _patientService.GetAllAsync();
             if (model != null)
             {
                 return View(model.model);
             }
 
-            ViewBag.Message = "Error fetching specialties.";
+            ViewBag.Message = "Error fetching patients.";
             return View();
         }
 
         public async Task<IActionResult> Details(int id)
         {
-            var model = await _specialtyService.GetByIdAsync(id);
+            var model = await _patientService.GetByIdAsync(id);
             if (model != null)
             {
                 return View(model.model);
             }
 
-            ViewBag.Message = "Error fetching details.";
+            ViewBag.Message = "Error fetching patient details.";
             return View();
         }
 
@@ -45,53 +44,53 @@ namespace GestionMedicaAPP.Web.Controllers.Medical.Adm
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(SpecialtiesSaveDto specialty)
+        public async Task<IActionResult> Create(PatientsSaveDto patient)
         {
-            var response = await _specialtyService.CreateAsync(specialty);
+            var response = await _patientService.CreateAsync(patient);
             if (response != null && response.isSuccess)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Message = response?.message ?? "Error creating specialty.";
+            ViewBag.Message = response?.message ?? "Error creating patient.";
             return View();
         }
 
         public async Task<IActionResult> Edit(int id)
         {
-            var model = await _specialtyService.GetByIdAsync(id);
+            var model = await _patientService.GetByIdAsync(id);
             if (model != null)
             {
                 return View(model.model);
             }
 
-            ViewBag.Message = "Error fetching specialty for editing.";
+            ViewBag.Message = "Error fetching patient for editing.";
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(SpecialtiesSaveDto specialty)
+        public async Task<IActionResult> Edit(PatientsSaveDto patient)
         {
-            var response = await _specialtyService.UpdateAsync(specialty);
+            var response = await _patientService.UpdateAsync(patient);
             if (response != null && response.isSuccess)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Message = response?.message ?? "Error updating specialty.";
-            return View(specialty);
+            ViewBag.Message = response?.message ?? "Error updating patient.";
+            return View(patient);
         }
 
         public async Task<IActionResult> Delete(int id)
         {
-            var response = await _specialtyService.DeleteAsync(id);
+            var response = await _patientService.DeleteAsync(id);
             if (response != null && response.isSuccess)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Message = response?.message ?? "Error deleting specialty.";
+            ViewBag.Message = response?.message ?? "Error deleting patient.";
             return RedirectToAction(nameof(Index));
         }
     }

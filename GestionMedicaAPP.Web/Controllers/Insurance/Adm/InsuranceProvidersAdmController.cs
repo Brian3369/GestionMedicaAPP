@@ -70,9 +70,9 @@ namespace GestionMedicaAPP.Web.Controllers.Insurance.Adm
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, InsuranceProviderSaveDto insuranceProvider)
+        public async Task<IActionResult> Edit(InsuranceProviderSaveDto insuranceProvider)
         {
-            var response = await _insuranceProviderService.UpdateAsync(id, insuranceProvider);
+            var response = await _insuranceProviderService.UpdateAsync(insuranceProvider);
             if (response != null && response.isSuccess)
             {
                 return RedirectToAction(nameof(Index));

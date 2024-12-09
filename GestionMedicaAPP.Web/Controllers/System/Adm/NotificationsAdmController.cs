@@ -1,101 +1,97 @@
-﻿//using GestionMedicaAPP.Application.Dtos.System.Notifications;
-//using Microsoft.AspNetCore.Mvc;
+﻿using GestionMedicaAPP.Application.Dtos.System.Notifications;
+using GestionMedicaAPP.Web.Service.ServiceApi.System;
+using Microsoft.AspNetCore.Mvc;
 
-//namespace GestionMedicaAPP.Web.Controllers
-//{
-//    public class NotificationsAdmController : Controller
-//    {
-//        private readonly INotificationsApiService _notificationsService;
+namespace GestionMedicaAPP.Web.Controllers
+{
+    public class NotificationsAdmController : Controller
+    {
+        private readonly NotificationServiceApi _notificationService;
 
-//        public NotificationsAdmController(INotificationsApiService notificationsService)
-//        {
-//            _notificationsService = notificationsService;
-//        }
+        public NotificationsAdmController(NotificationServiceApi notificationService)
+        {
+            _notificationService = notificationService;
+        }
 
-//        public async Task<IActionResult> Index()
-//        {
-//            var notifications = await _notificationsService.GetAllAsync();
-//            return View(notifications);
-//        }
+        public async Task<IActionResult> Index()
+        {
+            var model = await _notificationService.GetAllAsync();
+            if (model != null)
+            {
+                return View(model.model);
+            }
 
-//        public async Task<IActionResult> Details(int id)
-//        {
-//            var notification = await _notificationsService.GetByIdAsync(id);
-//            if (notification == null)
-//            {
-//                return NotFound();
-//            }
-//            return View(notification);
-//        }
+            ViewBag.Message = "Error fetching notifications.";
+            return View();
+        }
 
-//        public IActionResult Create()
-//        {
-//            return View();
-//        }
+        public async Task<IActionResult> Details(int id)
+        {
+            var model = await _notificationService.GetByIdAsync(id);
+            if (model != null)
+            {
+                return View(model.model);
+            }
 
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> Create(NotificationsSaveDto notification)
-//        {
-//            if (!ModelState.IsValid) return View(notification);
+            ViewBag.Message = "Error fetching notification details.";
+            return View();
+        }
 
-//            var result = await _notificationsService.CreateAsync(notification);
+        public IActionResult Create()
+        {
+            return View();
+        }
 
-//            if (!result.IsSuccess)
-//            {
-//                ViewBag.Message = result.Message;
-//                return View();
-//            }
-//            return RedirectToAction(nameof(Index));
-//        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(NotificationsSaveDto notification)
+        {
+            var response = await _notificationService.CreateAsync(notification);
+            if (response != null && response.isSuccess)
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
-//        public async Task<IActionResult> Edit(int id)
-//        {
-//            var notification = await _notificationsService.GetByIdAsync(id);
-//            if (notification == null)
-//            {
-//                return NotFound();
-//            }
-//            return View(notification);
-//        }
+            ViewBag.Message = response?.message ?? "Error creating notification.";
+            return View();
+        }
 
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> Edit(int id, NotificationsSaveDto notification)
-//        {
-//            if (!ModelState.IsValid) return View(notification);
+        public async Task<IActionResult> Edit(int id)
+        {
+            var model = await _notificationService.GetByIdAsync(id);
+            if (model != null)
+            {
+                return View(model.model);
+            }
 
-//            var result = await _notificationsService.UpdateAsync(id, notification);
+            ViewBag.Message = "Error fetching notification for editing.";
+            return View();
+        }
 
-//            if (!result.IsSuccess)
-//            {
-//                ViewBag.Message = result.Message;
-//                return View();
-//            }
-//            return RedirectToAction(nameof(Index));
-//        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(NotificationsSaveDto notification)
+        {
+            var response = await _notificationService.UpdateAsync(notification);
+            if (response != null && response.isSuccess)
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
-//        public async Task<IActionResult> Delete(int id)
-//        {
-//            var notification = await _notificationsService.GetByIdAsync(id);
-//            if (notification == null)
-//            {
-//                return NotFound();
-//            }
-//            return View(notification);
-//        }
+            ViewBag.Message = response?.message ?? "Error updating notification.";
+            return View(notification);
+        }
 
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> DeleteConfirmed(int id)
-//        {
-//            var result = await _notificationsService.DeleteAsync(id);
-//            if (!result.IsSuccess)
-//            {
-//                ViewBag.Message = result.Message;
-//                return View();
-//            }
-//            return RedirectToAction(nameof(Index));
-//        }
-//    }
-//}
+        public async Task<IActionResult> Delete(int id)
+        {
+            var response = await _notificationService.DeleteAsync(id);
+            if (response != null && response.isSuccess)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewBag.Message = response?.message ?? "Error deleting notification.";
+            return RedirectToAction(nameof(Index));
+        }
+    }
+}

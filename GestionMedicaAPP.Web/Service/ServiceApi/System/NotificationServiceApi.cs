@@ -1,46 +1,46 @@
-﻿using GestionMedicaAPP.Application.Dtos.Medical.MedicalRecords;
+﻿using GestionMedicaAPP.Application.Dtos.System.Notifications;
 using GestionMedicaAPP.Web.Models.Base;
-using GestionMedicaAPP.Web.Models.ControllersModels.Medical.MedicalRecords;
-using GestionMedicaAPP.Web.Service.Interfaces.Medical;
+using GestionMedicaAPP.Web.Models.ControllersModels.System.Notifications;
+using GestionMedicaAPP.Web.Service.Interfaces.System;
 using Newtonsoft.Json;
 
-namespace GestionMedicaAPP.Web.Service.ServiceApi.Medical
+namespace GestionMedicaAPP.Web.Service.ServiceApi.System
 {
-    public class MedicalRecordServiceApi : IMedicalRecordServiceApi
+    public class NotificationServiceApi : INotificationServiceApi
     {
         private readonly HttpClient _httpClient;
 
-        public MedicalRecordServiceApi(HttpClient httpClient)
+        public NotificationServiceApi(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("http://localhost:5184/MedicalRecords/");
+            _httpClient.BaseAddress = new Uri("http://localhost:5184/Notifications/");
         }
 
-        public async Task<MedicalRecordsGetAllModel> GetAllAsync()
+        public async Task<NotificationsGetAllModel> GetAllAsync()
         {
-            var response = await _httpClient.GetAsync("GetMedicalRecords");
+            var response = await _httpClient.GetAsync("GetNotifications");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<MedicalRecordsGetAllModel>(responseString);
+                return JsonConvert.DeserializeObject<NotificationsGetAllModel>(responseString);
             }
             return null;
         }
 
-        public async Task<MedicalRecordsGetByIdModel> GetByIdAsync(int id)
+        public async Task<NotificationsGetByIdModel> GetByIdAsync(int id)
         {
-            var response = await _httpClient.GetAsync($"GetMedicalRecordById?id={id}");
+            var response = await _httpClient.GetAsync($"GetNotificationById?id={id}");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<MedicalRecordsGetByIdModel>(responseString);
+                return JsonConvert.DeserializeObject<NotificationsGetByIdModel>(responseString);
             }
             return null;
         }
 
-        public async Task<BaseApiResponse> CreateAsync(MedicalRecordsSaveDto medicalRecord)
+        public async Task<BaseApiResponse> CreateAsync(NotificationsSaveDto notification)
         {
-            var response = await _httpClient.PostAsJsonAsync("SaveMedicalRecord", medicalRecord);
+            var response = await _httpClient.PostAsJsonAsync("SaveNotification", notification);
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -49,9 +49,9 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Medical
             return null;
         }
 
-        public async Task<BaseApiResponse> UpdateAsync(MedicalRecordsSaveDto medicalRecord)
+        public async Task<BaseApiResponse> UpdateAsync(NotificationsSaveDto notification)
         {
-            var response = await _httpClient.PutAsJsonAsync($"UpdateMedicalRecord/", medicalRecord);
+            var response = await _httpClient.PutAsJsonAsync($"UpdateNotification", notification);
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -62,7 +62,7 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Medical
 
         public async Task<BaseApiResponse> DeleteAsync(int id)
         {
-            var response = await _httpClient.DeleteAsync($"DeleteMedicalRecord/{id}");
+            var response = await _httpClient.DeleteAsync($"DeleteNotification/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();

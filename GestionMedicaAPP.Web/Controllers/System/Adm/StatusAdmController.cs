@@ -1,101 +1,97 @@
-﻿//using GestionMedicaAPP.Application.Dtos.System.Status;
-//using Microsoft.AspNetCore.Mvc;
+﻿using GestionMedicaAPP.Application.Dtos.System.Status;
+using GestionMedicaAPP.Web.Service.ServiceApi.System;
+using Microsoft.AspNetCore.Mvc;
 
-//namespace GestionMedicaAPP.Web.Controllers
-//{
-//    public class StatusAdmController : Controller
-//    {
-//        private readonly IStatusApiService _statusService;
+namespace GestionMedicaAPP.Web.Controllers
+{
+    public class StatusAdmController : Controller
+    {
+        private readonly StatusServiceApi _statusService;
 
-//        public StatusAdmController(IStatusApiService statusService)
-//        {
-//            _statusService = statusService;
-//        }
+        public StatusAdmController(StatusServiceApi statusService)
+        {
+            _statusService = statusService;
+        }
 
-//        public async Task<IActionResult> Index()
-//        {
-//            var statuses = await _statusService.GetAllAsync();
-//            return View(statuses);
-//        }
+        public async Task<IActionResult> Index()
+        {
+            var model = await _statusService.GetAllAsync();
+            if (model != null)
+            {
+                return View(model.model);
+            }
 
-//        public async Task<IActionResult> Details(int id)
-//        {
-//            var status = await _statusService.GetByIdAsync(id);
-//            if (status == null)
-//            {
-//                return NotFound();
-//            }
-//            return View(status);
-//        }
+            ViewBag.Message = "Error fetching statuses.";
+            return View();
+        }
 
-//        public IActionResult Create()
-//        {
-//            return View();
-//        }
+        public async Task<IActionResult> Details(int id)
+        {
+            var model = await _statusService.GetByIdAsync(id);
+            if (model != null)
+            {
+                return View(model.model);
+            }
 
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> Create(StatusSaveDto status)
-//        {
-//            if (!ModelState.IsValid) return View(status);
+            ViewBag.Message = "Error fetching status details.";
+            return View();
+        }
 
-//            var result = await _statusService.CreateAsync(status);
+        public IActionResult Create()
+        {
+            return View();
+        }
 
-//            if (!result.IsSuccess)
-//            {
-//                ViewBag.Message = result.Message;
-//                return View();
-//            }
-//            return RedirectToAction(nameof(Index));
-//        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(StatusSaveDto status)
+        {
+            var response = await _statusService.CreateAsync(status);
+            if (response != null && response.isSuccess)
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
-//        public async Task<IActionResult> Edit(int id)
-//        {
-//            var status = await _statusService.GetByIdAsync(id);
-//            if (status == null)
-//            {
-//                return NotFound();
-//            }
-//            return View(status);
-//        }
+            ViewBag.Message = response?.message ?? "Error creating status.";
+            return View();
+        }
 
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> Edit(int id, StatusSaveDto status)
-//        {
-//            if (!ModelState.IsValid) return View(status);
+        public async Task<IActionResult> Edit(int id)
+        {
+            var model = await _statusService.GetByIdAsync(id);
+            if (model != null)
+            {
+                return View(model.model);
+            }
 
-//            var result = await _statusService.UpdateAsync(id, status);
+            ViewBag.Message = "Error fetching status for editing.";
+            return View();
+        }
 
-//            if (!result.IsSuccess)
-//            {
-//                ViewBag.Message = result.Message;
-//                return View();
-//            }
-//            return RedirectToAction(nameof(Index));
-//        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(StatusSaveDto status)
+        {
+            var response = await _statusService.UpdateAsync(status);
+            if (response != null && response.isSuccess)
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
-//        public async Task<IActionResult> Delete(int id)
-//        {
-//            var status = await _statusService.GetByIdAsync(id);
-//            if (status == null)
-//            {
-//                return NotFound();
-//            }
-//            return View(status);
-//        }
+            ViewBag.Message = response?.message ?? "Error updating status.";
+            return View(status);
+        }
 
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> DeleteConfirmed(int id)
-//        {
-//            var result = await _statusService.DeleteAsync(id);
-//            if (!result.IsSuccess)
-//            {
-//                ViewBag.Message = result.Message;
-//                return View();
-//            }
-//            return RedirectToAction(nameof(Index));
-//        }
-//    }
-//}
+        public async Task<IActionResult> Delete(int id)
+        {
+            var response = await _statusService.DeleteAsync(id);
+            if (response != null && response.isSuccess)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewBag.Message = response?.message ?? "Error deleting status.";
+            return RedirectToAction(nameof(Index));
+        }
+    }
+}

@@ -16,7 +16,6 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Appointmets
             _httpClient.BaseAddress = new Uri("http://localhost:5184/DoctorAvailability/");
         }
 
-        // Obtener todas las disponibilidades de los doctores
         public async Task<DoctorAvailabilityGetAllModel> GetAllAsync()
         {
             var response = await _httpClient.GetAsync("GetDoctorAvailability");
@@ -28,7 +27,6 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Appointmets
             return null;
         }
 
-        // Obtener la disponibilidad de un doctor por ID
         public async Task<DoctorAvailabilityGetByIdModel> GetByIdAsync(int id)
         {
             var response = await _httpClient.GetAsync($"GetDoctorAvailabilityById?id={id}");
@@ -40,7 +38,6 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Appointmets
             return null;
         }
 
-        // Crear una nueva disponibilidad para un doctor
         public async Task<BaseApiResponse> CreateAsync(DoctorAvailabilitySaveDto doctorAvailability)
         {
             var response = await _httpClient.PostAsJsonAsync("SaveDoctorAvailability", doctorAvailability);
@@ -52,7 +49,6 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Appointmets
             return null;
         }
 
-        // Actualizar la disponibilidad de un doctor por ID
         public async Task<BaseApiResponse> UpdateAsync(DoctorAvailabilitySaveDto doctorAvailability)
         {
             var response = await _httpClient.PutAsJsonAsync($"UpdateDoctorAvailability", doctorAvailability);
@@ -64,7 +60,6 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Appointmets
             return null;
         }
 
-        // Eliminar la disponibilidad de un doctor por ID
         public async Task<BaseApiResponse> DeleteAsync(int id)
         {
             var response = await _httpClient.DeleteAsync($"RemoveDoctorAvailability?id={id}");

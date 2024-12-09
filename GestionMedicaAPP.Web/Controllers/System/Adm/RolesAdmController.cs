@@ -1,40 +1,39 @@
-﻿using GestionMedicaAPP.Application.Dtos.Medical.Specialties;
-using GestionMedicaAPP.Web.Service.ServiceApi.Medical;
+﻿using GestionMedicaAPP.Application.Dtos.System.Roles;
+using GestionMedicaAPP.Web.Service.ServiceApi.System;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
-namespace GestionMedicaAPP.Web.Controllers.Medical.Adm
+namespace GestionMedicaAPP.Web.Controllers.System.Adm
 {
-    public class SpecialtiesAdmController : Controller
+    public class RolesAdmController : Controller
     {
-        private readonly SpecialtiesServiceApi _specialtyService;
+        private readonly RoleServiceApi _roleService;
 
-        public SpecialtiesAdmController(SpecialtiesServiceApi specialtyService)
+        public RolesAdmController(RoleServiceApi roleService)
         {
-            _specialtyService = specialtyService;
+            _roleService = roleService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var model = await _specialtyService.GetAllAsync();
+            var model = await _roleService.GetAllAsync();
             if (model != null)
             {
                 return View(model.model);
             }
 
-            ViewBag.Message = "Error fetching specialties.";
+            ViewBag.Message = "Error fetching roles.";
             return View();
         }
 
         public async Task<IActionResult> Details(int id)
         {
-            var model = await _specialtyService.GetByIdAsync(id);
+            var model = await _roleService.GetByIdAsync(id);
             if (model != null)
             {
                 return View(model.model);
             }
 
-            ViewBag.Message = "Error fetching details.";
+            ViewBag.Message = "Error fetching role details.";
             return View();
         }
 
@@ -45,53 +44,53 @@ namespace GestionMedicaAPP.Web.Controllers.Medical.Adm
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(SpecialtiesSaveDto specialty)
+        public async Task<IActionResult> Create(RolesSaveDto role)
         {
-            var response = await _specialtyService.CreateAsync(specialty);
+            var response = await _roleService.CreateAsync(role);
             if (response != null && response.isSuccess)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Message = response?.message ?? "Error creating specialty.";
+            ViewBag.Message = response?.message ?? "Error creating role.";
             return View();
         }
 
         public async Task<IActionResult> Edit(int id)
         {
-            var model = await _specialtyService.GetByIdAsync(id);
+            var model = await _roleService.GetByIdAsync(id);
             if (model != null)
             {
                 return View(model.model);
             }
 
-            ViewBag.Message = "Error fetching specialty for editing.";
+            ViewBag.Message = "Error fetching role for editing.";
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(SpecialtiesSaveDto specialty)
+        public async Task<IActionResult> Edit(RolesSaveDto role)
         {
-            var response = await _specialtyService.UpdateAsync(specialty);
+            var response = await _roleService.UpdateAsync(role);
             if (response != null && response.isSuccess)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Message = response?.message ?? "Error updating specialty.";
-            return View(specialty);
+            ViewBag.Message = response?.message ?? "Error updating role.";
+            return View(role);
         }
 
         public async Task<IActionResult> Delete(int id)
         {
-            var response = await _specialtyService.DeleteAsync(id);
+            var response = await _roleService.DeleteAsync(id);
             if (response != null && response.isSuccess)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Message = response?.message ?? "Error deleting specialty.";
+            ViewBag.Message = response?.message ?? "Error deleting role.";
             return RedirectToAction(nameof(Index));
         }
     }

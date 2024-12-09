@@ -1,46 +1,46 @@
-﻿using GestionMedicaAPP.Application.Dtos.Medical.MedicalRecords;
+﻿using GestionMedicaAPP.Application.Dtos.System.Status;
 using GestionMedicaAPP.Web.Models.Base;
-using GestionMedicaAPP.Web.Models.ControllersModels.Medical.MedicalRecords;
-using GestionMedicaAPP.Web.Service.Interfaces.Medical;
+using GestionMedicaAPP.Web.Models.ControllersModels.System.Status;
+using GestionMedicaAPP.Web.Service.Interfaces.System;
 using Newtonsoft.Json;
 
-namespace GestionMedicaAPP.Web.Service.ServiceApi.Medical
+namespace GestionMedicaAPP.Web.Service.ServiceApi.System
 {
-    public class MedicalRecordServiceApi : IMedicalRecordServiceApi
+    public class StatusServiceApi : IStatusServiceApi
     {
         private readonly HttpClient _httpClient;
 
-        public MedicalRecordServiceApi(HttpClient httpClient)
+        public StatusServiceApi(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("http://localhost:5184/MedicalRecords/");
+            _httpClient.BaseAddress = new Uri("http://localhost:5184/Status/");
         }
 
-        public async Task<MedicalRecordsGetAllModel> GetAllAsync()
+        public async Task<StatusGetAllModel> GetAllAsync()
         {
-            var response = await _httpClient.GetAsync("GetMedicalRecords");
+            var response = await _httpClient.GetAsync("GetStatuses");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<MedicalRecordsGetAllModel>(responseString);
+                return JsonConvert.DeserializeObject<StatusGetAllModel>(responseString);
             }
             return null;
         }
 
-        public async Task<MedicalRecordsGetByIdModel> GetByIdAsync(int id)
+        public async Task<StatusGetByIdModel> GetByIdAsync(int id)
         {
-            var response = await _httpClient.GetAsync($"GetMedicalRecordById?id={id}");
+            var response = await _httpClient.GetAsync($"GetStatusById?id={id}");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<MedicalRecordsGetByIdModel>(responseString);
+                return JsonConvert.DeserializeObject<StatusGetByIdModel>(responseString);
             }
             return null;
         }
 
-        public async Task<BaseApiResponse> CreateAsync(MedicalRecordsSaveDto medicalRecord)
+        public async Task<BaseApiResponse> CreateAsync(StatusSaveDto status)
         {
-            var response = await _httpClient.PostAsJsonAsync("SaveMedicalRecord", medicalRecord);
+            var response = await _httpClient.PostAsJsonAsync("SaveStatus", status);
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -49,9 +49,9 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Medical
             return null;
         }
 
-        public async Task<BaseApiResponse> UpdateAsync(MedicalRecordsSaveDto medicalRecord)
+        public async Task<BaseApiResponse> UpdateAsync(StatusSaveDto status)
         {
-            var response = await _httpClient.PutAsJsonAsync($"UpdateMedicalRecord/", medicalRecord);
+            var response = await _httpClient.PutAsJsonAsync($"UpdateStatus", status);
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -62,7 +62,7 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Medical
 
         public async Task<BaseApiResponse> DeleteAsync(int id)
         {
-            var response = await _httpClient.DeleteAsync($"DeleteMedicalRecord/{id}");
+            var response = await _httpClient.DeleteAsync($"DeleteStatus/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
