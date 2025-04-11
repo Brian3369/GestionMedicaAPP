@@ -27,7 +27,6 @@ namespace GestionMedicaAPP.Infraestructure.Services
                     message.Subject = emailModel.Subject;
 
                     await client.SendMailAsync(message);
-
                 }
             }
             catch (Exception ex)

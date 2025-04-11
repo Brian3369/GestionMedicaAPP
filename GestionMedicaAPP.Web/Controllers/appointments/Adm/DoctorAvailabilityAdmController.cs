@@ -48,7 +48,7 @@ namespace GestionMedicaAPP.Web.Controllers.appointments.Adm
             }
 
             ViewBag.Message = response?.message ?? "Error creating record.";
-            return View();
+            return View(response);
         }
         public async Task<IActionResult> Edit(int id)
         {

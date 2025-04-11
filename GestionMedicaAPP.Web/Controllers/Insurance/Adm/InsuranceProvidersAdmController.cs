@@ -34,7 +34,7 @@ namespace GestionMedicaAPP.Web.Controllers.Insurance.Adm
             }
 
             ViewBag.Message = "Error fetching details.";
-            return View();
+            return View(model);
         }
 
         public IActionResult Create()

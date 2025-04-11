@@ -19,6 +19,7 @@ using GestionMedicaAPP.Persistance.Repositories.Insurance;
 using GestionMedicaAPP.Persistance.Repositories.Medical;
 using GestionMedicaAPP.Persistance.Repositories.System;
 using GestionMedicaAPP.Persistance.Repositories.users;
+using GestionMedicaAPP.Web.Service.Interfaces.Appointmets;
 using GestionMedicaAPP.Web.Service.ServiceApi.Appointmets;
 using GestionMedicaAPP.Web.Service.ServiceApi.Insurance;
 using GestionMedicaAPP.Web.Service.ServiceApi.Medical;

@@ -13,7 +13,7 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Insurance
         public InsuranceProviderServiceApi(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("http://localhost:5184/InsuranceProviders/");
+            _httpClient.BaseAddress = new Uri("http://localhost:5222/api/InsuranceProviders/");
         }
 
         public async Task<InsuranceProviderGetAllModel> GetAllAsync()

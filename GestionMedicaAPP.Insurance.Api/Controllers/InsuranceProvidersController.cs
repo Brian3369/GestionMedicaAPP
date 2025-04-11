@@ -14,7 +14,7 @@ namespace GestionMedicaAPP.Insurance.Api.Controllers
             _insuranceProvidersService = insuranceProviderService;
         }
 
-        [HttpGet("GetInsuranceProvider")]
+        [HttpGet("GetInsuranceProviders")]
         public async Task<IActionResult> Get()
         {
             var result = await _insuranceProvidersService.GetAll();

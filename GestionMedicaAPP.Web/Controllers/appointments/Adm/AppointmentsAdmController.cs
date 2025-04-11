@@ -1,4 +1,6 @@
-﻿using GestionMedicaAPP.Application.Dtos.Appointments.Appointments;
+﻿using Azure;
+using GestionMedicaAPP.Application.Dtos.Appointments.Appointments;
+using GestionMedicaAPP.Domain.Entities.appointmets;
 using GestionMedicaAPP.Web.Service.ServiceApi.Appointmets;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,18 +17,26 @@ namespace GestionMedicaAPP.Web.Controllers.appointments.Adm
 
         public async Task<IActionResult> Index()
         {
-            var appointments = await _appointmentsService.GetAllAsync();
-            return View(appointments);
+            var model = await _appointmentsService.GetAllAsync();
+            if (model != null)
+            {
+                return View(model.model);
+            }
+
+            ViewBag.Message = "Error fetching data.";
+            return View();
         }
 
         public async Task<IActionResult> Details(int id)
         {
-            var appointment = await _appointmentsService.GetByIdAsync(id);
-            if (appointment == null)
+            var model = await _appointmentsService.GetByIdAsync(id);
+            if (model != null)
             {
-                return NotFound();
+                return View(model.model);
             }
-            return View(appointment);
+
+            ViewBag.Message = "Error fetching details.";
+            return View();
         }
 
         public IActionResult Create()
@@ -52,51 +62,51 @@ namespace GestionMedicaAPP.Web.Controllers.appointments.Adm
 
         public async Task<IActionResult> Edit(int id)
         {
-            var appointment = await _appointmentsService.GetByIdAsync(id);
-            if (appointment == null)
+            var model = await _appointmentsService.GetByIdAsync(id);
+            if (model != null)
             {
-                return NotFound();
+                return View(model.model);
             }
-            return View(appointment);
+
+            ViewBag.Message = "Error fetching availability.";
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(AppointmentsSaveDto appointment)
         {
-            if (!ModelState.IsValid) return View(appointment);
+            var response = await _appointmentsService.UpdateAsync(appointment);
 
-            var result = await _appointmentsService.UpdateAsync(appointment);
-
-            if (!result.isSuccess)
+            if (response != null && response.isSuccess)
             {
-                ViewBag.Message = result.message;
-                return View();
+                return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Index));
-        }
+            ViewBag.Message = response?.message ?? "Error updating availability.";
+            return View(appointment);        }
 
         public async Task<IActionResult> Delete(int id)
         {
-            var appointment = await _appointmentsService.GetByIdAsync(id);
-            if (appointment == null)
+            var model = await _appointmentsService.GetByIdAsync(id);
+            if (model != null)
             {
-                return NotFound();
+                return View(model.model);
             }
-            return View(appointment);
+            ViewBag.Message = "Error removing appointment.";
+            return View();
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var result = await _appointmentsService.DeleteAsync(id);
-            if (!result.isSuccess)
+            var response = await _appointmentsService.DeleteAsync(id);
+            if (response != null && response.isSuccess)
             {
-                ViewBag.Message = result.message;
-                return View();
+                return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Index));
+            ViewBag.Message = response?.message ?? "Error deleting appointment.";
+            return RedirectToAction(nameof(Delete), new { id });
         }
     }
 }
