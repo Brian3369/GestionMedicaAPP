@@ -56,7 +56,7 @@ namespace GestionMedicaAPP.Appointment.Api.Controllers
         }
 
         [HttpDelete("RemoveAppointments")]
-        public async Task<IActionResult> get(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var result = await _appointmentsService.RemoveById(id);
             if (!result.IsSuccess)
