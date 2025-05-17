@@ -59,7 +59,7 @@ namespace GestionMedicaAPP.Medical.Api.Controllers
         }
 
         [HttpDelete("RemoveAvailabilityModes")]
-        public async Task<IActionResult> get(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var result = await _availabilityModesService.RemoveById(id);
             if (result.IsSuccess)

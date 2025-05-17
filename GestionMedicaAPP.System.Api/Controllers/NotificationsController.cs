@@ -1,5 +1,5 @@
-﻿using GestionMedicaAPP.Domain.Entities.System;
-using GestionMedicaAPP.Persistance.Interfaces.System;
+﻿using GestionMedicaAPP.Application.Contracts.System;
+using GestionMedicaAPP.Application.Dtos.System.Notifications;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionMedicaAPP.System.Api.Controllers
@@ -8,8 +8,8 @@ namespace GestionMedicaAPP.System.Api.Controllers
     [ApiController]
     public class NotificationsController : ControllerBase
     {
-        private readonly INotificationsRepository _notificationsRepository;
-        public NotificationsController(INotificationsRepository notificationsRepository)
+        private readonly INotificationsService _notificationsRepository;
+        public NotificationsController(INotificationsService notificationsRepository)
         {
             _notificationsRepository = notificationsRepository;
         }
@@ -18,7 +18,7 @@ namespace GestionMedicaAPP.System.Api.Controllers
         public async Task<IActionResult> Get()
         {
             var result = await _notificationsRepository.GetAll();
-            if (!result.Success)
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
@@ -27,38 +27,38 @@ namespace GestionMedicaAPP.System.Api.Controllers
         [HttpGet("GetById")]
         public async Task<IActionResult> Get(int id)
         {
-            var result = await _notificationsRepository.GetEntityBy(id);
-            if (!result.Success)
+            var result = await _notificationsRepository.GetById(id);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
         [HttpPost("SaveNotifications")]
-        public async Task<IActionResult> Post([FromBody] Notifications notifications)
+        public async Task<IActionResult> Post([FromBody] NotificationsSaveDto notifications)
         {
-            var result = await _notificationsRepository.Save(notifications);
-            if (!result.Success)
+            var result = await _notificationsRepository.SaveAsync(notifications);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
         [HttpPut("UpdateNotifications")]
-        public async Task<IActionResult> Put(int id, [FromBody] Notifications notifications)
+        public async Task<IActionResult> Put([FromBody] NotificationsUpdateDto notification)
         {
-            var result = await _notificationsRepository.Update(notifications);
-            if (!result.Success)
+            var result = await _notificationsRepository.UpdateAsync(notification);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
         [HttpDelete("RemoveNotifications")]
-        public async Task<IActionResult> Remove(Notifications notifications)
+        public async Task<IActionResult> Delete(int id)
         {
-            var result = await _notificationsRepository.Remove(notifications);
-            if (result.Success)
+            var result = await _notificationsRepository.RemoveById(id);
+            if (result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);

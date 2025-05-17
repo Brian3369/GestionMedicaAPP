@@ -1,6 +1,5 @@
 ﻿using GestionMedicaAPP.Application.Contracts.Medical;
 using GestionMedicaAPP.Application.Dtos.Medical.Specialties;
-using GestionMedicaAPP.Domain.Entities.Medical;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionMedicaAPP.Medical.Api.Controllers
@@ -56,7 +55,7 @@ namespace GestionMedicaAPP.Medical.Api.Controllers
         }
 
         [HttpDelete("RemoveSpecialties")]
-        public async Task<IActionResult> get(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var result = await _specialtiesService.RemoveById(id);
             if (result.IsSuccess)

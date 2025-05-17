@@ -1,6 +1,5 @@
-﻿using GestionMedicaAPP.Domain.Entities.System;
-using GestionMedicaAPP.Persistance.Interfaces.System;
-using GestionMedicaAPP.Persistance.Repositories.System;
+﻿using GestionMedicaAPP.Application.Contracts.System;
+using GestionMedicaAPP.Application.Dtos.System.Roles;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestionMedicaAPP.System.Api.Controllers
@@ -9,58 +8,57 @@ namespace GestionMedicaAPP.System.Api.Controllers
     [ApiController]
     public class RolesController : ControllerBase
     {
-        private readonly IRolesRepository _rolesRepository;
-        public RolesController(IRolesRepository rolesRepository) 
+        private readonly IRolesService _rolesService;
+        public RolesController(IRolesService rolesService)
         {
-            _rolesRepository = rolesRepository;
+            _rolesService = rolesService;
         }
-
 
         [HttpGet("GetRoles")]
         public async Task<IActionResult> Get()
         {
-            var result = await _rolesRepository.GetAll();
-            if (!result.Success)
+            var result = await _rolesService.GetAll();
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
-        [HttpGet("GetRolesById")]
+        [HttpGet("GetById")]
         public async Task<IActionResult> Get(int id)
         {
-            var result = await _rolesRepository.GetEntityBy(id);
-            if (!result.Success)
+            var result = await _rolesService.GetById(id);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
         [HttpPost("SaveRoles")]
-        public async Task<IActionResult> Post([FromBody] Roles roles)
+        public async Task<IActionResult> Post([FromBody] RolesSaveDto roles)
         {
-            var result = await _rolesRepository.Save(roles);
-            if (!result.Success)
+            var result = await _rolesService.SaveAsync(roles);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
         [HttpPut("UpdateRoles")]
-        public async Task<IActionResult> Put(int id, [FromBody] Roles roles)
+        public async Task<IActionResult> Put([FromBody] RolesUpdateDto roles)
         {
-            var result = await _rolesRepository.Update(roles);
-            if (!result.Success)
+            var result = await _rolesService.UpdateAsync(roles);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
         }
 
         [HttpDelete("RemoveRoles")]
-        public async Task<IActionResult> Remove(Roles roles)
+        public async Task<IActionResult> Delete(int id)
         {
-            var result = await _rolesRepository.Remove(roles);
-            if (result.Success)
+            var result = await _rolesService.RemoveById(id);
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);

@@ -1,9 +1,5 @@
 ﻿using GestionMedicaAPP.Application.Contracts.Medical;
 using GestionMedicaAPP.Application.Dtos.Medical.MedicalRecords;
-using GestionMedicaAPP.Domain.Entities.Medical;
-using GestionMedicaAPP.Domain.Entities.System;
-using GestionMedicaAPP.Persistance.Interfaces.Medical;
-using GestionMedicaAPP.Persistance.Interfaces.System;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -61,7 +57,7 @@ namespace GestionMedicaAPP.Medical.Api.Controllers
         }
 
         [HttpDelete("RemoveMedicalRecords")]
-        public async Task<IActionResult> get(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var result = await _medicalRecordsService.RemoveById(id);
             if (result.IsSuccess)

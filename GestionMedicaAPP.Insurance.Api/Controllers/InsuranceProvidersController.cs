@@ -55,7 +55,7 @@ namespace GestionMedicaAPP.Insurance.Api.Controllers
         }
 
         [HttpDelete("RemoveInsuranceProvider")]
-        public async Task<IActionResult> get(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var result = await _insuranceProvidersService.RemoveById(id);
             if (result.IsSuccess)

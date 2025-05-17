@@ -54,7 +54,7 @@ namespace GestionMedicaAPP.users.Api.Controllers
         }
 
         [HttpDelete("RemovePatients")]
-        public async Task<IActionResult> get(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var result = await _patientsService.RemoveById(id);
             if (result.IsSuccess)

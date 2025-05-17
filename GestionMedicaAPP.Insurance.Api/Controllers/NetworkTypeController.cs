@@ -59,7 +59,7 @@ namespace GestionMedicaAPP.Insurance.Api.Controllers
         }
 
         [HttpDelete("RemoveNetworkType")]
-        public async Task<IActionResult> get(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var result = await _NetwordTypeService.RemoveById(id);
             if (result.IsSuccess)
