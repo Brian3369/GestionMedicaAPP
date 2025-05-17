@@ -10,15 +10,15 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Appointmets
     {
         private readonly HttpClient _httpClient;
 
-        public DoctorAvailabilityServiceApi(HttpClient httpClient)
+        public DoctorAvailabilityServiceApi(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("http://localhost:5184/DoctorAvailability/");
+            _httpClient.BaseAddress = new Uri(configuration["ApiConecction:ApiBaseAppointments"]);
         }
 
         public async Task<DoctorAvailabilityGetAllModel> GetAllAsync()
         {
-            var response = await _httpClient.GetAsync("GetDoctorAvailability");
+            var response = await _httpClient.GetAsync("DoctorAvailability/GetDoctorAvailability");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
