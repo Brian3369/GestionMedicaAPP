@@ -4,7 +4,7 @@ using GestionMedicaAPP.Web.Service.Base;
 
 namespace GestionMedicaAPP.Web.Service.Interfaces.Insurance
 {
-    public interface IInsuranceProvidersServiceApi : IBaseServiceApi<InsuranceProviderGetAllModel, InsuranceProviderGetByIdModel, InsuranceProviderSaveDto>
+    public interface IInsuranceProvidersServiceApi : IBaseServiceApi<InsuranceProviderGetAllModel, InsuranceProviderGetByIdModel, InsuranceProviderSaveDto, InsuranceProviderUpdateDto>
     {
     }
 }

@@ -4,7 +4,7 @@ using GestionMedicaAPP.Web.Service.Base;
 
 namespace GestionMedicaAPP.Web.Service.Interfaces.Appointmets
 {
-    public interface IAppointmentsServiceApi : IBaseServiceApi<AppointmentsGetAllModel, AppointmentsGetByIdModel, AppointmentsSaveDto>
+    public interface IAppointmentsServiceApi : IBaseServiceApi<AppointmentsGetAllModel, AppointmentsGetByIdModel, AppointmentsSaveDto, AppointmentsUpdateDto>
     {
     }
 }

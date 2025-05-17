@@ -6,7 +6,6 @@ using GestionMedicaAPP.Persistance.Interfaces.Insurance;
 using GestionMedicaAPP.Persistance.Models.Insurance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Net;
 
 namespace GestionMedicaAPP.Persistance.Repositories.Insurance
 {

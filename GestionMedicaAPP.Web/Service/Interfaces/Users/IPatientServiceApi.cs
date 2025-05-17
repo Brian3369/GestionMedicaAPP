@@ -4,7 +4,7 @@ using GestionMedicaAPP.Web.Service.Base;
 
 namespace GestionMedicaAPP.Web.Service.Interfaces.Users
 {
-    public interface IPatientServiceApi : IBaseServiceApi<PatientsGetAllModel, PatientsGetByIdModel, PatientsSaveDto>
+    public interface IPatientServiceApi : IBaseServiceApi<PatientsGetAllModel, PatientsGetByIdModel, PatientsSaveDto, PatientsUpdateDto>
     {
     }
 }

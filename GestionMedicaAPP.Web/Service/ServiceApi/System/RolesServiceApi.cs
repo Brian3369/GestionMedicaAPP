@@ -50,7 +50,7 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.System
             return null;
         }
 
-        public async Task<BaseApiResponse> UpdateAsync(RolesSaveDto role)
+        public async Task<BaseApiResponse> UpdateAsync(RolesUpdateDto role)
         {
             var response = await _httpClient.PutAsJsonAsync($"UpdateRole", role);
             if (response.IsSuccessStatusCode)

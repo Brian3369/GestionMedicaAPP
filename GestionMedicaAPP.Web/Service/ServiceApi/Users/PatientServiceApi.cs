@@ -49,7 +49,7 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Users
             return null;
         }
 
-        public async Task<BaseApiResponse> UpdateAsync(PatientsSaveDto patient)
+        public async Task<BaseApiResponse> UpdateAsync(PatientsUpdateDto patient)
         {
             var response = await _httpClient.PutAsJsonAsync($"UpdatePatient", patient);
             if (response.IsSuccessStatusCode)

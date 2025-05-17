@@ -6,7 +6,7 @@ using GestionMedicaAPP.Web.Service.Base;
 
 namespace GestionMedicaAPP.Web.Service.Interfaces.Medical
 {
-    public interface ISpecialtiesServiceApi : IBaseServiceApi<SpecialtiesGetAllModel, SpecialtiesGetByIdModel, SpecialtiesSaveDto>
+    public interface ISpecialtiesServiceApi : IBaseServiceApi<SpecialtiesGetAllModel, SpecialtiesGetByIdModel, SpecialtiesSaveDto, SpecialtiesUpdateDto>
     {
     }
 }

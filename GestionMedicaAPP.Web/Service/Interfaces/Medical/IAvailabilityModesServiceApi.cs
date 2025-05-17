@@ -5,7 +5,7 @@ using GestionMedicaAPP.Web.Service.Base;
 
 namespace GestionMedicaAPP.Web.Service.Interfaces.Medical
 {
-    public interface IAvailabilityModesServiceApi : IBaseServiceApi<AvailabilityModeGetAllModel, AvailabilityModeGetByIdModel, AvailabilityModesSaveDto>
+    public interface IAvailabilityModesServiceApi : IBaseServiceApi<AvailabilityModeGetAllModel, AvailabilityModeGetByIdModel, AvailabilityModesSaveDto, AvailabilityModesUpdateDto>
     {
     }
 }

@@ -4,7 +4,7 @@ using GestionMedicaAPP.Web.Service.Base;
 
 namespace GestionMedicaAPP.Web.Service.Interfaces.Insurance
 {
-    public interface INetworkTypeServiceApi : IBaseServiceApi<NetworkTypeGetAllModel, NetworkTypeGetByIdModel, NetworkTypeSaveDto>
+    public interface INetworkTypeServiceApi : IBaseServiceApi<NetworkTypeGetAllModel, NetworkTypeGetByIdModel, NetworkTypeSaveDto, NetworkTypeUpdateDto>
     {
     }
 }

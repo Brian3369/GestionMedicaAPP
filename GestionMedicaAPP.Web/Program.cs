@@ -74,7 +74,7 @@ builder.Services.AddHttpClient<AppointmentServiceApi>();
 builder.Services.AddHttpClient<DoctorAvailabilityServiceApi>();
 
 builder.Services.AddHttpClient<InsuranceProviderServiceApi>();
-builder.Services.AddHttpClient<AvailabilityModeServiceApi>();
+builder.Services.AddHttpClient<NetworkTypeServiceApi>();
 
 builder.Services.AddHttpClient<AvailabilityModeServiceApi>();
 builder.Services.AddHttpClient<MedicalRecordServiceApi>();

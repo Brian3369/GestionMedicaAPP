@@ -10,15 +10,15 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Insurance
     {
         private readonly HttpClient _httpClient;
 
-        public NetworkTypeServiceApi(HttpClient httpClient)
+        public NetworkTypeServiceApi(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("http://localhost:5184/NetworkType/");
+            _httpClient.BaseAddress = new Uri(configuration["ApiConecction:ApiBaseInsuranceProviders"]);
         }
 
         public async Task<NetworkTypeGetAllModel> GetAllAsync()
         {
-            var response = await _httpClient.GetAsync("GetNetworkTypes");
+            var response = await _httpClient.GetAsync("NetworkType/GetNetworkType");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -49,7 +49,7 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Insurance
             return null;
         }
 
-        public async Task<BaseApiResponse> UpdateAsync(NetworkTypeSaveDto networkType)
+        public async Task<BaseApiResponse> UpdateAsync(NetworkTypeUpdateDto networkType)
         {
             var response = await _httpClient.PutAsJsonAsync($"UpdateNetworkType", networkType);
             if (response.IsSuccessStatusCode)

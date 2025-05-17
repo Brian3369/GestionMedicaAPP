@@ -71,7 +71,7 @@ namespace GestionMedicaAPP.Web.Controllers.Medical.Adm
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(SpecialtiesSaveDto specialty)
+        public async Task<IActionResult> Edit(SpecialtiesUpdateDto specialty)
         {
             var response = await _specialtyService.UpdateAsync(specialty);
             if (response != null && response.isSuccess)

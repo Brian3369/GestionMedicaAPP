@@ -29,7 +29,7 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Appointmets
 
         public async Task<AppointmentsGetByIdModel> GetByIdAsync(int id)
         {
-            var response = await _httpClient.GetAsync($"GetAppointmentsById?id={id}");
+            var response = await _httpClient.GetAsync($"Appointments/GetAppointmentsById?id={id}");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -40,7 +40,7 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Appointmets
 
         public async Task<BaseApiResponse> CreateAsync(AppointmentsSaveDto appointment)
         {
-            var response = await _httpClient.PostAsJsonAsync("SaveAppointments", appointment);
+            var response = await _httpClient.PostAsJsonAsync("Appointments/SaveAppointments", appointment);
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -49,9 +49,9 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Appointmets
             return null;
         }
 
-        public async Task<BaseApiResponse> UpdateAsync(AppointmentsSaveDto appointment)
+        public async Task<BaseApiResponse> UpdateAsync(AppointmentsUpdateDto appointment)
         {
-            var response = await _httpClient.PutAsJsonAsync($"UpdateAppointments", appointment);
+            var response = await _httpClient.PutAsJsonAsync($"Appointments/UpdateAppointments", appointment);
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -62,7 +62,7 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Appointmets
 
         public async Task<BaseApiResponse> DeleteAsync(int id)
         {
-            var response = await _httpClient.DeleteAsync($"RemoveAppointments?id={id}");
+            var response = await _httpClient.DeleteAsync($"Appointments/RemoveAppointments?id={id}");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();

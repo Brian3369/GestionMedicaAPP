@@ -49,7 +49,7 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Medical
             return null;
         }
 
-        public async Task<BaseApiResponse> UpdateAsync(SpecialtiesSaveDto specialty)
+        public async Task<BaseApiResponse> UpdateAsync(SpecialtiesUpdateDto specialty)
         {
             var response = await _httpClient.PutAsJsonAsync($"UpdateSpecialty", specialty);
             if (response.IsSuccessStatusCode)

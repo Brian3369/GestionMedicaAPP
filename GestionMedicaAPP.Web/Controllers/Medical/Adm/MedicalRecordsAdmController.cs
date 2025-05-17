@@ -70,7 +70,7 @@ namespace GestionMedicaAPP.Web.Controllers.Medical.Adm
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(MedicalRecordsSaveDto medicalRecord)
+        public async Task<IActionResult> Edit(MedicalRecordsUpdateDto medicalRecord)
         {
             var response = await _medicalRecordService.UpdateAsync(medicalRecord);
             if (response != null && response.isSuccess)

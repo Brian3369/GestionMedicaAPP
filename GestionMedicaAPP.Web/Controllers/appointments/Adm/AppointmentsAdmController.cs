@@ -74,7 +74,7 @@ namespace GestionMedicaAPP.Web.Controllers.appointments.Adm
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(AppointmentsSaveDto appointment)
+        public async Task<IActionResult> Edit(AppointmentsUpdateDto appointment)
         {
             var response = await _appointmentsService.UpdateAsync(appointment);
 

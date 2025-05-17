@@ -49,7 +49,7 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Appointmets
             return null;
         }
 
-        public async Task<BaseApiResponse> UpdateAsync(DoctorAvailabilitySaveDto doctorAvailability)
+        public async Task<BaseApiResponse> UpdateAsync(DoctorAvailabilityUpdateDto doctorAvailability)
         {
             var response = await _httpClient.PutAsJsonAsync($"UpdateDoctorAvailability", doctorAvailability);
             if (response.IsSuccessStatusCode)

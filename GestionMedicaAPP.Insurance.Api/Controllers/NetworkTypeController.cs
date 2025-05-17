@@ -18,7 +18,7 @@ namespace GestionMedicaAPP.Insurance.Api.Controllers
             _NetwordTypeService = NetwordTypeService;
         }
 
-        [HttpGet("GetNetwordType")]
+        [HttpGet("GetNetworkType")]
         public async Task<IActionResult> Get()
         {
             var result = await _NetwordTypeService.GetAll();
@@ -28,7 +28,7 @@ namespace GestionMedicaAPP.Insurance.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetNetwordTypeById")]
+        [HttpGet("GetNetworkTypeById")]
         public async Task<IActionResult> Get(int id)
         {
             var result = await _NetwordTypeService.GetById(id);
@@ -38,7 +38,7 @@ namespace GestionMedicaAPP.Insurance.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost("SaveNetwordType")]
+        [HttpPost("SaveNetworkType")]
         public async Task<IActionResult> Post([FromBody] NetworkTypeSaveDto networdType)
         {
             var result = await _NetwordTypeService.SaveAsync(networdType);
@@ -48,7 +48,7 @@ namespace GestionMedicaAPP.Insurance.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPut("UpdateNetwordType")]
+        [HttpPut("UpdateNetworkType")]
         public async Task<IActionResult> Put([FromBody] NetworkTypeUpdateDto networdType)
         {
             var result = await _NetwordTypeService.UpdateAsync(networdType);
@@ -58,7 +58,7 @@ namespace GestionMedicaAPP.Insurance.Api.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("RemoveNetwordType")]
+        [HttpDelete("RemoveNetworkType")]
         public async Task<IActionResult> get(int id)
         {
             var result = await _NetwordTypeService.RemoveById(id);

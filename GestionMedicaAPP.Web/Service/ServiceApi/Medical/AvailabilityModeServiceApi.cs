@@ -50,7 +50,7 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Medical
             return null;
         }
 
-        public async Task<BaseApiResponse> UpdateAsync(AvailabilityModesSaveDto availabilityMode)
+        public async Task<BaseApiResponse> UpdateAsync(AvailabilityModesUpdateDto availabilityMode)
         {
             var response = await _httpClient.PutAsJsonAsync($"UpdateAvailabilityMode", availabilityMode);
             if (response.IsSuccessStatusCode)

@@ -70,7 +70,7 @@ namespace GestionMedicaAPP.Web.Controllers.Medical.Adm
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(AvailabilityModesSaveDto availabilityMode)
+        public async Task<IActionResult> Edit(AvailabilityModesUpdateDto availabilityMode)
         {
             var response = await _availabilityModeService.UpdateAsync(availabilityMode);
             if (response != null && response.isSuccess)

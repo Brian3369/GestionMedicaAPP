@@ -10,15 +10,15 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Insurance
     {
         private readonly HttpClient _httpClient;
 
-        public InsuranceProviderServiceApi(HttpClient httpClient)
+        public InsuranceProviderServiceApi(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("http://localhost:5222/api/InsuranceProviders/");
+            _httpClient.BaseAddress = new Uri(configuration["ApiConecction:ApiBaseInsuranceProviders"]);
         }
 
         public async Task<InsuranceProviderGetAllModel> GetAllAsync()
         {
-            var response = await _httpClient.GetAsync("GetInsuranceProviders");
+            var response = await _httpClient.GetAsync("InsuranceProviders/GetInsuranceProviders");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -49,7 +49,7 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.Insurance
             return null;
         }
 
-        public async Task<BaseApiResponse> UpdateAsync(InsuranceProviderSaveDto insuranceProvider)
+        public async Task<BaseApiResponse> UpdateAsync(InsuranceProviderUpdateDto insuranceProvider)
         {
             var response = await _httpClient.PutAsJsonAsync($"UpdateInsuranceProvider", insuranceProvider);
             if (response.IsSuccessStatusCode)

@@ -7,7 +7,7 @@ using GestionMedicaAPP.Web.Service.Base;
 
 namespace GestionMedicaAPP.Web.Service.Interfaces.Medical
 {
-    public interface IMedicalRecordServiceApi : IBaseServiceApi<MedicalRecordsGetAllModel, MedicalRecordsGetByIdModel, MedicalRecordsSaveDto>
+    public interface IMedicalRecordServiceApi : IBaseServiceApi<MedicalRecordsGetAllModel, MedicalRecordsGetByIdModel, MedicalRecordsSaveDto, MedicalRecordsUpdateDto>
     {
     }
 }

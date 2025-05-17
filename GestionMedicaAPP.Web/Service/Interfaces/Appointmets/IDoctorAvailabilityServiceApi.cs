@@ -4,7 +4,7 @@ using GestionMedicaAPP.Web.Service.Base;
 
 namespace GestionMedicaAPP.Web.Service.Interfaces.Appointmets
 {
-    public interface IDoctorAvailabilityServiceApi : IBaseServiceApi<DoctorAvailabilityGetAllModel, DoctorAvailabilityGetByIdModel, DoctorAvailabilitySaveDto>
+    public interface IDoctorAvailabilityServiceApi : IBaseServiceApi<DoctorAvailabilityGetAllModel, DoctorAvailabilityGetByIdModel, DoctorAvailabilitySaveDto, DoctorAvailabilityUpdateDto>
     {
     }
 }

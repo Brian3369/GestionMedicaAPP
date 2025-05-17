@@ -70,7 +70,7 @@ namespace GestionMedicaAPP.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(NotificationsSaveDto notification)
+        public async Task<IActionResult> Edit(NotificationsUpdateDto notification)
         {
             var response = await _notificationService.UpdateAsync(notification);
             if (response != null && response.isSuccess)

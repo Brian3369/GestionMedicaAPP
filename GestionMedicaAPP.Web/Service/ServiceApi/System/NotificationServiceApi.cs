@@ -49,7 +49,7 @@ namespace GestionMedicaAPP.Web.Service.ServiceApi.System
             return null;
         }
 
-        public async Task<BaseApiResponse> UpdateAsync(NotificationsSaveDto notification)
+        public async Task<BaseApiResponse> UpdateAsync(NotificationsUpdateDto notification)
         {
             var response = await _httpClient.PutAsJsonAsync($"UpdateNotification", notification);
             if (response.IsSuccessStatusCode)

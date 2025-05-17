@@ -1,4 +1,5 @@
 ﻿using GestionMedicaAPP.Application.Dtos.Insurance.NetworkType;
+using GestionMedicaAPP.Web.Service.Interfaces.Insurance;
 using GestionMedicaAPP.Web.Service.ServiceApi.Insurance;
 using Microsoft.AspNetCore.Mvc;
 
@@ -70,7 +71,7 @@ namespace GestionMedicaAPP.Web.Controllers.Insurance.Adm
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(NetworkTypeSaveDto networkType)
+        public async Task<IActionResult> Edit(NetworkTypeUpdateDto networkType)
         {
             var response = await _networkTypeService.UpdateAsync(networkType);
             if (response != null && response.isSuccess)
